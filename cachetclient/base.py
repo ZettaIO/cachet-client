@@ -19,9 +19,16 @@ class Resource:
 
 class Manager:
     resource_class = None
+    path = None
 
     def __init__(self, client):
         self._http = client
+
+        if self.resource_class is None:
+            raise ValueError('resource_class not defined in class {}'.format(self.__class__))
+
+        if self.path is None:
+            raise ValueError('path not defined for class {}'.format(self.__class__))
 
     def _list_paginated(self, path, page_size=20):
         page = 1
