@@ -41,6 +41,17 @@ class Subscriber(Resource):
 
 class SubscriberManager(Manager):
     resource_class = Subscriber
+    path = 'subscribers'
+
+    def create(self, email, components=None, verify=True):
+        self._http.post(
+            self.path,
+            data={
+                'email': email,
+                'components': components,
+                'verify': verify,
+            },
+        )
 
     def list(self):
-        return self._http.get('subscribers')
+        yield from self._list_paginated(self.path)
