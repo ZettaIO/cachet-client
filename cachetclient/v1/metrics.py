@@ -7,3 +7,4 @@ class Metrics(Resource):
 
 class MetricsManager(Manager):
     resource_class = Metrics
+    path = 'metrics'

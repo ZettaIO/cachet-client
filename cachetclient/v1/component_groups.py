@@ -7,3 +7,4 @@ class CompontentGroup(Resource):
 
 class CompontentGroupManager(Manager):
     resource_class = CompontentGroup
+    path = 'components/groups'

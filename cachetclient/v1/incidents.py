@@ -7,3 +7,4 @@ class Incident(Resource):
 
 class IncidentManager(Manager):
     resource_class = Incident
+    path = 'incidents'

@@ -7,3 +7,4 @@ class Component(Resource):
 
 class ComponentManager(Manager):
     resource_class = Component
+    path = 'components'
