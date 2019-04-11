@@ -22,3 +22,23 @@ class Manager:
 
     def __init__(self, client):
         self._http = client
+
+    def _list_paginated(self, path, page_size=20):
+        page = 1
+        while True:
+            result = self._http.get(
+                path,
+                params={'page': page, 'per_page': page_size},
+            )
+            json_data = result.json()
+
+            meta = json_data['meta']
+            data = json_data['data']
+
+            for entry in data:
+                yield self.resource_class(self, entry)
+
+            if page >= meta['pagination']['total_pages']:
+                break
+
+            page += 1
