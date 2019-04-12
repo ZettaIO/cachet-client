@@ -57,3 +57,6 @@ class SubscriberManager(Manager):
 
     def list(self) -> Generator[Subscriber, None, None]:
         yield from self._list_paginated(self.path)
+
+    def delete(self, subscriber_id):
+        self._delete(subscriber_id)
