@@ -50,6 +50,11 @@ class Manager:
 
             page += 1
 
+    def _get(self, path, resource_id):
+        result = self._http.get("{}/{}".format(path, resource_id))
+        json_data = result.json()
+        return self.resource_class(json_data['data'])
+
     def _count(self, path):
         result = self._http.get(path, params={'per_page': 1})
         json_data = result.json()
