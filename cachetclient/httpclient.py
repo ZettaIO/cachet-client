@@ -28,8 +28,8 @@ class HttpClient:
     def post(self, path, data):
         return self.request('POST', path, data=data)
 
-    def delete(self, path):
-        return self.request('DELETE', path)
+    def delete(self, path, resource_id):
+        return self.request('DELETE', "{}/{}".format(path, resource_id))
 
     def request(self, method, path, params=None, data=None):
         url = urljoin(self.base_url, path)

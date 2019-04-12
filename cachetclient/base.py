@@ -54,3 +54,6 @@ class Manager:
         result = self._http.get(path, params={'per_page': 1})
         json_data = result.json()
         return json_data['meta']['pagination']['total']
+
+    def _delete(self, path, resource_id):
+        self._http.delete(path, resource_id)
