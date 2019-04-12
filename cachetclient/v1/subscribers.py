@@ -45,7 +45,8 @@ class SubscriberManager(Manager):
     resource_class = Subscriber
     path = 'subscribers'
 
-    def create(self, email, components=None, verify=True) -> Subscriber:
+    def create_or_update(self, email, components=None, verify=True) -> Subscriber:
+        """Create or update a subscriber"""
         self._http.post(
             self.path,
             data={
