@@ -60,3 +60,6 @@ class SubscriberManager(Manager):
 
     def delete(self, subscriber_id):
         self._delete(subscriber_id)
+
+    def count(self) -> int:
+        return self._count(self.path)

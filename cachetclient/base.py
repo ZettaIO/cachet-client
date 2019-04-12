@@ -49,3 +49,8 @@ class Manager:
                 break
 
             page += 1
+
+    def _count(self, path):
+        result = self._http.get(path, params={'per_page': 1})
+        json_data = result.json()
+        return json_data['meta']['pagination']['total']
