@@ -1,4 +1,6 @@
 from datetime import datetime
+from typing import Generator
+
 from cachetclient.base import Manager, Resource
 
 
@@ -43,7 +45,7 @@ class SubscriberManager(Manager):
     resource_class = Subscriber
     path = 'subscribers'
 
-    def create(self, email, components=None, verify=True):
+    def create(self, email, components=None, verify=True) -> Subscriber:
         self._http.post(
             self.path,
             data={
@@ -53,5 +55,5 @@ class SubscriberManager(Manager):
             },
         )
 
-    def list(self):
+    def list(self) -> Generator[Subscriber, None, None]:
         yield from self._list_paginated(self.path)
