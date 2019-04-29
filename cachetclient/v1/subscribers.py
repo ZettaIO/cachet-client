@@ -45,8 +45,18 @@ class SubscriberManager(Manager):
     resource_class = Subscriber
     path = 'subscribers'
 
-    def create_or_update(self, email, components=None, verify=True) -> Subscriber:
-        """Create or update a subscriber"""
+    def create_or_update(self, email: str, components=None, verify: bool = True) -> Subscriber:
+        """
+        Create or update a subscriber
+
+        Params:
+            email (str): Email address to subscribe
+            components: The components to subscribe to. If ommited all components are subscribed.
+            verify (bool): Verification status. If False an verfication email is sent.
+
+        Returns:
+            The created or updated Subsriber instance
+        """
         self._http.post(
             self.path,
             data={
