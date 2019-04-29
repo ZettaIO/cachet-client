@@ -18,8 +18,8 @@ class Resource:
 
 
 class Manager:
-    resource_class = None
-    path = None
+    resource_class = None  # Type: Resource
+    path = None  # Type: str
 
     def __init__(self, client):
         self._http = client
@@ -35,7 +35,10 @@ class Manager:
         while True:
             result = self._http.get(
                 path,
-                params={'page': page, 'per_page': page_size},
+                params={
+                    'page': page,
+                    'per_page': page_size,
+                },
             )
             json_data = result.json()
 
@@ -49,6 +52,12 @@ class Manager:
                 break
 
             page += 1
+
+    def _search(self, path, params=None):
+        params = params or {}
+        result = self._http.get(path, params={'per_page': 1, **params})
+        json_data = result.json()
+        print(json_data)
 
     def _get(self, path, resource_id):
         result = self._http.get("{}/{}".format(path, resource_id))
