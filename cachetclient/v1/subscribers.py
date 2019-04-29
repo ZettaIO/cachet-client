@@ -59,7 +59,7 @@ class SubscriberManager(Manager):
     def list(self) -> Generator[Subscriber, None, None]:
         yield from self._list_paginated(self.path)
 
-    def delete(self, subscriber_id):
+    def delete(self, subscriber_id) -> None:
         self._delete(self.path, subscriber_id)
 
     def count(self) -> int:
