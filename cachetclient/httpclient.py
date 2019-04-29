@@ -1,4 +1,3 @@
-import json
 from urllib.parse import urljoin
 
 import requests
@@ -37,10 +36,12 @@ class HttpClient:
             method,
             url,
             params=params,
-            data=json.dumps(data),
+            json=data,
             verify=self.verify_tls,
             timeout=self.timeout,
         )
+        print(params)
+        print(response.url)
         if response.ok:
             return response
 
