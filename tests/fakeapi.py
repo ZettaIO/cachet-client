@@ -77,7 +77,11 @@ class FakeHttpClient:
     """Fake implementation of the httpclient"""
 
     def __init__(self, base_url, api_token, timeout=None, verify_tls=True, user_agent=None):
-        pass
+        self.base_url = base_url
+        self.api_token = api_token
+        self.timeout = timeout
+        self.verify_tls = verify_tls
+        self.user_agent = user_agent
 
     def get(self, path, params=None):
         pass
