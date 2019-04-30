@@ -4,7 +4,8 @@ import re
 
 class FakeData:
 
-    def __init__(self, data=None):
+    def __init__(self, routes, data=None):
+        self.routes = routes
         self.data = data or []
 
 
@@ -53,23 +54,34 @@ class FakeVersion:
 
 
 class Routes:
+    """Requesting routing"""
 
     def __init__(self):
-        self.routes = [
-            (r'^ping', FakePing()),
-            (r'^version', FakeVersion()),
-            (r'^components', FakeComponents()),
-            (r'^incidents'),
-            (r'^incident'),
-            (r'^incident'),
-            (r'^incident'),
-            (r'^incident'),
-            (r'^incident'),
-            (r'^incident'),
+        self.ping = FakePing(self)
+        self.version = FakeVersion(self)
+        self.components = FakeComponents(self)
+        self.component_groups = None
+        self.incidents = None
+        self.incident_updates = None
+        self.metrics = None
+        self.metric_points = None
+        self.subscribers = None
+
+        self._routes = [
+            (r'^ping', self.ping),
+            (r'^version', self.version),
+            (r'^component/groups', self.components),
+            (r'^components/(?P<component_id>\w+)', self.components, ['GET', 'POST', 'DELETE']),
+            (r'^components', self.components, ['GET', 'POST']),
+            (r'^incident/updates', self.incident_updates),
+            (r'^incidents', self.incidents),
+            (r'^metric/points', self.metric_points),
+            (r'^metrics', self.metrics),
+            (r'^subscribers', self.subscribers),
         ]
 
     def dispatch(self, path, method):
-        for route in self.routes:
+        for route in self._routes:
             pass
 
 
