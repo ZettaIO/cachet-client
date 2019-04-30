@@ -11,8 +11,8 @@ class FakeData:
 
 class FakeSubscribers(FakeData):
 
-    def get(self,  params=None, **kwargs):
-        print("FakeSubscribers:get")
+    def get(self, subscriber_id=None, params=None, **kwargs):
+        print("FakeSubscribers:get", subscriber_id)
 
     def list(self):
         pass
@@ -85,14 +85,14 @@ class Routes:
     def dispatch(self, method, path, data=None, params=None):
         for route in self._routes:
             print(route[0], path)
-            res = re.search(route[0], path)
-            if not res:
+            match = re.search(route[0], path)
+            if not match:
                 continue
 
             if method in route[2]:
                 func = getattr(route[1], method, None)
                 if func:
-                    return func(data=data, params=params)
+                    return func(params=params, data=data, **match.groupdict())
 
             raise ValueError("Method '{}' not allowed for '{}'".format(method, path))
 
