@@ -1,10 +1,16 @@
-from unittest import TestCase, mock
+from unittest import mock, TestCase
 
 import cachetclient
 from base import CachetTestcase
+from fakeapi import FakeHttpClient
 
 
+@mock.patch('cachetclient.client.HttpClient', new=FakeHttpClient)
 class ClientTests(CachetTestcase):
+
+    def test_mock(self):
+        client = cachetclient.Client(endpoint=self.endpoint, api_token=self.token)
+        self.assertTrue(client._http.is_fake_client)
 
     def test_basic(self):
         """Create a basic client"""
