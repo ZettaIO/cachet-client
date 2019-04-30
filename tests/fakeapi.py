@@ -32,12 +32,12 @@ class FakeComponents(FakeData):
         print("moo")
 
 
-class FakePing:
+class FakePing(FakeData):
     def request(self, *args, **kwargs):
         return { "data": "Pong!" }
 
 
-class FakeVersion:
+class FakeVersion(FakeData):
 
     def request(self, *args, **kwargs):
         return {
@@ -68,19 +68,21 @@ class Routes:
         self.subscribers = None
 
         self._routes = [
-            (r'^ping', self.ping),
-            (r'^version', self.version),
-            (r'^component/groups', self.components),
+            (r'^ping', self.ping, ['GET']),
+            (r'^version', self.version, ['GET']),
+            (r'^component/groups/(?P<group_id>\w+)', self.components, ['GET', 'POST', 'DELETE']),
+            (r'^component/groups', self.components, ['GET', 'POST']),
             (r'^components/(?P<component_id>\w+)', self.components, ['GET', 'POST', 'DELETE']),
             (r'^components', self.components, ['GET', 'POST']),
-            (r'^incident/updates', self.incident_updates),
-            (r'^incidents', self.incidents),
+            (r'^incidents/(?P<incident_id>/updates/(?P<update_id>', ['GET', 'POST', 'DELETE']),
+            (r'^incident/(?P<incident_id>\w+)/updates', self.incident_updates, ['GET', 'POST']),
+            (r'^incidents', self.incidents, ['GET', 'POST']),
             (r'^metric/points', self.metric_points),
             (r'^metrics', self.metrics),
             (r'^subscribers', self.subscribers),
         ]
 
-    def dispatch(self, path, method):
+    def dispatch(self, method, path, data=None, params=None):
         for route in self._routes:
             pass
 
@@ -89,6 +91,7 @@ class FakeHttpClient:
     """Fake implementation of the httpclient"""
 
     def __init__(self, base_url, api_token, timeout=None, verify_tls=True, user_agent=None):
+        self.routes = Routes()
         self.base_url = base_url
         self.api_token = api_token
         self.timeout = timeout
@@ -96,23 +99,17 @@ class FakeHttpClient:
         self.user_agent = user_agent
 
     def get(self, path, params=None):
-        pass
+        return self.request('GET', path, params=params)
 
-    def post(self, path, data):
-        pass
+    def post(self, path, data=None, params=None):
+        return self.request('POST', path, data=data, params=params)
 
-    def delete(self, path, resource_id):
-        pass
+    def delete(self, path):
+        return self.request('DELETE', path)
 
     def request(self, method, path, params=None, data=None):
-        pass
-
-    def _resources(self, url):
-        pass
+        return self.routes.dispatch(method, path, params=params, data=data)
 
 
-# api/v1/*
-# ping
-# version
-# components
-# components/groups
+if __name__ == '__main__':
+    client = FakeHttpClient('http://status.example.com', 's4cr337k33y')
