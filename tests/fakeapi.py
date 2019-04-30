@@ -2,6 +2,7 @@
 import random
 import string
 import re
+from requests.exceptions import HTTPError
 
 from cachetclient.v1 import (
     Subscriber,
@@ -23,11 +24,11 @@ class FakeData:
 
     def delete_by_id(self, resource_id):
         """Delete a resource"""
-        resource = self.map.get(resource_id)
+        resource = self.map.get(int(resource_id))
         if not resource:
-            raise ValueError("404")
+            raise HTTPError("404")
 
-        del self.map[resource_id]
+        del self.map[int(resource_id)]
         self.data.remove(resource)
 
     def next_id(self):
@@ -54,7 +55,7 @@ class FakeSubscribers(FakeData):
         self.add_entry(instance)
 
     def delete(self, subscriber_id=None, **kwargs):
-        pass
+        self.delete_by_id(subscriber_id)
 
 
 class FakeComponents(FakeData):
@@ -156,4 +157,6 @@ if __name__ == '__main__':
     client = FakeHttpClient('http://status.example.com', 's4cr337k33y')
     client.post('subscribers', data={'email': 'user@example.com'})
     subs = client.get('subscribers')
+    print("Subscribers:", subs)
+    client.delete('subscribers/{}'.format(subs[0]['id']))
     print("Subscribers:", subs)
