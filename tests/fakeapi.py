@@ -11,13 +11,13 @@ class FakeData:
 
 class FakeSubscribers(FakeData):
 
-    def get(self):
-        pass
+    def get(self,  params=None, **kwargs):
+        print("FakeSubscribers:get")
 
     def list(self):
         pass
 
-    def create(self):
+    def create(self, params=None, data=None):
         pass
 
     def delete(self):
@@ -65,26 +65,36 @@ class Routes:
         self.incident_updates = None
         self.metrics = None
         self.metric_points = None
-        self.subscribers = None
+        self.subscribers = FakeSubscribers(self)
 
         self._routes = [
-            (r'^ping', self.ping, ['GET']),
-            (r'^version', self.version, ['GET']),
-            (r'^component/groups/(?P<group_id>\w+)', self.components, ['GET', 'POST', 'DELETE']),
-            (r'^component/groups', self.components, ['GET', 'POST']),
-            (r'^components/(?P<component_id>\w+)', self.components, ['GET', 'POST', 'DELETE']),
+            (r'^ping', self.ping, ['get']),
+            (r'^version', self.version, ['get']),
+            (r'^component/groups/(?P<group_id>\w+)', self.components, ['get', 'post', 'delete']),
+            (r'^component/groups', self.components, ['get', 'post']),
+            (r'^components/(?P<component_id>\w+)', self.components, ['get', 'post', 'delete']),
             (r'^components', self.components, ['GET', 'POST']),
-            (r'^incidents/(?P<incident_id>/updates/(?P<update_id>', ['GET', 'POST', 'DELETE']),
-            (r'^incident/(?P<incident_id>\w+)/updates', self.incident_updates, ['GET', 'POST']),
-            (r'^incidents', self.incidents, ['GET', 'POST']),
-            (r'^metric/points', self.metric_points),
-            (r'^metrics', self.metrics),
-            (r'^subscribers', self.subscribers),
+            (r'^incidents/(?P<incident_id>\w+)/updates/(?P<update_id>\w+)', ['get', 'post', 'delete']),
+            (r'^incident/(?P<incident_id>\w+)/updates', self.incident_updates, ['get', 'post']),
+            (r'^incidents', self.incidents, ['get', 'post']),
+            (r'^metric/points', self.metric_points, ['get']),
+            (r'^metrics', self.metrics, ['get']),
+            (r'^subscribers', self.subscribers, ['get']),
         ]
 
     def dispatch(self, method, path, data=None, params=None):
         for route in self._routes:
-            pass
+            print(route[0], path)
+            res = re.search(route[0], path)
+            if not res:
+                continue
+
+            if method in route[2]:
+                func = getattr(route[1], method, None)
+                if func:
+                    return func(data=data, params=params)
+
+            raise ValueError("Method '{}' not allowed for '{}'".format(method, path))
 
 
 class FakeHttpClient:
@@ -99,13 +109,13 @@ class FakeHttpClient:
         self.user_agent = user_agent
 
     def get(self, path, params=None):
-        return self.request('GET', path, params=params)
+        return self.request('get', path, params=params)
 
     def post(self, path, data=None, params=None):
-        return self.request('POST', path, data=data, params=params)
+        return self.request('post', path, data=data, params=params)
 
     def delete(self, path):
-        return self.request('DELETE', path)
+        return self.request('delete', path)
 
     def request(self, method, path, params=None, data=None):
         return self.routes.dispatch(method, path, params=params, data=data)
@@ -113,3 +123,4 @@ class FakeHttpClient:
 
 if __name__ == '__main__':
     client = FakeHttpClient('http://status.example.com', 's4cr337k33y')
+    client.get('subscribers')
