@@ -1,4 +1,5 @@
 """Fake cachet api"""
+import math
 import random
 import string
 import re
@@ -36,12 +37,32 @@ class FakeData:
         self.last_id += 1
         return self.last_id
 
+    def list(self, per_page=20, page=1):
+        """Generic list with pagination"""
+        entries = self.data[per_page * (page - 1):per_page * page]
+        return FakeHttpResponse(
+            data={
+                'meta': {
+                    'pagination': {
+                        'total': len(self.data),
+                        'count': len(entries),
+                        'per_page': per_page,
+                        'current_page': page,
+                        'total_pages': math.ceil(len(self.data) / per_page),
+                    }
+                },
+                'data': entries,
+            }
+        )
 
 class FakeSubscribers(FakeData):
 
     def get(self, params=None, **kwargs):
         """List only supported"""
-        return self.data
+        return super().list(
+            per_page=params.get('per_page') or 20,
+            page=params.get('page') or 1,
+        )
 
     def post(self, params=None, data=None):
         instance = {
@@ -53,9 +74,11 @@ class FakeSubscribers(FakeData):
             "updated_at": "2015-07-24 14:42:24"
         }
         self.add_entry(instance)
+        return FakeHttpResponse()
 
     def delete(self, subscriber_id=None, **kwargs):
         self.delete_by_id(subscriber_id)
+        return FakeHttpResponse()
 
 
 class FakeComponents(FakeData):
@@ -131,6 +154,7 @@ class Routes:
 
 class FakeHttpClient:
     """Fake implementation of the httpclient"""
+    is_fake_client = True
 
     def __init__(self, base_url, api_token, timeout=None, verify_tls=True, user_agent=None):
         self.routes = Routes()
@@ -151,6 +175,20 @@ class FakeHttpClient:
 
     def request(self, method, path, params=None, data=None):
         return self.routes.dispatch(method, path, params=params, data=data)
+
+
+class FakeHttpResponse:
+
+    def __init__(self, data=None, status_code=200):
+        self.status_code = status_code
+        self._data = data
+
+    def json(self):
+        return self._data
+
+    def raise_for_status(self):
+        if self.status_code > 300:
+            raise HTTPError(self.status_code)
 
 
 if __name__ == '__main__':
