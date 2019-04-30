@@ -17,23 +17,23 @@ def Client(endpoint: str=None, api_token: str=None, version: str=None, verify_tl
                        endpoint url. The value "1" will create a v1 cachet client.
     """
     if not api_token:
-        api_token = os.environ['CACHET_API_TOKEN']
-
-    if not endpoint:
-        endpoint = os.environ['CACHET_ENDPOINT']
-
-    if not endpoint:
-        raise ValueError(
-            "No api endpoint specified. "
-            "The token must be supplied in the Client fuction "
-            "or through the CACHET_ENDPOINT enviroment variable."
-        )
+        api_token = os.environ.get('CACHET_API_TOKEN')
 
     if not api_token:
         raise ValueError(
             "No api_token specified. "
             "The endpoint must be supplied in the Client fuction "
             "or through the CACHET_API_TOKEN enviroment variable."
+        )
+
+    if not endpoint:
+        endpoint = os.environ.get('CACHET_ENDPOINT')
+
+    if not endpoint:
+        raise ValueError(
+            "No api endpoint specified. "
+            "The token must be supplied in the Client fuction "
+            "or through the CACHET_ENDPOINT enviroment variable."
         )
 
     if not version:
@@ -53,5 +53,5 @@ def detect_version(endpoint: str) -> str:
     raise ValueError(
         "Cannot determine api version based on endpoint '{}'. "
         "If the api version is not present in the url, "
-        "please supply it on client creation."
+        "please supply it on client creation.".format(endpoint)
     )
