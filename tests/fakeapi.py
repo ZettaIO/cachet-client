@@ -1,39 +1,69 @@
 """Fake cachet api"""
+import random
+import string
 import re
+
+from cachetclient.v1 import (
+    Subscriber,
+)
 
 
 class FakeData:
 
-    def __init__(self, routes, data=None):
+    def __init__(self, routes):
         self.routes = routes
-        self.data = data or []
+        self.data = []
+        self.map = {}
+        self.last_id = 0
+
+    def add_entry(self, entry):
+        """Add a data entry"""
+        self.data.append(entry)
+        self.map[entry['id']] = entry
+
+    def delete_by_id(self, resource_id):
+        """Delete a resource"""
+        resource = self.map.get(resource_id)
+        if not resource:
+            raise ValueError("404")
+
+        del self.map[resource_id]
+        self.data.remove(resource)
+
+    def next_id(self):
+        """Generate unique instance id"""
+        self.last_id += 1
+        return self.last_id
 
 
 class FakeSubscribers(FakeData):
 
-    def get(self, subscriber_id=None, params=None, **kwargs):
-        print("FakeSubscribers:get", subscriber_id)
+    def get(self, params=None, **kwargs):
+        """List only supported"""
+        return self.data
 
-    def list(self):
-        pass
+    def post(self, params=None, data=None):
+        instance = {
+            "id": self.next_id(),
+            "email": data['email'],
+            "verify_code": ''.join(random.choice(string.ascii_lowercase) for i in range(16)),
+            "verified_at": "2015-07-24 14:42:24",
+            "created_at": "2015-07-24 14:42:24",
+            "updated_at": "2015-07-24 14:42:24"
+        }
+        self.add_entry(instance)
 
-    def create(self, params=None, data=None):
-        pass
-
-    def delete(self):
-        pass
-
-    def request(self):
+    def delete(self, subscriber_id=None, **kwargs):
         pass
 
 
 class FakeComponents(FakeData):
-    def request(self):
+    def get(self):
         print("moo")
 
 
 class FakePing(FakeData):
-    def request(self, *args, **kwargs):
+    def get(self, *args, **kwargs):
         return { "data": "Pong!" }
 
 
@@ -79,12 +109,13 @@ class Routes:
             (r'^incidents', self.incidents, ['get', 'post']),
             (r'^metric/points', self.metric_points, ['get']),
             (r'^metrics', self.metrics, ['get']),
-            (r'^subscribers', self.subscribers, ['get']),
+            (r'^subscribers/(?P<subscriber_id>\w+)', self.subscribers, ['delete']),
+            (r'^subscribers', self.subscribers, ['get', 'post']),
         ]
 
     def dispatch(self, method, path, data=None, params=None):
         for route in self._routes:
-            print(route[0], path)
+            print(route[0], path, params, data)
             match = re.search(route[0], path)
             if not match:
                 continue
@@ -123,4 +154,6 @@ class FakeHttpClient:
 
 if __name__ == '__main__':
     client = FakeHttpClient('http://status.example.com', 's4cr337k33y')
-    client.get('subscribers')
+    client.post('subscribers', data={'email': 'user@example.com'})
+    subs = client.get('subscribers')
+    print("Subscribers:", subs)
