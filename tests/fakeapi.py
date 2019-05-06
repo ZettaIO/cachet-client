@@ -1,13 +1,10 @@
 """Fake cachet api"""
 import math
 import random
-import string
 import re
-from requests.exceptions import HTTPError
+import string
 
-from cachetclient.v1 import (
-    Subscriber,
-)
+from requests.exceptions import HTTPError
 
 
 class FakeData:
@@ -170,8 +167,8 @@ class FakeHttpClient:
     def post(self, path, data=None, params=None):
         return self.request('post', path, data=data, params=params)
 
-    def delete(self, path):
-        return self.request('delete', path)
+    def delete(self, path, resource_id):
+        return self.request('delete', "{}/{}".format(path, resource_id))
 
     def request(self, method, path, params=None, data=None):
         return self.routes.dispatch(method, path, params=params, data=data)
