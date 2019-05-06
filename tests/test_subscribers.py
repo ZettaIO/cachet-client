@@ -12,10 +12,21 @@ class SubscriberTests(CachetTestcase):
         client = self.create_client()
         client.subscribers.create_or_update('user@example.com')
 
+        # Count subscribers
         count = client.subscribers.count()
-        self.assertEqual(count,  1)
+        self.assertEqual(count, 1)
 
-        subs = client.subscribers.list()
-        subs = list(subs)
+        # Inspect subscribers
+        subs = list(client.subscribers.list())
         sub = subs[0]
         self.assertEqual(sub.id, 1)
+
+        # Delete subscriber
+        sub.delete()
+        count = client.subscribers.count()
+        self.assertEqual(count, 0)
+
+    def test_list(self):
+        client = self.create_client()
+        for i in range(20 * 4 + 5):
+            pass
