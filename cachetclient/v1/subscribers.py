@@ -45,7 +45,7 @@ class SubscriberManager(Manager):
     resource_class = Subscriber
     path = 'subscribers'
 
-    def create_or_update(self, email: str, components=None, verify: bool = True) -> Subscriber:
+    def create(self, email: str, components=None, verify: bool = True) -> Subscriber:
         """
         Create or update a subscriber
 

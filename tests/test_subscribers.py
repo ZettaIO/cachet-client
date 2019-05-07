@@ -11,7 +11,7 @@ class SubscriberTests(CachetTestcase):
 
     def test_create(self):
         client = self.create_client()
-        client.subscribers.create_or_update('user@example.com')
+        client.subscribers.create('user@example.com')
 
         # Count subscribers
         self.assertEqual(client.subscribers.count(), 1)
@@ -29,7 +29,7 @@ class SubscriberTests(CachetTestcase):
         client = self.create_client()
         num_subs = 20 * 4 + 5
         for i in range(num_subs):
-            client.subscribers.create_or_update(
+            client.subscribers.create(
                 email="user{}@example.com".format(str(i).zfill(3)),
                 verify=True,
             )
