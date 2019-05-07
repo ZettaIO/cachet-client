@@ -1,3 +1,4 @@
+import types
 from unittest import mock
 
 from base import CachetTestcase
@@ -36,8 +37,12 @@ class SubscriberTests(CachetTestcase):
         # Ensure the count matches
         self.assertEqual(client.subscribers.count(), num_subs)
 
-        # Delete them all
-        for sub in client.subscribers.list():
+        # List should return a generator
+        self.assertIsInstance(client.subscribers.list(), types.GeneratorType)
+
+        # Delete them all (We cannot delete while iterating)
+        subs = list(client.subscribers.list())
+        for sub in subs:
             sub.delete()
 
         # We should have no subs left
