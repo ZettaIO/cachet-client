@@ -42,6 +42,8 @@ class SubscriberTests(CachetTestcase):
 
         # Delete them all (We cannot delete while iterating)
         subs = list(client.subscribers.list())
+        self.assertEqual(len(subs), num_subs)
+        self.assertEqual(len(set(subs)), num_subs)
         for sub in subs:
             sub.delete()
 
