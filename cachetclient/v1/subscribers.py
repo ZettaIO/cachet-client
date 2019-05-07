@@ -67,10 +67,25 @@ class SubscriberManager(Manager):
         )
 
     def list(self) -> Generator[Subscriber, None, None]:
+        """
+        List all subscribers.
+        """
         yield from self._list_paginated(self.path)
 
     def delete(self, subscriber_id) -> None:
+        """
+        Delete a specific subscriber id
+
+        Returns:
+            None or raises exception
+        """
         self._delete(self.path, subscriber_id)
 
     def count(self) -> int:
+        """
+        Count the total number of subscribers
+
+        Returns:
+            (int) number of subscribers
+        """
         return self._count(self.path)
