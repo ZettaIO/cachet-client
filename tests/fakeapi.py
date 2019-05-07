@@ -36,7 +36,10 @@ class FakeData:
 
     def list(self, per_page=20, page=1):
         """Generic list with pagination"""
-        entries = self.data[per_page * (page - 1):per_page * page]
+        start = per_page * (page - 1)
+        end = per_page * page
+        entries = self.data[start:end]
+
         return FakeHttpResponse(
             data={
                 'meta': {
@@ -136,7 +139,7 @@ class Routes:
 
     def dispatch(self, method, path, data=None, params=None):
         for route in self._routes:
-            print(route[0], path, params, data)
+            # print(route[0], path, params, data)
             match = re.search(route[0], path)
             if not match:
                 continue
