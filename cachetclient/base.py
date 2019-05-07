@@ -30,6 +30,10 @@ class Manager:
         if self.path is None:
             raise ValueError('path not defined for class {}'.format(self.__class__))
 
+    def _create(self, path, data):
+        response = self._http.post(path, data=data)
+        return self.resource_class(self, response.json()['data'])
+
     def _list_paginated(self, path, page_size=20):
         page = 1
         while True:

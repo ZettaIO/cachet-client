@@ -57,9 +57,9 @@ class SubscriberManager(Manager):
         Returns:
             The created or updated Subsriber instance
         """
-        self._http.post(
+        return self._create(
             self.path,
-            data={
+            {
                 'email': email,
                 'components': components,
                 'verify': verify,

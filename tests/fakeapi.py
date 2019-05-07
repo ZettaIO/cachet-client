@@ -74,7 +74,7 @@ class FakeSubscribers(FakeData):
             "updated_at": "2015-07-24 14:42:24"
         }
         self.add_entry(instance)
-        return FakeHttpResponse()
+        return FakeHttpResponse(data={'data': instance})
 
     def delete(self, subscriber_id=None, **kwargs):
         self.delete_by_id(subscriber_id)

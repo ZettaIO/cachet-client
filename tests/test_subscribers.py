@@ -11,7 +11,9 @@ class SubscriberTests(CachetTestcase):
 
     def test_create(self):
         client = self.create_client()
-        client.subscribers.create('user@example.com')
+        sub = client.subscribers.create('user@example.com')
+        self.assertEqual(sub.id, 1)
+        self.assertEqual(sub.email, 'user@example.com')
 
         # Count subscribers
         self.assertEqual(client.subscribers.count(), 1)
