@@ -6,3 +6,4 @@ from cachetclient.v1.component_groups import CompontentGroup
 from cachetclient.v1.incident_updates import IndicentUpdate
 from cachetclient.v1.metrics import Metrics
 from cachetclient.v1.metric_points import MetricPoints
+from cachetclient.v1 import enums
