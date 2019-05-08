@@ -28,7 +28,14 @@ class ComponentManager(Manager):
         Returns:
             Compotent instance
         """
-        pass
+        self._create(
+            self.path,
+            {
+                'name': name,
+                'description': description,
+                'status': status,
+            }
+        )
 
     def list(self) -> Generator[Component, None, None]:
         yield from self._list_paginated(self.path)
