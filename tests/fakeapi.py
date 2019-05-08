@@ -55,6 +55,7 @@ class FakeData:
             }
         )
 
+
 class FakeSubscribers(FakeData):
 
     def get(self, params=None, **kwargs):
@@ -82,29 +83,30 @@ class FakeSubscribers(FakeData):
 
 
 class FakeComponents(FakeData):
+
     def get(self):
         print("moo")
 
 
 class FakePing(FakeData):
     def get(self, *args, **kwargs):
-        return { "data": "Pong!" }
+        return FakeHttpResponse(data={"data": "Pong!"})
 
 
 class FakeVersion(FakeData):
 
     def request(self, *args, **kwargs):
-        return {
+        return FakeHttpResponse(data={
             "meta": {
                 "on_latest": True,
                 "latest": {
                     "tag_name": "v2.3.10",
                     "prelease": False,
-                    "draft": False
+                    "draft": False,
                 }
             },
-            "data": "2.3.11-dev"
-        }
+            "data": "2.3.11-dev",
+        })
 
 
 class Routes:
