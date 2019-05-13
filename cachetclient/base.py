@@ -47,8 +47,7 @@ class Manager:
         response = self._http.post(path, data=data)
         return self.resource_class(self, response.json()['data'])
 
-    def _list_paginated(self, path, page_size=20):
-        page = 1
+    def _list_paginated(self, path, page=1, page_size=20):
         while True:
             result = self._http.get(
                 path,
