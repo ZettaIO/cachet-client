@@ -84,8 +84,27 @@ class FakeSubscribers(FakeData):
 
 class FakeComponents(FakeData):
 
-    def get(self):
-        print("moo")
+    def get(self, params=None, **kwargs):
+        return super().list(
+            per_page=params.get('per_page') or 20,
+            page=params.get('page') or 1,
+        )
+
+    def post(self, params=None, data=None):
+        instance = {
+            "id": self.next_id(),
+            "name": data.get('name'),
+            "description": data.get('description'),
+            "link": data.get('link'),
+            "status": data.get('status'),
+            "order": data.get('order'),
+            "group_id": data.get('group_id'),
+            "created_at": "2015-08-01 12:00:00",
+            "updated_at": "2015-08-01 12:00:00",
+            "deleted_at": None,
+        }
+        self.add_entry(instance)
+        return FakeHttpResponse(data={'data': instance})
 
 
 class FakePing(FakeData):
@@ -129,7 +148,7 @@ class Routes:
             (r'^component/groups/(?P<group_id>\w+)', self.components, ['get', 'post', 'delete']),
             (r'^component/groups', self.components, ['get', 'post']),
             (r'^components/(?P<component_id>\w+)', self.components, ['get', 'post', 'delete']),
-            (r'^components', self.components, ['GET', 'POST']),
+            (r'^components', self.components, ['get', 'post']),
             (r'^incidents/(?P<incident_id>\w+)/updates/(?P<update_id>\w+)', ['get', 'post', 'delete']),
             (r'^incident/(?P<incident_id>\w+)/updates', self.incident_updates, ['get', 'post']),
             (r'^incidents', self.incidents, ['get', 'post']),
