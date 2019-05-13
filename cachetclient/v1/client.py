@@ -5,6 +5,7 @@ from cachetclient.v1.incidents import IncidentManager
 from cachetclient.v1.metrics import MetricsManager
 from cachetclient.v1.subscribers import SubscriberManager
 from cachetclient.v1.ping import PingManager
+from cachetclient.v1.version import VersionManager
 
 
 class Client:
@@ -18,7 +19,7 @@ class Client:
 
         # Managers
         self.ping = PingManager(self._http)
-        self.version = None
+        self.version = VersionManager(self._http)
         self.component_groups = CompontentGroupManager(self._http)
         self.components = ComponentManager(self._http)
         self.incidents = IncidentManager(self._http)

@@ -1,0 +1,48 @@
+from cachetclient.base import Manager, Resource
+
+
+class Version(Resource):
+
+    @property
+    def value(self) -> str:
+        """Version string"""
+        return self._data['data']
+
+    @property
+    def on_latest(self) -> bool:
+        """
+        Are we on latest version?
+        Requires beacon enabled on server.
+        """
+        return self._data['meta']['on_latest']
+
+    @property
+    def latest(self) -> dict:
+        """
+        Obtains info dict about latest version.
+        Requires beacon enabled on server.
+
+        Response::
+
+            {
+                "tag_name": "v2.3.10",
+                "prelease": false,
+                "draft": false
+            }
+
+        """
+        return self._data['meta']['latest']
+
+
+class VersionManager(Manager):
+    resource_class = Version
+    path = 'version'
+
+    def __call__(self) -> Version:
+        """Get version info"""
+        return self.get()
+
+    def get(self) -> Version:
+        """Get version info"""
+        response = self._http.get(self.path)
+        return Version(self, response.json())
