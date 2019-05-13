@@ -1,3 +1,4 @@
+from cachetclient.httpclient import HttpClient
 
 
 class Resource:
@@ -18,11 +19,11 @@ class Resource:
 
 
 class Manager:
-    resource_class = None  # Type: Resource
+    resource_class = Resource
     path = None  # Type: str
 
-    def __init__(self, client):
-        self._http = client
+    def __init__(self, http_client: HttpClient):
+        self._http = http_client
 
         if self.resource_class is None:
             raise ValueError('resource_class not defined in class {}'.format(self.__class__))
