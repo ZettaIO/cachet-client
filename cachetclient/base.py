@@ -7,8 +7,10 @@ class Resource:
         self._manager = manager
         self._data = data
 
-    def __repr__(self):
-        return str(self)
+    @property
+    def attrs(self):
+        """The raw json respons from the server"""
+        return self._data
 
     def get(self, name):
         """Obtain any attribute name for the resource"""
@@ -16,6 +18,9 @@ class Resource:
 
     def delete(self):
         self._manager.delete(self.get('id'))
+
+    def __repr__(self):
+        return str(self)
 
 
 class Manager:
