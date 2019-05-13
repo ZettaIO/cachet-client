@@ -106,8 +106,13 @@ class FakeComponents(FakeData):
         self.add_entry(instance)
         return FakeHttpResponse(data={'data': instance})
 
+    def delete(self, component_id=None, params=None, data=None):
+        self.delete_by_id(component_id)
+        return FakeHttpResponse()
+
 
 class FakePing(FakeData):
+
     def get(self, *args, **kwargs):
         return FakeHttpResponse(data={"data": "Pong!"})
 

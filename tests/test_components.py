@@ -1,4 +1,5 @@
 from unittest import mock
+from requests.exceptions import HTTPError
 
 from base import CachetTestcase
 from fakeapi import FakeHttpClient
@@ -34,4 +35,19 @@ class ComponentsTests(CachetTestcase):
         self.assertIsNone(comp.deleted_at)
 
     def test_delete(self):
-        pass
+        """Create and delete component"""
+        client = self.create_client()
+        client.components.create(
+            "API Server",
+            description="General API server",
+        )
+        self.assertEqual(client.components.count(), 1)
+        comp = next(client.components.list())
+        comp.delete()
+        self.assertEqual(client.components.count(), 0)
+
+    def test_delete_nonexist(self):
+        """Delete non-exsitent component"""
+        client = self.create_client()
+        with self.assertRaises(HTTPError):
+            client.components.delete(1337)
