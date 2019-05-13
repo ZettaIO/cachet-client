@@ -5,7 +5,7 @@ from fakeapi import FakeHttpClient
 
 
 @mock.patch('cachetclient.client.HttpClient', new=FakeHttpClient)
-class SubscriberTests(CachetTestcase):
+class VersionTests(CachetTestcase):
 
     def test_version_call(self):
         """Version using __call__ method"""

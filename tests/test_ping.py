@@ -5,7 +5,7 @@ from fakeapi import FakeHttpClient
 
 
 @mock.patch('cachetclient.client.HttpClient', new=FakeHttpClient)
-class SubscriberTests(CachetTestcase):
+class PingTests(CachetTestcase):
 
     def test_ping_call(self):
         """Ping using __call__ method"""
