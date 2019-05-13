@@ -34,6 +34,9 @@ class ComponentsTests(CachetTestcase):
         self.assertIsNotNone(comp.updated_at)
         self.assertIsNone(comp.deleted_at)
 
+        comp = client.components.get(1)
+        self.assertEqual(comp.id, 1)
+
     def test_delete(self):
         """Create and delete component"""
         client = self.create_client()
