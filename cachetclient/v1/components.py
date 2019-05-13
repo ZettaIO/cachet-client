@@ -27,6 +27,10 @@ class Component(Resource):
         return self._data['status']
 
     @property
+    def status_name(self) -> str:
+        return self._data['status_name']
+
+    @property
     def order(self) -> int:
         return self._data['order']
 
@@ -74,6 +78,7 @@ class ComponentManager(Manager):
                 'description': description,
                 'status': status,
                 'link': link,
+                'order': order,
                 'group_id': group_id,
                 'enabled': enabled,
             }

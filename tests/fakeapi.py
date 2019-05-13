@@ -117,6 +117,7 @@ class FakeComponents(FakeData):
             "description": data.get('description'),
             "link": data.get('link'),
             "status": data.get('status'),
+            "status_name": "Operational",
             "order": data.get('order'),
             "group_id": data.get('group_id'),
             "created_at": "2015-08-01 12:00:00",
