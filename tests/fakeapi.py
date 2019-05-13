@@ -88,7 +88,8 @@ class FakeSubscribers(FakeData):
             "verify_code": ''.join(random.choice(string.ascii_lowercase) for i in range(16)),
             "verified_at": "2015-07-24 14:42:24",
             "created_at": "2015-07-24 14:42:24",
-            "updated_at": "2015-07-24 14:42:24"
+            "updated_at": "2015-07-24 14:42:24",
+            "global": True,
         }
         self.add_entry(instance)
         return FakeHttpResponse(data={'data': instance})

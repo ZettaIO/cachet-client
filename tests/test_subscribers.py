@@ -19,11 +19,17 @@ class SubscriberTests(CachetTestcase):
         self.assertEqual(client.subscribers.count(), 1)
 
         # Inspect subscribers
-        subs = list(client.subscribers.list())
-        self.assertEqual(subs[0].id, 1)
+        sub = next(client.subscribers.list())
+        self.assertEqual(sub.id, 1)
+        self.assertEqual(sub.email, 'user@example.com')
+        self.assertTrue(sub.is_global)
+        self.assertIsNotNone(sub.verify_code)
+        self.assertIsNotNone(sub.verified_at)
+        self.assertIsNotNone(sub.created_at)
+        self.assertIsNotNone(sub.updated_at)
 
         # Delete subscriber
-        subs[0].delete()
+        sub.delete()
         self.assertEqual(client.subscribers.count(), 0)
 
     def test_list(self):

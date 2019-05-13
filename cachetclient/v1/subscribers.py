@@ -22,12 +22,8 @@ class Subscriber(Resource):
         return self._data['verify_code']
 
     @property
-    def verified_at(self) -> str:
-        return self._data['verified_at']
-
-    @property
     def is_global(self) -> bool:
-        return self._data['global'] == 'true'
+        return self._data['global']
 
     @property
     def created_at(self) -> datetime:
@@ -36,6 +32,10 @@ class Subscriber(Resource):
     @property
     def updated_at(self) -> datetime:
         return self._data['created_at']
+
+    @property
+    def verified_at(self) -> str:
+        return self._data['verified_at']
 
     def __str__(self) -> str:
         return "<Subscriber {}: {}>".format(self.id, self.email)
