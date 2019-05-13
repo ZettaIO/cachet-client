@@ -18,7 +18,7 @@ class Resource:
         return self._data.get(name)
 
     def update(self):
-        self._manager.update(self.get('id'), **self.attrs)
+        return self._manager.update(self.get('id'), **self.attrs)
 
     def delete(self) -> None:
         self._manager.delete(self.get('id'))
