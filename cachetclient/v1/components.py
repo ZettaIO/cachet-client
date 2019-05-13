@@ -5,7 +5,46 @@ from cachetclient.v1 import enums
 
 
 class Component(Resource):
-    pass
+
+    @property
+    def id(self) -> int:
+        return self._data['id']
+
+    @property
+    def name(self) -> str:
+        return self._data['name']
+
+    @property
+    def description(self) -> str:
+        return self._data['description']
+
+    @property
+    def link(self) -> str:
+        return self._data['link']
+
+    @property
+    def status(self) -> int:
+        return self._data['status']
+
+    @property
+    def order(self) -> int:
+        return self._data['order']
+
+    @property
+    def group_id(self):
+        return self._data['group_id']
+
+    @property
+    def created_at(self):
+        return self._data['created_at']
+
+    @property
+    def updated_at(self):
+        return self._data['updated_at']
+
+    @property
+    def deleted_at(self):
+        return self._data['deleted_at']
 
 
 class ComponentManager(Manager):
