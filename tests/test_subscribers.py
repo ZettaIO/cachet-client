@@ -42,6 +42,10 @@ class SubscriberTests(CachetTestcase):
         # List should return a generator
         self.assertIsInstance(client.subscribers.list(), types.GeneratorType)
 
+        # Request specific page
+        sub = next(client.subscribers.list(page=2, per_page=10))
+        self.assertEqual(sub.id, 11)
+
         # Delete them all (We cannot delete while iterating)
         subs = list(client.subscribers.list())
         self.assertEqual(len(subs), num_subs)
