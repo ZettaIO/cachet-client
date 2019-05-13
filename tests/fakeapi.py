@@ -20,13 +20,23 @@ class FakeData:
         self.data.append(entry)
         self.map[entry['id']] = entry
 
+    def get_by_id(self, resource_id):
+        """Get a resource by id"""
+        resource_id = int(resource_id)
+        data = self.map.get(resource_id)
+        if data is None:
+            raise HTTPError("404")
+
+        return data
+
     def delete_by_id(self, resource_id):
         """Delete a resource"""
-        resource = self.map.get(int(resource_id))
+        resource_id = int(resource_id)
+        resource = self.map.get(resource_id)
         if not resource:
             raise HTTPError("404")
 
-        del self.map[int(resource_id)]
+        del self.map[resource_id]
         self.data.remove(resource)
 
     def next_id(self):
@@ -34,7 +44,13 @@ class FakeData:
         self.last_id += 1
         return self.last_id
 
-    def list(self, per_page=20, page=1):
+    def _get(self, resource_id):
+        """Get a single resource"""
+        resource_id = int(resource_id)
+        data = self.get_by_id(resource_id)
+        return FakeHttpResponse(data={'data': data})
+
+    def _list(self, per_page=20, page=1):
         """Generic list with pagination"""
         start = per_page * (page - 1)
         end = per_page * page
@@ -60,7 +76,7 @@ class FakeSubscribers(FakeData):
 
     def get(self, params=None, **kwargs):
         """List only supported"""
-        return super().list(
+        return super()._list(
             per_page=params.get('per_page') or 20,
             page=params.get('page') or 1,
         )
@@ -84,11 +100,15 @@ class FakeSubscribers(FakeData):
 
 class FakeComponents(FakeData):
 
-    def get(self, params=None, **kwargs):
-        return super().list(
-            per_page=params.get('per_page') or 20,
-            page=params.get('page') or 1,
-        )
+    def get(self, component_id=None, params=None, **kwargs):
+        if component_id is None:
+            return super()._list(
+                per_page=params.get('per_page') or 20,
+                page=params.get('page') or 1,
+            )
+        else:
+            print(component_id, type(component_id))
+            return super()._get(component_id)
 
     def post(self, params=None, data=None):
         instance = {
