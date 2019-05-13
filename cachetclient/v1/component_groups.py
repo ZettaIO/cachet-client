@@ -15,10 +15,18 @@ class CompontentGroup(Resource):
         """Name of component group"""
         return self._data['name']
 
+    @name.setter
+    def name(self, value):
+        self._data['name'] = value
+
     @property
     def order(self) -> int:
         """Order value for group"""
         return self._data['order']
+
+    @order.setter
+    def order(self, value):
+        self._data['order'] = value
 
     @property
     def collapsed(self) -> int:
@@ -27,6 +35,10 @@ class CompontentGroup(Resource):
         See enums module for values
         """
         return self._data['collapsed']
+
+    @collapsed.setter
+    def collapsed(self, value):
+        self._data['collapsed'] = value
 
     @property
     def created_at(self):
@@ -57,6 +69,26 @@ class CompontentGroupManager(Manager):
         """
         return self._create(
             self.path,
+            {
+                'name': name,
+                'order': order,
+                'collapsed': collapsed,
+            }
+        )
+
+    def update(self, group_id, name=None, order=None, collapsed=None, **kwargs):
+        """
+        Update component group
+
+        Params:
+            group_id (int): The group id to update
+            name (str): New name for group
+            order (int): Order value of the group
+            collapsed (int): Collapsed value. See enums module.
+        """
+        return self._update(
+            self.path,
+            group_id,
             {
                 'name': name,
                 'order': order,
