@@ -73,6 +73,9 @@ class ComponentManager(Manager):
                 'name': name,
                 'description': description,
                 'status': status,
+                'link': link,
+                'group_id': group_id,
+                'enabled': enabled,
             }
         )
 
