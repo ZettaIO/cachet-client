@@ -4,12 +4,13 @@ from cachetclient.base import Manager, Resource
 class PingManager(Manager):
     path = 'ping'
 
-    def __call__(self):
+    def __call__(self) -> bool:
         """Get version info"""
         return self.get()
 
-    def get(self):
+    def get(self) -> bool:
         """Get version info"""
+        # FIXME: Test more explicit exceptions
         try:
             response = self._http.get(self.path)
             data = response.json()
