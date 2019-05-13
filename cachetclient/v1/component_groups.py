@@ -22,7 +22,10 @@ class CompontentGroup(Resource):
 
     @property
     def collapsed(self) -> int:
-        """Is the group collapsed?"""
+        """
+        Is the group collapsed?
+        See enums module for values
+        """
         return self._data['collapsed']
 
     @property
@@ -40,8 +43,26 @@ class CompontentGroupManager(Manager):
     resource_class = CompontentGroup
     path = 'components/groups'
 
-    def create(self, name):
-        pass
+    def create(self, name, order=0, collapsed=0) -> CompontentGroup:
+        """
+        Create a component group
+
+        Params:
+            name (str): Name of the group
+            order (int): group order
+            collapsed (int): Collapse value (see enums)
+        
+        Return:
+            CompoentGroup instance
+        """
+        return self._create(
+            self.path,
+            {
+                'name': name,
+                'order': order,
+                'collapsed': collapsed,
+            }
+        )
 
     def list(self, page: int = 1, per_page: int = 20) -> Generator[CompontentGroup, None, None]:
         """
