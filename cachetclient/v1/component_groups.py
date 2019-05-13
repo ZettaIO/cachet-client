@@ -64,6 +64,15 @@ class CompontentGroupManager(Manager):
             }
         )
 
+    def count(self) -> int:
+        """
+        Count the number of component groups
+
+        Returns:
+            (int) Number of component groups
+        """
+        return self._count(self.path)
+
     def list(self, page: int = 1, per_page: int = 20) -> Generator[CompontentGroup, None, None]:
         """
         List all component groups
