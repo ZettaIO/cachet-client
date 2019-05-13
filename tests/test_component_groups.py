@@ -50,3 +50,18 @@ class ComponentGroupTests(CachetTestcase):
         client = self.create_client()
         with self.assertRaises(HTTPError):
             client.component_groups.delete(1337)
+
+    def test_self_update(self):
+        """Test self updating resource"""
+        client = self.create_client()
+        client.component_groups.create("Global Services")
+        group = next(client.component_groups.list())
+        group.name = "Global Stuff"
+        group.order = 1
+        group.collapsed = enums.COMPONENT_GROUP_COLLAPSED_TRUE
+
+        new_group = group.update()
+        self.assertEqual(new_group.id, 1)
+        self.assertEqual(new_group.name, "Global Stuff")
+        self.assertEqual(new_group.order, 1)
+        self.assertEqual(new_group.collapsed, enums.COMPONENT_GROUP_COLLAPSED_TRUE)
