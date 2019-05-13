@@ -1,4 +1,5 @@
 from cachetclient.httpclient import HttpClient
+from typing import Union
 
 
 class Resource:
@@ -8,22 +9,25 @@ class Resource:
         self._data = data
 
     @property
-    def attrs(self):
+    def attrs(self) -> dict:
         """The raw json respons from the server"""
         return self._data
 
-    def get(self, name):
+    def get(self, name) -> Union[int, str, float]:
         """Obtain any attribute name for the resource"""
         return self._data.get(name)
 
-    def delete(self):
+    def delete(self) -> None:
         self._manager.delete(self.get('id'))
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return str(self)
 
 
 class Manager:
+    """
+    Base class for handling crud resources
+    """
     resource_class = Resource
     path = None  # Type: str
 
