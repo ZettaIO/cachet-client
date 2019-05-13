@@ -1,4 +1,4 @@
-from typing import Generator
+from typing import Generator, List
 
 from cachetclient.base import Manager, Resource
 from cachetclient.v1 import enums
@@ -55,7 +55,8 @@ class ComponentManager(Manager):
     resource_class = Component
     path = 'components'
 
-    def create(self, name, description=None, status=1, link=None, order=None, group_id=None, enabled=True):
+    def create(self, name, description: str = None, status: int = 1, link: str = None,
+        order: int = None, group_id: int = None, enabled: bool = True, tags: List[str] = None):
         """
         Create a component.
 
@@ -67,6 +68,7 @@ class ComponentManager(Manager):
             order (int): Order of the component in its group
             group_id (int): The group it belongs to
             enabled (bool): Enabled status
+            tags (list): String tags
 
         Returns:
             Compotent instance
@@ -81,6 +83,7 @@ class ComponentManager(Manager):
                 'order': order,
                 'group_id': group_id,
                 'enabled': enabled,
+                'tags': tags,
             }
         )
 
