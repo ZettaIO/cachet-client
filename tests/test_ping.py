@@ -1,7 +1,6 @@
 from unittest import mock
 
 from base import CachetTestcase
-import cachetclient
 from fakeapi import FakeHttpClient
 
 
