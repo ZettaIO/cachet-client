@@ -154,6 +154,11 @@ class FakeComponentGroups(FakeData):
         self.add_entry(instance)
         return FakeHttpResponse(data={'data': instance})
 
+    def put(self, group_id=None, params=None, data=None):
+        instance = self.get_by_id(group_id)
+        instance.update(data)
+        return FakeHttpResponse(data={'data': instance})
+
     def delete(self, group_id=None, params=None, data=None):
         self.delete_by_id(group_id)
         return FakeHttpResponse()
@@ -198,7 +203,7 @@ class Routes:
         self._routes = [
             (r'^ping', self.ping, ['get']),
             (r'^version', self.version, ['get']),
-            (r'^components/groups/(?P<group_id>\w+)', self.component_groups, ['get', 'post', 'delete']),
+            (r'^components/groups/(?P<group_id>\w+)', self.component_groups, ['get', 'put', 'delete']),
             (r'^components/groups', self.component_groups, ['get', 'post']),
             (r'^components/(?P<component_id>\w+)', self.components, ['get', 'post', 'delete']),
             (r'^components', self.components, ['get', 'post']),
@@ -243,6 +248,9 @@ class FakeHttpClient:
 
     def post(self, path, data=None, params=None):
         return self.request('post', path, data=data, params=params)
+
+    def put(self, path, data=None, params=None):
+        return self.request('put', path, data=data, params=params)
 
     def delete(self, path, resource_id):
         return self.request('delete', "{}/{}".format(path, resource_id))
