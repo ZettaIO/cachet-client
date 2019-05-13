@@ -108,7 +108,6 @@ class FakeComponents(FakeData):
                 page=params.get('page') or 1,
             )
         else:
-            print(component_id, type(component_id))
             return super()._get(component_id)
 
     def post(self, params=None, data=None):
@@ -129,6 +128,34 @@ class FakeComponents(FakeData):
 
     def delete(self, component_id=None, params=None, data=None):
         self.delete_by_id(component_id)
+        return FakeHttpResponse()
+
+
+class FakeComponentGroups(FakeData):
+
+    def get(self, group_id=None, params=None, **kwargs):
+        if group_id is None:
+            return super()._list(
+                per_page=params.get('per_page') or 20,
+                page=params.get('page') or 1,
+            )
+        else:
+            return super()._get(group_id)
+
+    def post(self, params=None, data=None):
+        instance = {
+            'id': self.next_id(),
+            'name': data.get('name'),
+            'order': data.get('order'),
+            'collapsed': data.get('collapsed'),
+            'updated_at': '2015-11-07 16:35:13',
+            'created_at': '2015-11-07 16:35:13',
+        }
+        self.add_entry(instance)
+        return FakeHttpResponse(data={'data': instance})
+
+    def delete(self, group_id=None, params=None, data=None):
+        self.delete_by_id(group_id)
         return FakeHttpResponse()
 
 
@@ -161,7 +188,7 @@ class Routes:
         self.ping = FakePing(self)
         self.version = FakeVersion(self)
         self.components = FakeComponents(self)
-        self.component_groups = None
+        self.component_groups = FakeComponentGroups(self)
         self.incidents = None
         self.incident_updates = None
         self.metrics = None
@@ -171,8 +198,8 @@ class Routes:
         self._routes = [
             (r'^ping', self.ping, ['get']),
             (r'^version', self.version, ['get']),
-            (r'^component/groups/(?P<group_id>\w+)', self.components, ['get', 'post', 'delete']),
-            (r'^component/groups', self.components, ['get', 'post']),
+            (r'^components/groups/(?P<group_id>\w+)', self.component_groups, ['get', 'post', 'delete']),
+            (r'^components/groups', self.component_groups, ['get', 'post']),
             (r'^components/(?P<component_id>\w+)', self.components, ['get', 'post', 'delete']),
             (r'^components', self.components, ['get', 'post']),
             (r'^incidents/(?P<incident_id>\w+)/updates/(?P<update_id>\w+)', ['get', 'post', 'delete']),
