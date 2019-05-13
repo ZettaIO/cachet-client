@@ -98,6 +98,9 @@ class ComponentManager(Manager):
 
         Returns:
             Component instance
+
+        Raises:
+            HttpError if not found
         """
         return self._get(self.path, component_id)
 
