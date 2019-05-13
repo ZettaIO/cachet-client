@@ -95,7 +95,7 @@ class FakePing(FakeData):
 
 class FakeVersion(FakeData):
 
-    def request(self, *args, **kwargs):
+    def get(self, *args, **kwargs):
         return FakeHttpResponse(data={
             "meta": {
                 "on_latest": True,
