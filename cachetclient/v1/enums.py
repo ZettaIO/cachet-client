@@ -12,6 +12,12 @@ COMPONENT_PARTIAL_OUTAGE = 3
 # The component is not working for anybody.
 COMPONENT_MAJOR_OUTAGE = 4
 
+# Componet group collapse value
+# 0 = No. 1 = Yes. 2 = If a component is not Operational.
+COMPONENT_GROUP_COLLAPSE_FALSE = 0
+COMPONENT_GROUP_COLLAPSE_TRUE = 1
+COMPONENT_GROUP_COLLAPSE_NOT_OPERATIONAL = 2
+
 # Incident Status
 # 0 Scheduled
 # This status is reserved for a scheduled status.
