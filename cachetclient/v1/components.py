@@ -77,10 +77,43 @@ class ComponentManager(Manager):
         )
 
     def list(self) -> Generator[Component, None, None]:
+        """
+        List all components
+
+        Returns:
+            Generator with Component instances
+        """
         yield from self._list_paginated(self.path)
 
-    def delete(self, subscriber_id) -> None:
-        self._delete(self.path, subscriber_id)
+    def get(self, component_id: int) -> Component:
+        """
+        Get a component by id
+
+        Params:
+            component_id (int): Id of the component
+
+        Returns:
+            Component instance
+        """
+        return self._get(self.path, component_id)
+
+    def delete(self, component_id: int) -> None:
+        """
+        Delete a component
+
+        Params:
+            component_id (int): Id of the component
+
+        Raises:
+            HTTPError if compontent do not exist
+        """
+        self._delete(self.path, component_id)
 
     def count(self) -> int:
+        """
+        Count the number of components
+
+        Returns:
+            (int) Total number of components
+        """
         return self._count(self.path)
