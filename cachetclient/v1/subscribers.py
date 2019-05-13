@@ -66,11 +66,18 @@ class SubscriberManager(Manager):
             },
         )
 
-    def list(self) -> Generator[Subscriber, None, None]:
+    def list(self, page: int = 1, page_size: int = 20) -> Generator[Subscriber, None, None]:
         """
-        List all subscribers.
+        List all subscribers
+
+        Params:
+            page (int): The page to start listing
+            page_size: Number of entires per page
+
+        Returns:
+            Generator of Subscriber instances
         """
-        yield from self._list_paginated(self.path)
+        yield from self._list_paginated(self.path, page=page, page_size=page_size)
 
     def delete(self, subscriber_id) -> None:
         """
