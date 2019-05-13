@@ -76,14 +76,18 @@ class ComponentManager(Manager):
             }
         )
 
-    def list(self) -> Generator[Component, None, None]:
+    def list(self, page: int = 1, per_page: int = 20) -> Generator[Component, None, None]:
         """
         List all components
+
+        Params:
+            page (int): The page to start listing
+            per_page: Number of entires per page
 
         Returns:
             Generator with Component instances
         """
-        yield from self._list_paginated(self.path)
+        yield from self._list_paginated(self.path, page=page, per_page=per_page)
 
     def get(self, component_id: int) -> Component:
         """
