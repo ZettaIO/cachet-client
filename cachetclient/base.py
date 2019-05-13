@@ -23,6 +23,9 @@ class Resource:
     def __repr__(self) -> str:
         return str(self)
 
+    def __str__(self) -> str:
+        return str(self._data)
+
 
 class Manager:
     """
