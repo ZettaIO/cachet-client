@@ -28,6 +28,9 @@ class HttpClient:
     def post(self, path, data) -> requests.Response:
         return self.request('POST', path, data=data)
 
+    def put(self, path, data) -> requests.Response:
+        return self.request('PUT', path, data=data)
+
     def delete(self, path, resource_id) -> requests.Response:
         return self.request('DELETE', "{}/{}".format(path, resource_id))
 
