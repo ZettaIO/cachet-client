@@ -17,6 +17,9 @@ class Resource:
         """Obtain any attribute name for the resource"""
         return self._data.get(name)
 
+    def update(self):
+        self._manager.update(self.get('id'), **self.attrs)
+
     def delete(self) -> None:
         self._manager.delete(self.get('id'))
 
@@ -47,8 +50,8 @@ class Manager:
         response = self._http.post(path, data=data)
         return self.resource_class(self, response.json()['data'])
 
-    def _update(self, path, data):
-        response = self._http.put(path, data=data)
+    def _update(self, path, resource_id, data):
+        response = self._http.put("{}/{}".format(path, resource_id), data=data)
         return self.resource_class(self, response.json()['data'])
 
     def _list_paginated(self, path, page=1, per_page=20):
