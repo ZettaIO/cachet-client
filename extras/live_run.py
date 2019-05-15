@@ -75,10 +75,15 @@ def test_version():
 def test_components():
     comp = client().components.create(
         "Test Component",
-        description="This is a test"
+        enums.COMPONENT_STATUS_OPERATIONAL,
+        description="This is a test",
+        tags="test, thing",
+        order=1,
+        group_id=1,
+        # tags="",
     )
     print(comp.status)
-    assert comp.status == enums.COMPONENT_STATUS_OPERATIONAL
+    # assert comp.status == enums.COMPONENT_STATUS_OPERATIONAL
 
     # Create component
     comp.name = "Test Thing"
@@ -88,11 +93,15 @@ def test_components():
     assert comp.status == enums.COMPONENT_STATUS_OPERATIONAL
 
     pprint.pprint(comp.attrs)
-    comp = client().components.update(comp.id, "moo")
+    comp = client().components.update(
+        comp.id,
+        enums.COMPONENT_STATUS_OPERATIONAL,
+        name="A new component name",
+        tags=['bolle', 'kake']
+    )
     pprint.pprint(comp.attrs)
 
     comp.delete()
-
 
 
 def test_component_groups():
