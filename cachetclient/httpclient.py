@@ -44,8 +44,7 @@ class HttpClient:
             verify=self.verify_tls,
             timeout=self.timeout,
         )
-        print(params)
-        print(response.url)
+        print(method, response.url)
         if response.ok:
             return response
 
