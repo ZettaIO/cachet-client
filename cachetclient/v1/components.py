@@ -6,6 +6,11 @@ from cachetclient.v1 import enums
 
 class Component(Resource):
 
+    def __init__(self, manager, data):
+        super().__init__(manager, data)
+        if data.get('tags') is None:
+            data['tags'] = {}
+
     @property
     def id(self) -> int:
         return self._data['id']
@@ -56,7 +61,7 @@ class Component(Resource):
         Args:
             name (str): Name of the tag
         """
-        self.tags[name] = name
+        self._data['tags'][name] = name
 
     def del_tag(self, name: str) -> None:
         """
@@ -68,7 +73,7 @@ class Component(Resource):
         Raises:
             KeyError if tag does not exist
         """
-        del self.tags[name]
+        del self._data['tags'][name]
 
     def has_tag(self, name: str) -> bool:
         """
@@ -80,7 +85,7 @@ class Component(Resource):
         Returns:
             bool: If the tag exists
         """
-        return name in self.tags
+        return name in self._data['tags']
 
     @property
     def created_at(self):
