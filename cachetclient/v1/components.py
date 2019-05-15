@@ -43,6 +43,46 @@ class Component(Resource):
         return self._data['group_id']
 
     @property
+    def tags(self) -> set:
+        """
+        (set) Tags for the component
+        """
+        return set(self._data['tags'].keys()) if self._data['tags'] else set()
+
+    def add_tag(self, name: str) -> None:
+        """
+        Add a new tag.
+
+        Args:
+            name (str): Name of the tag
+        """
+        self.tags[name] = name
+
+    def del_tag(self, name: str) -> None:
+        """
+        Delete a tag.
+
+        Args:
+            name (str): Name of tag to remove
+        
+        Raises:
+            KeyError if tag does not exist
+        """
+        del self.tags[name]
+
+    def has_tag(self, name: str) -> bool:
+        """
+        Check if a tag exists.
+
+        Args:
+            name (str): Tag name
+        
+        Returns:
+            bool: If the tag exists
+        """
+        return name in self.tags
+
+    @property
     def created_at(self):
         return self._data['created_at']
 
