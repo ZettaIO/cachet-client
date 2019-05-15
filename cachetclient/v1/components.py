@@ -62,7 +62,7 @@ class ComponentManager(Manager):
     def create(
             self,
             name,
-            status: int = enums.COMPONENT_STATUS_OPERATIONAL,
+            status,
             description: str = None,
             link: str = None,
             order: int = None,
@@ -74,9 +74,9 @@ class ComponentManager(Manager):
 
         Args:
             name (str): Name of the component
+            status (int): Status if of the component (see enums module)
 
         Keyword Args:
-            status (int): Status if of the component
             description (str): Description of the component (required)
             link (str): Link to the component
             order (int): Order of the component in its group
@@ -116,7 +116,9 @@ class ComponentManager(Manager):
             name=None,
             description=None,
             status=None,
+            tags=None,
             **kwargs):
+
         return self._update(
             self.path,
             component_id,
@@ -124,6 +126,7 @@ class ComponentManager(Manager):
                 'name': name,
                 'description': description,
                 'status': status,
+                'tags': tags,
             }
         )
 
