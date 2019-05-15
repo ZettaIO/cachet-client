@@ -1,11 +1,18 @@
 """
 Run some simple test on an actual cachet setup.
-This can be set up locally with docker fairly quickly
+This can be set up locally with docker fairly quickly.
+
+Set the following enviroment variables before running the script:
+
+- CACHET_ENDPOINT (eg: http://test.example.com/api/v1)
+- CACHET_API_TOKEN (eg. Wohc7eeGhaewae7zie1E)
 """
 import os
+import pprint
+
 import cachetclient
 from cachetclient.v1.client import Client
-
+from cachetclient.v1 import enums
 
 CACHET_ENDPOINT = os.environ.get('CACHET_ENDPOINT')
 CACHET_API_TOKEN = os.environ.get('CACHET_API_TOKEN')
@@ -66,7 +73,26 @@ def test_version():
 
 
 def test_components():
-    pass
+    comp = client().components.create(
+        "Test Component",
+        description="This is a test"
+    )
+    print(comp.status)
+    assert comp.status == enums.COMPONENT_STATUS_OPERATIONAL
+
+    # Create component
+    comp.name = "Test Thing"
+    comp = comp.update()
+    assert comp.name == "Test Thing"
+    assert comp.description == "This is a test"
+    assert comp.status == enums.COMPONENT_STATUS_OPERATIONAL
+
+    pprint.pprint(comp.attrs)
+    comp = client().components.update(comp.id, "moo")
+    pprint.pprint(comp.attrs)
+
+    comp.delete()
+
 
 
 def test_component_groups():
