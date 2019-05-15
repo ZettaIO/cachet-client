@@ -123,6 +123,7 @@ class FakeComponents(FakeData):
             "created_at": "2015-08-01 12:00:00",
             "updated_at": "2015-08-01 12:00:00",
             "deleted_at": None,
+            "tags": {e: e for e in data.get('tags')} if data.get('tags') else None,
         }
         self.add_entry(instance)
         return FakeHttpResponse(data={'data': instance})
