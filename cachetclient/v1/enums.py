@@ -1,16 +1,23 @@
 # Component statuses
 # 1 Operational 
 # The component is working.
-COMPONENT_OPERATIONAL = 1
+COMPONENT_STATUS_OPERATIONAL = 1
 # 2 Performance Issues
 # The component is experiencing some slowness.
-COMPONENT_PERFORMANCE_ISSUES = 2
+COMPONENT_STATUS_PERFORMANCE_ISSUES = 2
 # 3 Partial Outage
 # The component may not be working for everybody. This could be a geographical issue for example.
-COMPONENT_PARTIAL_OUTAGE = 3
+COMPONENT_STATUS_PARTIAL_OUTAGE = 3
 # 4 Major Outage
 # The component is not working for anybody.
-COMPONENT_MAJOR_OUTAGE = 4
+COMPONENT_STATUS_MAJOR_OUTAGE = 4
+
+COMPONENT_STATUS_LIST = [
+    COMPONENT_STATUS_OPERATIONAL,
+    COMPONENT_STATUS_PERFORMANCE_ISSUES,
+    COMPONENT_STATUS_PARTIAL_OUTAGE,
+    COMPONENT_STATUS_MAJOR_OUTAGE
+]
 
 # Componet group collapse value
 # 0 = No. 1 = Yes. 2 = If a component is not Operational.
