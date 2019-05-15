@@ -72,3 +72,5 @@ class ComponentsTests(CachetTestcase):
         comp = comp.update()
         self.assertTrue(comp.has_tag('tag1'))
         self.assertTrue(comp.has_tag('tag2'))
+        self.assertFalse(comp.has_tag('test'))
+        self.assertEqual(comp.tags, {'tag1', 'tag2'})

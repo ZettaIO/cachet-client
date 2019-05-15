@@ -123,14 +123,24 @@ class FakeComponents(FakeData):
             "created_at": "2015-08-01 12:00:00",
             "updated_at": "2015-08-01 12:00:00",
             "deleted_at": None,
-            "tags": {e: e for e in data.get('tags')} if data.get('tags') else None,
+            "tags": self._transform_tags(data.get('tags'))
         }
         self.add_entry(instance)
+        return FakeHttpResponse(data={'data': instance})
+
+    def put(self, component_id=None, params=None, data=None):
+        # TODO: Rules on what field can be updated
+        instance = self.get_by_id(component_id)
+        instance.update(data)
+        instance['tags'] = self._transform_tags(instance.get('tags'))
         return FakeHttpResponse(data={'data': instance})
 
     def delete(self, component_id=None, params=None, data=None):
         self.delete_by_id(component_id)
         return FakeHttpResponse()
+
+    def _transform_tags(self, tags):
+        return {v: v for v in tags.split(',')} if tags else None
 
 
 class FakeComponentGroups(FakeData):
@@ -157,6 +167,7 @@ class FakeComponentGroups(FakeData):
         return FakeHttpResponse(data={'data': instance})
 
     def put(self, group_id=None, params=None, data=None):
+        # TODO: Rules on what field can be updated
         instance = self.get_by_id(group_id)
         instance.update(data)
         return FakeHttpResponse(data={'data': instance})
@@ -207,7 +218,7 @@ class Routes:
             (r'^version', self.version, ['get']),
             (r'^components/groups/(?P<group_id>\w+)', self.component_groups, ['get', 'put', 'delete']),
             (r'^components/groups', self.component_groups, ['get', 'post']),
-            (r'^components/(?P<component_id>\w+)', self.components, ['get', 'post', 'delete']),
+            (r'^components/(?P<component_id>\w+)', self.components, ['get', 'post', 'put', 'delete']),
             (r'^components', self.components, ['get', 'post']),
             (r'^incidents/(?P<incident_id>\w+)/updates/(?P<update_id>\w+)', ['get', 'post', 'delete']),
             (r'^incident/(?P<incident_id>\w+)/updates', self.incident_updates, ['get', 'post']),

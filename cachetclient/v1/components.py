@@ -151,7 +151,7 @@ class ComponentManager(Manager):
                 'order': order,
                 'group_id': group_id,
                 'enabled': enabled,
-                'tags': tags,
+                'tags': ','.join(tags) if tags else None,
             }
         )
 
