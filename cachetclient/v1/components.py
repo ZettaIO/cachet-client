@@ -14,6 +14,10 @@ class Component(Resource):
     def name(self) -> str:
         return self._data['name']
 
+    @name.setter
+    def name(self, value):
+        self._data['name'] = value
+
     @property
     def description(self) -> str:
         return self._data['description']
@@ -55,15 +59,25 @@ class ComponentManager(Manager):
     resource_class = Component
     path = 'components'
 
-    def create(self, name, description: str = None, status: int = 1, link: str = None,
-        order: int = None, group_id: int = None, enabled: bool = True, tags: List[str] = None):
+    def create(
+            self,
+            name,
+            status: int = enums.COMPONENT_STATUS_OPERATIONAL,
+            description: str = None,
+            link: str = None,
+            order: int = None,
+            group_id: int = None,
+            enabled: bool = True,
+            tags: List[str] = None):
         """
         Create a component.
 
-        Params:
+        Args:
             name (str): Name of the component
-            description (str): Description of the component
+
+        Keyword Args:
             status (int): Status if of the component
+            description (str): Description of the component (required)
             link (str): Link to the component
             order (int): Order of the component in its group
             group_id (int): The group it belongs to
@@ -71,9 +85,18 @@ class ComponentManager(Manager):
             tags (list): String tags
 
         Returns:
-            Compotent instance
+            :py:class:`Component` instance
         """
-        self._create(
+        if not name:
+            raise ValueError("Name empty or None: {}".format(name))
+
+        if status not in enums.COMPONENT_STATUS_LIST:
+            raise ValueError("Invalid status id '{}'. Valid values :{}".format(
+                status,
+                enums.COMPONENT_STATUS_LIST,
+            ))
+
+        return self._create(
             self.path,
             {
                 'name': name,
@@ -87,11 +110,28 @@ class ComponentManager(Manager):
             }
         )
 
+    def update(
+            self,
+            component_id,
+            name=None,
+            description=None,
+            status=None,
+            **kwargs):
+        return self._update(
+            self.path,
+            component_id,
+            {
+                'name': name,
+                'description': description,
+                'status': status,
+            }
+        )
+
     def list(self, page: int = 1, per_page: int = 20) -> Generator[Component, None, None]:
         """
         List all components
 
-        Params:
+        Keyword Args:
             page (int): The page to start listing
             per_page: Number of entires per page
 
