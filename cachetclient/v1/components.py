@@ -1,4 +1,4 @@
-from typing import Generator, List
+from typing import Generator, Set
 
 from cachetclient.base import Manager, Resource
 from cachetclient.v1 import enums
@@ -68,7 +68,7 @@ class ComponentManager(Manager):
             order: int = None,
             group_id: int = None,
             enabled: bool = True,
-            tags: List[str] = None):
+            tags: Set[str] = None):
         """
         Create a component.
 
@@ -112,13 +112,24 @@ class ComponentManager(Manager):
 
     def update(
             self,
-            component_id,
-            name=None,
-            description=None,
-            status=None,
-            tags=None,
+            component_id: int,
+            status: int,
+            name: str = None,
+            description: str = None,
+            tags : Set[str] = None,
             **kwargs):
+        """
+        Update a component by id.
 
+        Args:
+            component_id (int): The component to update
+            status (int): Status of the component (see enums)
+
+        Keyword Args:
+            name (str): New name
+            description (str): New description
+            tags (list): List of strings
+        """
         return self._update(
             self.path,
             component_id,
@@ -126,7 +137,7 @@ class ComponentManager(Manager):
                 'name': name,
                 'description': description,
                 'status': status,
-                'tags': tags,
+                'tags': ','.join(tags) if tags else None,
             }
         )
 
