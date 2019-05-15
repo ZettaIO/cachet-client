@@ -19,6 +19,7 @@ class ComponentsTests(CachetTestcase):
         client = self.create_client()
         client.components.create(
             "API Server",
+            enums.COMPONENT_STATUS_OPERATIONAL,
             description="General API server",
         )
         self.assertEqual(client.components.count(), 1)
@@ -43,6 +44,7 @@ class ComponentsTests(CachetTestcase):
         client = self.create_client()
         client.components.create(
             "API Server",
+            enums.COMPONENT_STATUS_OPERATIONAL,
             description="General API server",
         )
         self.assertEqual(client.components.count(), 1)
