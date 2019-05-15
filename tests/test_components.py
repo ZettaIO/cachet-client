@@ -29,7 +29,7 @@ class ComponentsTests(CachetTestcase):
         self.assertEqual(comp.description, "General API server")
         self.assertEqual(comp.group_id, None)
         self.assertEqual(comp.link, None)
-        self.assertEqual(comp.status, enums.COMPONENT_OPERATIONAL)
+        self.assertEqual(comp.status, enums.COMPONENT_STATUS_OPERATIONAL)
         self.assertEqual(comp.status_name, "Operational")
         self.assertIsNotNone(comp.created_at)
         self.assertIsNotNone(comp.updated_at)
