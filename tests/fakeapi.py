@@ -291,5 +291,5 @@ if __name__ == '__main__':
     client.post('subscribers', data={'email': 'user@example.com'})
     subs = client.get('subscribers')
     print("Subscribers:", subs)
-    client.delete('subscribers/{}'.format(subs[0]['id']))
+    client.delete('subscribers', subs[0]['id'])
     print("Subscribers:", subs)
