@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Generator
+from typing import Generator, List
 
 from cachetclient.base import Manager, Resource
 
@@ -45,13 +45,14 @@ class SubscriberManager(Manager):
     resource_class = Subscriber
     path = 'subscribers'
 
-    def create(self, email: str, components=None, verify: bool = True) -> Subscriber:
+    def create(self, email: str, components: List[int] = None, verify: bool = True) -> Subscriber:
         """
         Create or update a subscriber
 
         Params:
             email (str): Email address to subscribe
-            components: The components to subscribe to. If ommited all components are subscribed.
+            components (int list): The components to subscribe to. If ommited all components are subscribed.
+                        If no components are supplied the user will subscribe to all componets.
             verify (bool): Verification status. If False an verfication email is sent.
 
         Returns:
