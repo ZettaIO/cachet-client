@@ -6,6 +6,7 @@ from cachetclient.v1.metrics import MetricsManager
 from cachetclient.v1.subscribers import SubscriberManager
 from cachetclient.v1.ping import PingManager
 from cachetclient.v1.version import VersionManager
+from cachetclient.v1.schedules import ScheduleManager
 
 
 class Client:
@@ -25,3 +26,4 @@ class Client:
         self.incidents = IncidentManager(self._http)
         self.metrics = MetricsManager(self._http)
         self.subscribers = SubscriberManager(self._http)
+        self.schedules = ScheduleManager(self._http)

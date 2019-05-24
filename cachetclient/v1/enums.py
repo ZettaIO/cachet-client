@@ -41,3 +41,7 @@ INCIDENT_WATCHING = 3
 # 4 Fixed
 # The fix has worked, you're happy to close the incident.
 INCIDENT_FIXED = 4
+
+SCHEDULE_STATUS_UPCOMING = 0
+SCHEDULE_STATUS_IN_PROGRESS = 1
+SCHEDULE_STATUS_COMPLETE = 2

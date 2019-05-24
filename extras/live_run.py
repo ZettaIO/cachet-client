@@ -44,6 +44,7 @@ def main():
     test_issue_updates()
     test_metrics()
     test_metric_points()
+    # test_schedules()
 
 
 def test_ping():
@@ -170,6 +171,11 @@ def test_issues():
 
 def test_issue_updates():
     pass
+
+
+# def test_schedules():
+#     sch = client().schedules.create("Test Schedule", "Shits gonna happen", None)
+#     pprint(sch.attrs, indent=2)
 
 
 def test_metrics():
