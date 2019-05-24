@@ -1,6 +1,9 @@
+from datetime import datetime
 from typing import Generator
 
 from cachetclient.base import Manager, Resource
+from cachetclient import utils
+from cachetclient.v1 import enums
 
 
 class CompontentGroup(Resource):
@@ -8,7 +11,7 @@ class CompontentGroup(Resource):
     @property
     def id(self) -> int:
         """Id of the component group"""
-        return self._data['id']
+        return self.get('id')
 
     @property
     def name(self) -> str:
@@ -22,7 +25,7 @@ class CompontentGroup(Resource):
     @property
     def order(self) -> int:
         """Order value for group"""
-        return self._data['order']
+        return self.get('order')
 
     @order.setter
     def order(self, value):
@@ -34,28 +37,53 @@ class CompontentGroup(Resource):
         Is the group collapsed?
         See enums module for values
         """
-        return self._data['collapsed']
+        return self.get('collapsed')
 
     @collapsed.setter
     def collapsed(self, value):
         self._data['collapsed'] = value
 
     @property
-    def created_at(self):
-        """Date/time created"""
-        return self._data['created_at']
+    def lowest_human_status(self):
+        return self.get('lowest_human_status')
 
     @property
-    def updated_at(self):
+    def is_collapsed(self) -> bool:
+        """
+        Does the current collapsed value indicate the group is collapsed?
+        Note that the collapsed value may also indicate the group is not operational.
+        """
+        return self.collapsed == enums.COMPONENT_GROUP_COLLAPSED_TRUE
+
+    @property
+    def is_open(self) -> bool:
+        """
+        Does the current collapsed value indicate the group is open?
+        Note that the collapsed value may also indicate the group is not operational.
+        """
+        return self.collapsed == enums.COMPONENT_GROUP_COLLAPSED_FALSE
+
+    @property
+    def is_operational(self):
+        """Does the current collapsed value indicate the group not operational?"""
+        return self.collapsed != enums.COMPONENT_GROUP_COLLAPSED_NOT_OPERATIONAL
+
+    @property
+    def created_at(self) -> datetime:
+        """Date/time created"""
+        return utils.to_datetime(self.get('created_at'))
+
+    @property
+    def updated_at(self) -> datetime:
         """Date/time updated"""
-        return self._data['updated_at']
+        return utils.to_datetime(self.get('updated_at'))
 
 
 class CompontentGroupManager(Manager):
     resource_class = CompontentGroup
     path = 'components/groups'
 
-    def create(self, name, order=0, collapsed=0) -> CompontentGroup:
+    def create(self, name: str, order: int = 0, collapsed: int = 0) -> CompontentGroup:
         """
         Create a component group
 
@@ -76,7 +104,7 @@ class CompontentGroupManager(Manager):
             }
         )
 
-    def update(self, group_id, name=None, order=None, collapsed=None, **kwargs):
+    def update(self, group_id: int, name: str = None, order: int = None, collapsed: int = None, **kwargs):
         """
         Update component group
 
