@@ -21,6 +21,7 @@ class ComponentGroupTests(CachetTestcase):
         client.component_groups.create("Global Services")
         self.assertEqual(client.component_groups.count(), 1)
 
+        # Check attributes
         group = next(client.component_groups.list())
         self.assertEqual(group.id, 1)
         self.assertEqual(group.name, "Global Services")
@@ -32,8 +33,25 @@ class ComponentGroupTests(CachetTestcase):
         self.assertTrue(group.is_open)
         self.assertTrue(group.is_operational)
 
+        # update group
+        group.name = "Global Websites"
+        group.order = 2
+        group.collapsed = enums.COMPONENT_GROUP_COLLAPSED_TRUE
+        group = group.update()
+        self.assertEqual(group.id, 1)
+        self.assertEqual(group.name, "Global Websites")
+        self.assertEqual(group.collapsed, enums.COMPONENT_GROUP_COLLAPSED_TRUE)
+        self.assertEqual(group.order, 2)
+        self.assertIsInstance(group.created_at, datetime)
+        self.assertIsNotNone(group.updated_at, datetime)
+        self.assertTrue(group.is_collapsed)
+        self.assertFalse(group.is_open)
+        self.assertTrue(group.is_operational)
+
+        # Re-fetch by id and delete
         group = client.component_groups.get(1)
         self.assertEqual(group.id, 1)
+        group.delete()
 
     def test_get_nonexist(self):
         client = self.create_client()
