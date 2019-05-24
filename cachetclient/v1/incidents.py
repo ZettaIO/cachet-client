@@ -81,6 +81,21 @@ class IncidentManager(Manager):
             template: str = None,
             template_vars: List[str] = None):
         """
+        Create and general issue or issue for a component.
+        component_id and component_status must be supplied when making
+        a component issue.
+
+        Args:
+            name (str): Name/title of the issue
+            message (str): Mesage body for the issue
+            status (int): Status of the incident (see enums)
+            visible (bool): Publicly visible incident
+            component_id (int): The component to update
+            component_status (int): The status to apply on component
+            notify (bool): If users should be notified
+            created_at: when the indicent was created
+            template (str): Slug of template to use
+            template_vars (list): Variables to the template
         """
         return self._create(
             self.path,
