@@ -8,7 +8,8 @@ Set the following enviroment variables before running the script:
 - CACHET_API_TOKEN (eg. Wohc7eeGhaewae7zie1E)
 """
 import os
-import pprint
+from datetime import datetime
+from pprint import pprint
 
 import cachetclient
 from cachetclient.v1.client import Client
@@ -69,10 +70,11 @@ def test_components():
         tags="test, thing",
         order=1,
         group_id=1,
-        # tags="",
     )
-    print(comp.status)
-    # assert comp.status == enums.COMPONENT_STATUS_OPERATIONAL
+    pprint(comp.attrs, indent=2)
+    assert comp.status == enums.COMPONENT_STATUS_OPERATIONAL
+    assert isinstance(comp.created_at, datetime)
+    assert isinstance(comp.updated_at, datetime)
 
     # Create component using properties
     comp.name = 'Test Thing'
@@ -84,6 +86,7 @@ def test_components():
     comp.tags = {'moo', 'boo'}
     comp = comp.update()
 
+    # Test if values are correctly updates
     assert comp.name == 'Test Thing'
     assert comp.description == 'This is a test'
     assert comp.status == enums.COMPONENT_STATUS_MAJOR_OUTAGE
@@ -108,7 +111,6 @@ def test_components():
     assert comp.group_id == 1000
     assert comp.enabled is False
     assert comp.tags == {'bolle', 'kake'}
-
     comp.delete()
 
 
