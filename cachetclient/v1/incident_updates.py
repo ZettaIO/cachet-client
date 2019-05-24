@@ -44,37 +44,107 @@ class IndicentUpdate(Resource):
         """Permanent url"""
         return self.get('permlink')
 
+    def update(self):
+        """Update/save changes"""
+        return self._manager.update(self.incident_id, self.id)
+
+    def delete(self):
+        self._manager.delete(self.incident_id, self.id)
+
 
 class IncidentUpdatesManager(Manager):
     resource_class = IndicentUpdate
     path = 'incidents/{resource_id}/updates'
 
-    def create(self):
+    def create(self, incident_id: int, status: int, message: str):
         """
         Create an incident update
-        """
-        pass
 
-    def update(self):
+        Args:
+            incident_id (int): The incident to update
+            status (int): New status id
+            message (str): Update message
+        
+        Returns:
+            IndicentUpdate instance
+        """
+        return self._create(
+            self.path.format(incident_id),
+            {
+                'status': status,
+                'message': message,
+            }
+        )
+
+    def update(self, incident_id: int, update_id: int, status: int = None, message: str = None):
         """
         Update an incident update
-        """
-        pass
 
-    def list(self):
+        Args:
+            incident_id (int): The incident
+            update_id (int): The incident update id to update
+
+        Keyword Args:
+            status (int): New status id
+            message (str): New message
+
+        Returns:
+            The updated IncidentUpdate instance
+        """
+        # TODO: Documentation claims data is set as query params
+        return self._update(
+            self.path.format(incident_id),
+            update_id,
+            {
+                'status': status,
+                'message': message,
+            }
+        )
+
+    def count(self, incident_id):
+        """
+        Count the number of indicent update for an issue
+
+        Returns:
+            (int) Number of incident updates for the issue
+        """
+        return self._count(self.path.format(incident_id))
+
+    def list(self, incident_id: int, page=1, per_page=20):
         """
         List updates for an issue
-        """
-        pass
 
-    def get(self):
+        Args:
+            incident_id: The incident to list updates
+
+        Keyword Args:
+            page (int): The first page to request
+            per_page (int): Entires per page
+
+        Return:
+            Generator of incident updates
+        """
+        return self._list_paginated(
+            self.path.format(incident_id),
+            page=page,
+            per_page=per_page,
+        )
+
+    def get(self, incident_id, update_id):
         """
         Get an incident update
+
+        Args:
+            incident_id (int): The incident
+            update_id (int): The indicent update id to obtain
+
+        Returns:
+            IncidentUpdate instance
         """
-        pass
+        return self._get(self.path.format(incident_id), update_id)
 
     def delete(self, incident_id, update_id):
         """
         Delete an incident update
         """
-        pass
+        self._delete(self.path.format(incident_id), update_id)
