@@ -75,11 +75,24 @@ def test_components():
     # assert comp.status == enums.COMPONENT_STATUS_OPERATIONAL
 
     # Create component
-    comp.name = "Test Thing"
+    comp.name = 'Test Thing'
+    comp.status = enums.COMPONENT_STATUS_MAJOR_OUTAGE
+    comp.link = 'http://status.example.com'
+    comp.order = 10
+    comp.group_id = 1000
+    comp.enabled = False
+    comp.tags = {'moo', 'boo'}
+    pprint.pprint(comp.attrs)
     comp = comp.update()
-    assert comp.name == "Test Thing"
-    assert comp.description == "This is a test"
-    assert comp.status == enums.COMPONENT_STATUS_OPERATIONAL
+
+    assert comp.name == 'Test Thing'
+    assert comp.description == 'This is a test'
+    assert comp.status == enums.COMPONENT_STATUS_MAJOR_OUTAGE
+    assert comp.link == 'http://status.example.com'
+    assert comp.order == 10
+    assert comp.group_id == 1000
+    assert comp.enabled is False
+    assert comp.tags == {'moo', 'boo'}
 
     pprint.pprint(comp.attrs)
     comp = client().components.update(
