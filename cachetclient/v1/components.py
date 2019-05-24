@@ -27,13 +27,25 @@ class Component(Resource):
     def description(self) -> str:
         return self._data['description']
 
+    @description.setter
+    def description(self, value):
+        self._data['description'] = value
+
     @property
     def link(self) -> str:
         return self._data['link']
 
+    @link.setter
+    def link(self, value):
+        self._data['link'] = value
+
     @property
     def status(self) -> int:
         return self._data['status']
+
+    @status.setter
+    def status(self, value):
+        self._data['status'] = value
 
     @property
     def status_name(self) -> str:
@@ -43,9 +55,25 @@ class Component(Resource):
     def order(self) -> int:
         return self._data['order']
 
+    @order.setter
+    def order(self, value):
+        self._data['order'] = value
+
     @property
     def group_id(self):
         return self._data['group_id']
+
+    @group_id.setter
+    def group_id(self, value):
+        self._data['group_id'] = value
+
+    @property
+    def enabled(self):
+        return self._data['enabled']
+
+    @enabled.setter
+    def enabled(self, value):
+        self._data['enabled'] = value
 
     @property
     def tags(self) -> set:
@@ -53,6 +81,10 @@ class Component(Resource):
         (set) Tags for the component
         """
         return set(self._data['tags'].keys()) if self._data['tags'] else set()
+
+    @tags.setter
+    def tags(self, value: set):
+        self._data['tags'] = {val: val for val in value}
 
     def add_tag(self, name: str) -> None:
         """
@@ -132,9 +164,6 @@ class ComponentManager(Manager):
         Returns:
             :py:class:`Component` instance
         """
-        if not name:
-            raise ValueError("Name empty or None: {}".format(name))
-
         if status not in enums.COMPONENT_STATUS_LIST:
             raise ValueError("Invalid status id '{}'. Valid values :{}".format(
                 status,
@@ -151,17 +180,20 @@ class ComponentManager(Manager):
                 'order': order,
                 'group_id': group_id,
                 'enabled': enabled,
-                'tags': ','.join(tags) if tags else None,
+                'tags': tags,
             }
         )
 
     def update(
             self,
             component_id: int,
-            status: int,
+            status: int = None,
             name: str = None,
-            description: str = None,
-            tags : Set[str] = None,
+            link: str = None,
+            order: int = None,
+            group_id: int = None,
+            enabled: bool = None,
+            tags: Set[str] = None,
             **kwargs):
         """
         Update a component by id.
@@ -175,15 +207,20 @@ class ComponentManager(Manager):
             description (str): New description
             tags (list): List of strings
         """
+        data = {
+            'status': status,
+            'name': name,
+            'link': link,
+            'order': order,
+            'group_id': group_id,
+            'enabled': enabled,
+            'tags': ','.join(tags) if tags else None,
+        }
+        print("Update", data)
         return self._update(
             self.path,
             component_id,
-            {
-                'name': name,
-                'description': description,
-                'status': status,
-                'tags': ','.join(tags) if tags else None,
-            }
+            data,
         )
 
     def list(self, page: int = 1, per_page: int = 20) -> Generator[Component, None, None]:
