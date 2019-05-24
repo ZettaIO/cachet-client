@@ -56,17 +56,6 @@ def test_version():
     if version.value is not str and len(version.value) < 3:
         raise ValueError("Version value string suspicious? '{}'".format(version.value))
 
-    # {
-    #     'meta': {
-    #         'on_latest': True,
-    #         'latest': {
-    #             'tag_name': 'v2.3.16',
-    #             'prelease': False,
-    #             'draft': False
-    #         }
-    #     },
-    #     'data': '2.3.14-dev'
-    # }
     print("Version   :", version.value)
     print("on_latest :", version.on_latest)
     print("latest    :", version.latest)
@@ -109,7 +98,22 @@ def test_component_groups():
 
 
 def test_subscribers():
-    pass
+    new_sub = client().subscribers.create('einar2@zetta.io')
+
+    # Rought subscriber count check
+    count = client().subscribers.count()
+    if count == 0:
+        raise ValueError("Subscriber count is 0")
+
+    # Iterate subscribers
+    for sub in client().subscribers.list():
+        print(sub)
+
+    # Delete subscriber and recount
+    new_sub.delete()
+    count_pre = client().subscribers.count()
+    if count != count_pre + 1:
+        raise ValueError("subscriber count {} != {}".format(count, count_pre))
 
 
 def test_issues():
