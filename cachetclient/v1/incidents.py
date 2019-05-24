@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import List
 
 from cachetclient.base import Manager, Resource
 from cachetclient.v1 import enums
@@ -66,8 +67,36 @@ class IncidentManager(Manager):
     resource_class = Incident
     path = 'incidents'
 
-    def create(self):
-        pass
+
+    def create(
+            self,
+            name: str,
+            message: str,
+            status: int,
+            visible: int,
+            component_id: int = None,
+            component_status: int = None,
+            notify: bool = None,
+            created_at: datetime = None,
+            template: str = None,
+            template_vars: List[str] = None):
+        """
+        """
+        return self._create(
+            self.path,
+            {
+                'name': name,
+                'message': message,
+                'status': status,
+                'visible': visible,
+                'component_id': component_id,
+                'component_status': component_status,
+                'notify': notify,
+                'created_at': created_at,
+                'template': template,
+                'vars': template_vars,
+            }
+        )
 
     def update(self):
         pass
