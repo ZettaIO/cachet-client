@@ -13,11 +13,17 @@ class ComponentsTests(CachetTestcase):
     def setUp(self):
         self.client = self.create_client()
 
-    def create_component(self, client):
+    def create_component(
+            self,
+            client,
+            status=enums.COMPONENT_STATUS_OPERATIONAL,
+            name="API Server",
+            description="General API server"):
+
         return client.components.create(
-            "API Server",
-            enums.COMPONENT_STATUS_OPERATIONAL,
-            description="General API server",
+            name,
+            status,
+            description=description,
         )
 
     def test_count(self):
