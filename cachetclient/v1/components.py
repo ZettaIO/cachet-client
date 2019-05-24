@@ -2,6 +2,7 @@ from typing import Generator, Set
 
 from cachetclient.base import Manager, Resource
 from cachetclient.v1 import enums
+from cachetclient import utils
 
 
 class Component(Resource):
@@ -13,10 +14,12 @@ class Component(Resource):
 
     @property
     def id(self) -> int:
+        """(int) The unique ID of the component"""
         return self._data['id']
 
     @property
     def name(self) -> str:
+        """(str) Name of the component"""
         return self._data['name']
 
     @name.setter
@@ -33,6 +36,7 @@ class Component(Resource):
 
     @property
     def link(self) -> str:
+        """(str) http link to the component"""
         return self._data['link']
 
     @link.setter
@@ -41,6 +45,7 @@ class Component(Resource):
 
     @property
     def status(self) -> int:
+        """(int) Status id of the component (see enums)"""
         return self._data['status']
 
     @status.setter
@@ -49,10 +54,12 @@ class Component(Resource):
 
     @property
     def status_name(self) -> str:
+        """(str) Human readable status representation"""
         return self._data['status_name']
 
     @property
     def order(self) -> int:
+        """(int) Order of the component in a group"""
         return self._data['order']
 
     @order.setter
@@ -61,6 +68,7 @@ class Component(Resource):
 
     @property
     def group_id(self):
+        """(int) The component group id"""
         return self._data['group_id']
 
     @group_id.setter
@@ -69,6 +77,7 @@ class Component(Resource):
 
     @property
     def enabled(self):
+        """(bool) If the component is enabled"""
         return self._data['enabled']
 
     @enabled.setter
@@ -77,9 +86,7 @@ class Component(Resource):
 
     @property
     def tags(self) -> set:
-        """
-        (set) Tags for the component
-        """
+        """(set) Tags for the component"""
         return set(self._data['tags'].keys()) if self._data['tags'] else set()
 
     @tags.setter
@@ -121,15 +128,11 @@ class Component(Resource):
 
     @property
     def created_at(self):
-        return self._data['created_at']
+        return utils.to_datetime(self._data['created_at'])
 
     @property
     def updated_at(self):
-        return self._data['updated_at']
-
-    @property
-    def deleted_at(self):
-        return self._data['deleted_at']
+        return utils.to_datetime(self._data['updated_at'])
 
 
 class ComponentManager(Manager):
@@ -207,20 +210,18 @@ class ComponentManager(Manager):
             description (str): New description
             tags (list): List of strings
         """
-        data = {
-            'status': status,
-            'name': name,
-            'link': link,
-            'order': order,
-            'group_id': group_id,
-            'enabled': enabled,
-            'tags': ','.join(tags) if tags else None,
-        }
-        print("Update", data)
         return self._update(
             self.path,
             component_id,
-            data,
+            {
+                'status': status,
+                'name': name,
+                'link': link,
+                'order': order,
+                'group_id': group_id,
+                'enabled': enabled,
+                'tags': ','.join(tags) if tags else None,
+            },
         )
 
     def list(self, page: int = 1, per_page: int = 20) -> Generator[Component, None, None]:
