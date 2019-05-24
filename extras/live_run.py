@@ -115,7 +115,30 @@ def test_components():
 
 
 def test_component_groups():
-    pass
+    grp = client().component_groups.create("Test Group", order=1)
+    assert grp.id > 0
+    assert grp.name == "Test Group"
+    assert grp.order == 1
+    assert grp.is_collapsed is False
+    assert grp.is_open is True
+    assert grp.is_operational is True
+
+    # Re-fetch by id
+    grp = client().component_groups.get(grp.id)
+
+    # Update group
+    grp.order = 2
+    grp.name = "Global Services"
+    grp.collapsed = enums.COMPONENT_GROUP_COLLAPSED_TRUE
+    assert grp.id > 0
+    assert grp.name == "Global Services"
+    assert grp.order == 2
+    assert grp.is_collapsed is True
+    assert grp.is_open is False
+    assert grp.is_operational is True
+
+    pprint(grp.attrs, indent=2)
+    grp.delete()
 
 
 def test_subscribers():
