@@ -1,3 +1,4 @@
+from datetime import datetime
 from unittest import mock
 from requests.exceptions import HTTPError
 
@@ -44,9 +45,8 @@ class ComponentsTests(CachetTestcase):
         self.assertEqual(comp.link, None)
         self.assertEqual(comp.status, enums.COMPONENT_STATUS_OPERATIONAL)
         self.assertEqual(comp.status_name, "Operational")
-        self.assertIsNotNone(comp.created_at)
-        self.assertIsNotNone(comp.updated_at)
-        self.assertIsNone(comp.deleted_at)
+        self.assertIsInstance(comp.created_at, datetime)
+        self.assertIsInstance(comp.updated_at, datetime)
 
         comp = self.client.components.get(1)
         self.assertEqual(comp.id, 1)
