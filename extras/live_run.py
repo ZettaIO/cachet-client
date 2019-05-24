@@ -121,6 +121,10 @@ def test_component_groups():
 def test_subscribers():
     new_sub = client().subscribers.create('einar2@zetta.io')
 
+    assert isinstance(new_sub.created_at, datetime)
+    assert isinstance(new_sub.updated_at, datetime)
+    assert isinstance(new_sub.verified_at, datetime)
+
     # Rought subscriber count check
     count = client().subscribers.count()
     if count == 0:
