@@ -47,7 +47,8 @@ class SubscriberManager(Manager):
 
     def create(self, email: str, components: List[int] = None, verify: bool = True) -> Subscriber:
         """
-        Create or update a subscriber
+        Create a subscriber. If a subscriber already exists the existing one will be returned.
+        Note that this endoint cannot be used to edit the user.
 
         Params:
             email (str): Email address to subscribe
@@ -56,7 +57,7 @@ class SubscriberManager(Manager):
             verify (bool): Verification status. If False an verfication email is sent.
 
         Returns:
-            The created or updated Subsriber instance
+            The Subscriber instance
         """
         return self._create(
             self.path,
