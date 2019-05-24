@@ -74,7 +74,7 @@ def test_components():
     print(comp.status)
     # assert comp.status == enums.COMPONENT_STATUS_OPERATIONAL
 
-    # Create component
+    # Create component using properties
     comp.name = 'Test Thing'
     comp.status = enums.COMPONENT_STATUS_MAJOR_OUTAGE
     comp.link = 'http://status.example.com'
@@ -82,7 +82,6 @@ def test_components():
     comp.group_id = 1000
     comp.enabled = False
     comp.tags = {'moo', 'boo'}
-    pprint.pprint(comp.attrs)
     comp = comp.update()
 
     assert comp.name == 'Test Thing'
@@ -94,14 +93,21 @@ def test_components():
     assert comp.enabled is False
     assert comp.tags == {'moo', 'boo'}
 
-    pprint.pprint(comp.attrs)
+    # Call update directly on the manager
     comp = client().components.update(
         comp.id,
-        enums.COMPONENT_STATUS_OPERATIONAL,
+        status=enums.COMPONENT_STATUS_OPERATIONAL,
         name="A new component name",
-        tags=['bolle', 'kake']
+        tags={'bolle', 'kake'}
     )
-    pprint.pprint(comp.attrs)
+    assert comp.name == "A new component name"
+    assert comp.description == 'This is a test'
+    assert comp.status == enums.COMPONENT_STATUS_OPERATIONAL
+    assert comp.link == 'http://status.example.com'
+    assert comp.order == 10
+    assert comp.group_id == 1000
+    assert comp.enabled is False
+    assert comp.tags == {'bolle', 'kake'}
 
     comp.delete()
 
