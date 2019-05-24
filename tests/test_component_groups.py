@@ -1,3 +1,4 @@
+from datetime import datetime
 from unittest import mock
 from requests.exceptions import HTTPError
 
@@ -25,8 +26,11 @@ class ComponentGroupTests(CachetTestcase):
         self.assertEqual(group.name, "Global Services")
         self.assertEqual(group.collapsed, enums.COMPONENT_GROUP_COLLAPSED_FALSE)
         self.assertEqual(group.order, 0)
-        self.assertIsNotNone(group.created_at)
-        self.assertIsNotNone(group.updated_at)
+        self.assertIsInstance(group.created_at, datetime)
+        self.assertIsNotNone(group.updated_at, datetime)
+        self.assertFalse(group.is_collapsed, False)
+        self.assertTrue(group.is_open)
+        self.assertTrue(group.is_operational)
 
         group = client.component_groups.get(1)
         self.assertEqual(group.id, 1)
