@@ -2,6 +2,7 @@ from datetime import datetime
 from typing import Generator, List
 
 from cachetclient.base import Manager, Resource
+from cachetclient import utils
 
 
 class Subscriber(Resource):
@@ -27,15 +28,15 @@ class Subscriber(Resource):
 
     @property
     def created_at(self) -> datetime:
-        return self._data['created_at']
+        return utils.to_datetime(self.get('created_at'))
 
     @property
     def updated_at(self) -> datetime:
-        return self._data['created_at']
+        return utils.to_datetime(self.get('updated_at'))
 
     @property
-    def verified_at(self) -> str:
-        return self._data['verified_at']
+    def verified_at(self) -> datetime:
+        return utils.to_datetime(self.get('verified_at'))
 
     def __str__(self) -> str:
         return "<Subscriber {}: {}>".format(self.id, self.email)
