@@ -1,4 +1,5 @@
 from typing import Generator, Set
+from datetime import datetime
 
 from cachetclient.base import Manager, Resource
 from cachetclient.v1 import enums
@@ -124,15 +125,15 @@ class Component(Resource):
         Returns:
             bool: If the tag exists
         """
-        return name in self._data['tags']
+        return name in self.get('tags')
 
     @property
-    def created_at(self):
-        return utils.to_datetime(self._data['created_at'])
+    def created_at(self) -> datetime:
+        return utils.to_datetime(self.get('created_at'))
 
     @property
-    def updated_at(self):
-        return utils.to_datetime(self._data['updated_at'])
+    def updated_at(self) -> datetime:
+        return utils.to_datetime(self.get('updated_at'))
 
 
 class ComponentManager(Manager):
