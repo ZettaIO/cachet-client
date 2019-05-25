@@ -13,3 +13,6 @@ test.py
 .venv2
 .env
 env
+
+# project
+extras/env.sh
