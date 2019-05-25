@@ -26,6 +26,16 @@ class Incident(Resource):
         return self.get('name')
 
     @property
+    def message(self) -> str:
+        """(str) Indicent body message"""
+        return self.get('message')
+
+    @property
+    def notify(self) -> str:
+        """(bool) Notify user"""
+        return self.get('notify')
+
+    @property
     def status(self) -> int:
         """(int) Status of the incident"""
         return self.get('status')
@@ -38,12 +48,7 @@ class Incident(Resource):
     @property
     def visible(self) -> int:
         """(int) Visibility of the indcinent"""
-        return self.get('visible')
-
-    @property
-    def message(self) -> str:
-        """(str) Indicent body message"""
-        return self.get('message')
+        return self.get('visible') == 1
 
     @property
     def scheduled_at(self) -> datetime:
