@@ -180,6 +180,10 @@ class FakeComponentGroups(FakeData):
 class FakeIncidents(FakeData):
 
     def post(self, params=None, data=None):
+        # Fields we don't store but instead triggers behaviour
+        # 'component_status': data.get('component_status'),
+        # 'template': data.get('template'),
+        # 'vars': data.get('vars'),
         instance = {
             'id': self.next_id(),
             'name': data.get('name'),
@@ -187,11 +191,12 @@ class FakeIncidents(FakeData):
             'status': data.get('status'),
             'visible': data.get('visible'),
             'component_id': data.get('component_id'),
-            'component_status': data.get('component_status'),
             'notify': data.get('notify'),
             'created_at': data.get('created_at'),
-            'template': data.get('template'),
-            'vars': data.get('vars'),
+            'human_status': 'Investigating',
+            'created_at': '2019-05-25 15:21:34',
+            'scheduled_at': '2019-05-25 15:21:34',
+            'updated_at': '2019-05-25 15:21:34',
         }
         self.add_entry(instance)
         return FakeHttpResponse(data={'data': instance})
