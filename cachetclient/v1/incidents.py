@@ -82,7 +82,7 @@ class IncidentManager(Manager):
             name: str,
             message: str,
             status: int,
-            visible: int,
+            visible: bool = True,
             component_id: int = None,
             component_status: int = None,
             notify: bool = None,
@@ -98,6 +98,8 @@ class IncidentManager(Manager):
             name (str): Name/title of the issue
             message (str): Mesage body for the issue
             status (int): Status of the incident (see enums)
+
+        Keyword Args:
             visible (bool): Publicly visible incident
             component_id (int): The component to update
             component_status (int): The status to apply on component
@@ -128,5 +130,11 @@ class IncidentManager(Manager):
     def list(self):
         pass
 
-    def delete(self):
-        pass
+    def delete(self, incident_id):
+        """
+        Delete an incident
+
+        Args:
+            incident_id (int): The incident id
+        """
+        self._delete(self.path, incident_id)
