@@ -177,6 +177,29 @@ class FakeComponentGroups(FakeData):
         return FakeHttpResponse()
 
 
+class FakeIncidents(FakeData):
+
+    def post(self, params=None, data=None):
+        instance = {
+            'id': self.next_id(),
+            'name': data.get('name'),
+            'message': data.get('message'),
+            'status': data.get('status'),
+            'visible': data.get('visible'),
+            'component_id': data.get('component_id'),
+            'component_status': data.get('component_status'),
+            'notify': data.get('notify'),
+            'created_at': data.get('created_at'),
+            'template': data.get('template'),
+            'vars': data.get('vars'),
+        }
+        self.add_entry(instance)
+        return FakeHttpResponse(data={'data': instance})
+
+    def delete(self, incident_id=None, params=None, data=None):
+        self.delete_by_id(incident_id)
+        return FakeHttpResponse()
+
 class FakePing(FakeData):
 
     def get(self, *args, **kwargs):
@@ -207,7 +230,7 @@ class Routes:
         self.version = FakeVersion(self)
         self.components = FakeComponents(self)
         self.component_groups = FakeComponentGroups(self)
-        self.incidents = None
+        self.incidents = FakeIncidents(self)
         self.incident_updates = None
         self.metrics = None
         self.metric_points = None
@@ -222,6 +245,7 @@ class Routes:
             (r'^components', self.components, ['get', 'post']),
             (r'^incidents/(?P<incident_id>\w+)/updates/(?P<update_id>\w+)', ['get', 'post', 'delete']),
             (r'^incident/(?P<incident_id>\w+)/updates', self.incident_updates, ['get', 'post']),
+            (r'^incidents/(?P<incident_id>\w+)', self.incidents, ['get', 'put', 'delete']),
             (r'^incidents', self.incidents, ['get', 'post']),
             (r'^metric/points', self.metric_points, ['get']),
             (r'^metrics', self.metrics, ['get']),
