@@ -57,5 +57,5 @@ class MetricsManager(Manager):
     def get(self):
         pass
 
-    def delete(self):
-        pass
+    def delete(self, metrics_id):
+        self._delete(self.path, metrics_id)
