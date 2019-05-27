@@ -203,7 +203,17 @@ class FakeIncidents(FakeData):
     def put(self, incident_id=None, params=None, data=None):
         # TODO: Rules on what field can be updated
         instance = self.get_by_id(incident_id)
-        instance.update(data)
+
+        # Required params
+        instance['name'] = data['name']
+        instance['message'] = data['message']
+        instance['status'] = data['status']
+        instance['visible'] = data['visible']
+        # Optional only update if value is present
+        for key, value in data.items():
+            if key in instance and value is not None:
+                instance[key] = value
+
         return FakeHttpResponse(data={'data': instance})
 
     def delete(self, incident_id=None, params=None, data=None):
