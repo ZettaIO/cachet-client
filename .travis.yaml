@@ -1,0 +1,18 @@
+language: python
+
+sudo: false
+
+matrix:
+  include:
+    - env: TOXENV=pep8
+      python: 3.6
+      dist: xenial
+      sudo: true
+
+install: 
+  - pip install -U setuptools
+  - pip install -r requirements-test.txt
+  - python setup.py develop
+
+script:
+  - tox
