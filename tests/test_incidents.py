@@ -31,4 +31,24 @@ class IncidentTests(CachetTestcase):
         self.assertIsInstance(issue.created_at, datetime)
         self.assertIsInstance(issue.updated_at, datetime)
         self.assertIsInstance(issue.scheduled_at, datetime)
+
+        # Do an update on the resource
+        issue.name = "Something probably blew up?!"
+        issue = issue.update()
+        self.assertEqual(issue.name, "Something probably blew up?!")
+
+        # Update directly
+        issue = self.client.incidents.update(
+            issue.id,
+            name="Something probably blew up?!",
+            message="All good",
+            status=enums.INCIDENT_FIXED,
+            visible=True,
+        )
+        self.assertEqual(issue.id, 1)
+        self.assertEqual(issue.status, enums.INCIDENT_FIXED)
+        self.assertIsInstance(issue.created_at, datetime)
+        self.assertIsInstance(issue.updated_at, datetime)
+        self.assertIsInstance(issue.scheduled_at, datetime)
+
         issue.delete()
