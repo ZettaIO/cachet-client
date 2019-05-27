@@ -153,8 +153,54 @@ class IncidentManager(Manager):
             }
         )
 
-    def update(self):
-        pass
+    def update(
+            self,
+            incident_id: int,
+            name: str,
+            message: str,
+            status: int,
+            visible: bool = True,
+            component_id: int = None,
+            component_status: int = None,
+            notify: bool = True,
+            created_at: datetime = None,
+            template: str = None,
+            template_vars: List[str] = None,
+            **kwargs):
+        """
+        Edit and incident.
+
+        Args:
+            incident_id (int): The incident to update
+
+        Keyword Args:
+            name (str): Name/title of the issue
+            message (str): Mesage body for the issue
+            status (int): Status of the incident (see enums)
+            visible (bool): Publicly visible incident
+            component_id (int): The component to update
+            component_status (int): The status to apply on component
+            notify (bool): If users should be notified
+            created_at: when the indicent was created
+            template (str): Slug of template to use
+            template_vars (list): Variables to the template
+        """
+        return self._update(
+            self.path,
+            incident_id,
+            {
+                'name': name,
+                'message': message,
+                'status': status,
+                'visible': 1 if visible else 0,
+                'component_id': component_id,
+                'component_status': component_status,
+                'notify': 1 if notify else 0,
+                'created_at': created_at,
+                'template': template,
+                'vars': template_vars,
+            }
+        )
 
     def list(self):
         pass
