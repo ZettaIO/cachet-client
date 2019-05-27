@@ -109,7 +109,7 @@ class Component(Resource):
 
         Args:
             name (str): Name of tag to remove
-        
+
         Raises:
             KeyError if tag does not exist
         """
@@ -121,7 +121,7 @@ class Component(Resource):
 
         Args:
             name (str): Tag name
-        
+
         Returns:
             bool: If the tag exists
         """

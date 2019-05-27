@@ -1,5 +1,5 @@
 # Component statuses
-# 1 Operational 
+# 1 Operational
 # The component is working.
 COMPONENT_STATUS_OPERATIONAL = 1
 # 2 Performance Issues

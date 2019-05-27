@@ -1,4 +1,4 @@
-from cachetclient.base import Manager, Resource
+from cachetclient.base import Manager
 
 
 class PingManager(Manager):

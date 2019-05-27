@@ -5,8 +5,13 @@ import requests
 
 class HttpClient:
 
-    def __init__(self, base_url: str, api_token: str, timeout: float = None,
-        verify_tls: bool = True, user_agent:  str = None):
+    def __init__(
+            self, base_url: str,
+            api_token: str,
+            timeout: float = None,
+            verify_tls: bool = True,
+            user_agent: str = None):
+
         self.base_url = base_url
         if not self.base_url.endswith('/'):
             self.base_url += '/'

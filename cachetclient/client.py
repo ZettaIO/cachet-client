@@ -4,7 +4,11 @@ from cachetclient import v1
 from cachetclient.httpclient import HttpClient
 
 
-def Client(endpoint: str=None, api_token: str=None, version: str=None, verify_tls: bool=True) -> v1.Client:
+def Client(
+        endpoint: str = None,
+        api_token: str = None,
+        version: str = None,
+        verify_tls: bool = True) -> v1.Client:
     """
     Creates a cachet client. Use this fuction to create clients to ensure
     compatibility in the future.

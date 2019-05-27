@@ -1,4 +1,4 @@
-from cachetclient.httpclient import HttpClient
+from cachetclient.httpclient import HttpClient  # noqa
 from cachetclient.v1.component_groups import CompontentGroupManager
 from cachetclient.v1.components import ComponentManager
 from cachetclient.v1.incidents import IncidentManager

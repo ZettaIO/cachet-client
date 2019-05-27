@@ -5,7 +5,7 @@ from datetime import datetime
 def to_datetime(timestamp: str):
     """
     Convert string to datetime of formats::
-    
+
         '2019-05-24 09:26:22'
         'Friday 24th May 2019 10:01:44'
 

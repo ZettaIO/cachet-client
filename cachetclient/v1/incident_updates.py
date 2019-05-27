@@ -1,7 +1,6 @@
 from datetime import datetime
 
 from cachetclient.base import Manager, Resource
-from cachetclient.v1 import enums
 from cachetclient import utils
 
 
@@ -64,7 +63,7 @@ class IncidentUpdatesManager(Manager):
             incident_id (int): The incident to update
             status (int): New status id
             message (str): Update message
-        
+
         Returns:
             IndicentUpdate instance
         """

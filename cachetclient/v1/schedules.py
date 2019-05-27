@@ -1,7 +1,6 @@
 from datetime import datetime
 
 from cachetclient.base import Resource, Manager
-from cachetclient.v1 import enums
 from cachetclient import utils
 
 

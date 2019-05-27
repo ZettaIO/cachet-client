@@ -91,7 +91,7 @@ class CompontentGroupManager(Manager):
             name (str): Name of the group
             order (int): group order
             collapsed (int): Collapse value (see enums)
-        
+
         Return:
             CompoentGroup instance
         """
@@ -155,7 +155,7 @@ class CompontentGroupManager(Manager):
 
         Returns:
             ComponentGroup instance
-        
+
         Raises:
             HttpError if not found
         """

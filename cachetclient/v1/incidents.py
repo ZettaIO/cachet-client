@@ -2,7 +2,6 @@ from datetime import datetime
 from typing import List
 
 from cachetclient.base import Manager, Resource
-from cachetclient.v1 import enums
 from cachetclient import utils
 from cachetclient.v1.incident_updates import IncidentUpdatesManager
 from cachetclient.httpclient import HttpClient

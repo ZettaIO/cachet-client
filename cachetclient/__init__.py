@@ -1,1 +1,1 @@
-from cachetclient.client import Client
+from cachetclient.client import Client  # noqa
