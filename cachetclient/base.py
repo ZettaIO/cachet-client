@@ -94,3 +94,11 @@ class Manager:
 
     def _delete(self, path, resource_id):
         self._http.delete(path, resource_id)
+
+    def _build_data_dict(self, **kwargs):
+        """
+        Builds a data dictionary for posting to the server.
+        Will ommit key/value pars with None values.
+        This makes partial updates less error prone.
+        """
+        return {key: value for key, value in kwargs.items() if value is not None}
