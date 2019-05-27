@@ -192,7 +192,6 @@ class FakeIncidents(FakeData):
             'visible': data.get('visible'),
             'component_id': data.get('component_id'),
             'notify': data.get('notify'),
-            'created_at': data.get('created_at'),
             'human_status': 'Investigating',
             'created_at': '2019-05-25 15:21:34',
             'scheduled_at': '2019-05-25 15:21:34',
