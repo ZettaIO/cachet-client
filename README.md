@@ -1,4 +1,6 @@
 
+[![travis](https://api.travis-ci.org/ZettaIO/cachet-client.svg?branch=master)](https://travis-ci.org/ZettaIO/cachet-client)
+
 *WORK IN PROGRESS*
 
 # cachet-client
