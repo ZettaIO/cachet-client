@@ -156,10 +156,10 @@ class IncidentManager(Manager):
     def update(
             self,
             incident_id: int,
-            name: str,
-            message: str,
-            status: int,
-            visible: bool = True,
+            name: str = None,
+            message: str = None,
+            status: int = None,
+            visible: bool = None,
             component_id: int = None,
             component_status: int = None,
             notify: bool = True,
@@ -185,21 +185,24 @@ class IncidentManager(Manager):
             template (str): Slug of template to use
             template_vars (list): Variables to the template
         """
+        if name is None or message is None or status is None or visible is None:
+            raise ValueError('name, message, status and visible are required parameters')
+
         return self._update(
             self.path,
             incident_id,
-            {
-                'name': name,
-                'message': message,
-                'status': status,
-                'visible': 1 if visible else 0,
-                'component_id': component_id,
-                'component_status': component_status,
-                'notify': 1 if notify else 0,
-                'created_at': created_at,
-                'template': template,
-                'vars': template_vars,
-            }
+            self._build_data_dict(
+                name=name,
+                message=message,
+                status=status,
+                visible=1 if visible else 0,
+                component_id=component_id,
+                component_status=component_status,
+                notify=1 if notify else 0,
+                created_at=created_at,
+                template=template,
+                vars=template_vars,
+            )
         )
 
     def list(self):
