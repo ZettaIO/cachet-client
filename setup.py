@@ -3,7 +3,7 @@ from setuptools import setup, find_namespace_packages
 
 setup(
     name="cachet-client",
-    version="0.1",
+    version="0.8",
     description="Administation client for the Cachet status project",
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
