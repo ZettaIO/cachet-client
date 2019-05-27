@@ -200,6 +200,12 @@ class FakeIncidents(FakeData):
         self.add_entry(instance)
         return FakeHttpResponse(data={'data': instance})
 
+    def put(self, incident_id=None, params=None, data=None):
+        # TODO: Rules on what field can be updated
+        instance = self.get_by_id(incident_id)
+        instance.update(data)
+        return FakeHttpResponse(data={'data': instance})
+
     def delete(self, incident_id=None, params=None, data=None):
         self.delete_by_id(incident_id)
         return FakeHttpResponse()
