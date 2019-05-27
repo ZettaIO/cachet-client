@@ -20,25 +20,45 @@ class Incident(Resource):
         """(int) The component id for this incident"""
         return self.get('component_id')
 
+    @component_id.setter
+    def component_id(self, value: int):
+        self._data['component_id'] = value
+
     @property
     def name(self) -> str:
         """(str) Name/title of the incident"""
         return self.get('name')
+
+    @name.setter
+    def name(self, value: str):
+        self._data['name'] = value
 
     @property
     def message(self) -> str:
         """(str) Indicent body message"""
         return self.get('message')
 
+    @message.setter
+    def message(self, value: str):
+        self._data['message'] = value
+
     @property
     def notify(self) -> str:
         """(bool) Notify user"""
         return self.get('notify')
 
+    @notify.setter
+    def notify(self, value: bool):
+        self._data['notify'] = value
+
     @property
     def status(self) -> int:
         """(int) Status of the incident"""
         return self.get('status')
+
+    @status.setter
+    def status(self, value: int):
+        self._data['status'] = value
 
     @property
     def human_status(self) -> str:
@@ -47,8 +67,12 @@ class Incident(Resource):
 
     @property
     def visible(self) -> int:
-        """(int) Visibility of the indcinent"""
+        """(bool) Visibility of the indcinent"""
         return self.get('visible') == 1
+
+    @visible.setter
+    def visible(self, value: bool):
+        self._data['visible'] = value
 
     @property
     def scheduled_at(self) -> datetime:
