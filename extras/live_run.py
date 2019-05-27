@@ -40,10 +40,11 @@ def main():
     test_components()
     test_component_groups()
     test_subscribers()
-    test_issues()
+    test_incidents()
     test_issue_updates()
     test_metrics()
     test_metric_points()
+
     # test_schedules()
 
 
@@ -165,8 +166,17 @@ def test_subscribers():
         raise ValueError("subscriber count {} != {}".format(count, count_pre))
 
 
-def test_issues():
-    pass
+def test_incidents():
+    issue = client().incidents.create(
+        "Something blew up!",
+        "We are looking into it",
+        enums.INCIDENT_INVESTIGATING,
+        visible=True,
+        component_id=1,
+        component_status=enums.COMPONENT_STATUS_MAJOR_OUTAGE,
+    )
+    pprint(issue.attrs)
+    issue.delete()
 
 
 def test_issue_updates():
