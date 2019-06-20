@@ -4,7 +4,7 @@ from setuptools import setup
 setup(
     name="cachet-client",
     version="1.0.0",
-    description="Administation client for the Cachet status project",
+    description="A python 3 client for the Cachet API",
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
     url="https://github.com/zettaio/cachet-client",

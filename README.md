@@ -5,6 +5,9 @@
 
 # cachet-client
 
+A python 3 API client for then open source status page system
+[Cachet](https://github.com/CachetHQ/Cachet).
+
 * [cachet-client on github](https://github.com/ZettaIO/cachet-client)
 * cachet-client on PyPI
 * Documentation
