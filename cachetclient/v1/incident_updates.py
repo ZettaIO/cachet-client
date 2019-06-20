@@ -18,9 +18,17 @@ class IndicentUpdate(Resource):
     def status(self) -> int:
         return self.get('status')
 
+    @status.setter
+    def status(self, value: int):
+        self._data['status'] = value
+
     @property
     def messages(self) -> str:
         return self.get('message')
+
+    @messages.setter
+    def message(self, value: str):
+        self._data['message'] = value
 
     @property
     def user_id(self) -> int:
