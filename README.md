@@ -5,7 +5,7 @@
 
 # cachet-client
 
-* cachet-client on github
+* [cachet-client on github](https://github.com/ZettaIO/cachet-client)
 * cachet-client on PyPI
 * Documentation
 
@@ -19,6 +19,7 @@ In development:
 
 ```
 git clone ...
+make and activate a virtualenv
 python setup.py develop
 ```
 
@@ -26,4 +27,7 @@ Cachet can easily be set up locally with docker: https://github.com/CachetHQ/Doc
 
 # Running Tests
 
-pytest tests
+```
+pip install -r tests/requirements.txt
+tox
+```
