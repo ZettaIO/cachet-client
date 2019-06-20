@@ -48,6 +48,8 @@ class IncidentUpdatesTests(CachetTestcase):
             "We have located the issue"
         )
 
+        self.assertEqual(self.client.incident_updates.count(incident.id), 3)
+
         # List and compare
         updates = list(incident.updates())
         self.assertEqual(len(updates), 3)

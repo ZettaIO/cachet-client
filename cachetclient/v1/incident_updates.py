@@ -123,10 +123,13 @@ class IncidentUpdatesManager(Manager):
 
     def count(self, incident_id) -> int:
         """
-        Count the number of indicent update for an issue
+        Count the number of indicent update for an incident
+
+        Args:
+            incident_id (int): The incident
 
         Returns:
-            (int) Number of incident updates for the issue
+            (int) Number of incident updates for the incident
         """
         return self._count(self.path.format(incident_id))
 
