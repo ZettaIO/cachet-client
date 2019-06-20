@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import List
+from typing import List, Generator
 
 from cachetclient.base import Manager, Resource
 from cachetclient import utils
@@ -92,7 +92,7 @@ class Incident(Resource):
         """(datetime) When the issue was deleted"""
         return utils.to_datetime(self.get('deleted_at'))
 
-    def updates(self):
+    def updates(self) -> Generator['Incident', None, None]:
         """Get incident updates for this issue"""
         return self._manager.updates.list(self.id)
 
@@ -116,7 +116,7 @@ class IncidentManager(Manager):
             notify: bool = True,
             created_at: datetime = None,
             template: str = None,
-            template_vars: List[str] = None):
+            template_vars: List[str] = None) -> Incident:
         """
         Create and general issue or issue for a component.
         component_id and component_status must be supplied when making
@@ -135,6 +135,9 @@ class IncidentManager(Manager):
             created_at: when the indicent was created
             template (str): Slug of template to use
             template_vars (list): Variables to the template
+
+        Returns:
+            Incident instance
         """
         return self._create(
             self.path,
@@ -165,7 +168,7 @@ class IncidentManager(Manager):
             created_at: datetime = None,
             template: str = None,
             template_vars: List[str] = None,
-            **kwargs):
+            **kwargs) -> Incident:
         """
         Edit and incident.
 
@@ -183,6 +186,9 @@ class IncidentManager(Manager):
             created_at: when the indicent was created
             template (str): Slug of template to use
             template_vars (list): Variables to the template
+
+        Returns:
+            Updated incident Instance
         """
         if name is None or message is None or status is None or visible is None:
             raise ValueError('name, message, status and visible are required parameters')
@@ -204,7 +210,7 @@ class IncidentManager(Manager):
             )
         )
 
-    def list(self, page: int = 1, per_page: int = 1):
+    def list(self, page: int = 1, per_page: int = 1) -> Generator[Incident, None, None]:
         """
         List all incidents
 
@@ -221,7 +227,7 @@ class IncidentManager(Manager):
             per_page=per_page,
         )
 
-    def get(self, incident_id: int):
+    def get(self, incident_id: int) -> Incident:
         """
         Get a single incident
 
@@ -236,7 +242,7 @@ class IncidentManager(Manager):
         """
         return self._get(self.path, incident_id)
 
-    def delete(self, incident_id: int):
+    def delete(self, incident_id: int) -> None:
         """
         Delete an incident
 
