@@ -14,12 +14,22 @@ class IncidentTests(CachetTestcase):
     def setUp(self):
         self.client = self.create_client()
 
+    def test_get(self):
+        self.client.incidents.create("Issue 1", "Descr", enums.INCIDENT_INVESTIGATING)
+        self.client.incidents.create("Issue 2", "Descr", enums.INCIDENT_INVESTIGATING)
+        self.client.incidents.create("Issue 3", "Descr", enums.INCIDENT_INVESTIGATING)
+
+        incidents = self.client.incidents.list()
+        incidents = list(incidents)
+        self.assertEqual(len(incidents), 3)
+
     def test_create(self):
         issue = self.client.incidents.create(
             "Something blew up!",
             "We are looking into it",
             enums.INCIDENT_INVESTIGATING,
         )
+
         self.assertEqual(issue.id, 1)
         self.assertEqual(issue.name, "Something blew up!")
         self.assertEqual(issue.message, "We are looking into it")

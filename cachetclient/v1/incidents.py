@@ -204,8 +204,22 @@ class IncidentManager(Manager):
             )
         )
 
-    def list(self):
-        pass
+    def list(self, page: int = 1, per_page: int = 1):
+        """
+        List all incidents
+
+        Keyword Args:
+            page (int): Page to start on
+            per_page (int): Entires per page
+
+        Returns:
+            Generator of Incidents
+        """
+        return self._list_paginated(
+            self.path,
+            page=page,
+            per_page=per_page,
+        )
 
     def delete(self, incident_id):
         """

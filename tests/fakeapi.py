@@ -187,6 +187,15 @@ class FakeComponentGroups(FakeData):
 
 class FakeIncidents(FakeData):
 
+    def get(self, incident_id=None, params=None, data=None):
+        if incident_id:
+            return self._get(incident_id)
+        else:
+            return self._list(
+                per_page=params.get('per_page') or 20,
+                page=params.get('page') or 1,
+            )
+
     def post(self, params=None, data=None):
         # Fields we don't store but instead triggers behaviour
         # 'component_status': data.get('component_status'),
