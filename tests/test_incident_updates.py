@@ -18,15 +18,43 @@ class IncidentUpdatesTests(CachetTestcase):
             "We are investigating",
             enums.INCIDENT_INVESTIGATING,
         )
-        self.client.incident_updates.create(
+
+        # Add 3 updates
+        first = self.client.incident_updates.create(
             incident.id,
             enums.INCIDENT_IDENTIFIED,
             "We have located the issue"
         )
-        # incident.updates()
+        # Test all properties
 
-    def test_list(self):
-        pass
+        self.client.incident_updates.create(
+            incident.id,
+            enums.INCIDENT_WATCHING,
+            "We have located the issue"
+        )
+        self.client.incident_updates.create(
+            incident.id,
+            enums.INCIDENT_FIXED,
+            "We have located the issue"
+        )
 
-    def test_delete(self):
-        pass
+        # List and compare
+        updates = list(incident.updates())
+        self.assertEqual(len(updates), 3)
+        self.assertEqual(
+            [{k: i.attrs[k] for k in ['id', 'incident_id', 'status', 'message']} for i in updates],
+            [{'id': 1, 'incident_id': '1', 'status': 2, 'message': 'We have located the issue'},
+            {'id': 2, 'incident_id': '1', 'status': 3, 'message': 'We have located the issue'},
+            {'id': 3, 'incident_id': '1', 'status': 4, 'message': 'We have located the issue'}]
+        )
+
+        # Update an entry
+        entry = updates[-1]
+        entry.status = enums.INCIDENT_INVESTIGATING
+        entry.message = "Lookin into it.."
+        entry.update()
+
+        # Manually re-fetch
+        updated_entry = self.client.incident_updates.get(entry.incident_id, entry.id)
+        self.assertEqual(updated_entry.status, enums.INCIDENT_INVESTIGATING)
+        self.assertEqual(updated_entry.message, "Lookin into it..")
