@@ -41,10 +41,9 @@ def main():
     test_component_groups()
     test_subscribers()
     test_incidents()
-    test_issue_updates()
+    # test_incident_updates()
     test_metrics()
     test_metric_points()
-
     # test_schedules()
 
 
@@ -179,8 +178,25 @@ def test_incidents():
     issue.delete()
 
 
-def test_issue_updates():
-    pass
+def test_incident_updates():
+    """Requires 2.4"""
+    incident = client().incidents.create(
+        "Something blew up!",
+        "We are looking into it",
+        enums.INCIDENT_INVESTIGATING,
+        visible=True,
+        component_id=1,
+        component_status=enums.COMPONENT_STATUS_MAJOR_OUTAGE,
+    )
+
+    update = client().incident_updates.create(
+        incident.id,
+        enums.INCIDENT_IDENTIFIED,
+        "We have found the source",
+    )
+    updates = list(incident.updates())
+    print("Updates", updates)
+    incident.delete()
 
 
 # def test_schedules():
