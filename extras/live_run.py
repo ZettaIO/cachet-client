@@ -19,6 +19,7 @@ CACHET_ENDPOINT = os.environ.get('CACHET_ENDPOINT')
 CACHET_API_TOKEN = os.environ.get('CACHET_API_TOKEN')
 CLIENT = None
 
+
 class Stats:
     """Basic stats for tests"""
     NUM_TESTS = 0
@@ -251,7 +252,7 @@ def test_incident_updates():
         component_status=enums.COMPONENT_STATUS_MAJOR_OUTAGE,
     )
 
-    update = client().incident_updates.create(
+    client().incident_updates.create(
         incident.id,
         enums.INCIDENT_IDENTIFIED,
         "We have found the source",
