@@ -1,9 +1,9 @@
-from setuptools import setup, find_namespace_packages
+from setuptools import setup
 
 
 setup(
     name="cachet-client",
-    version="0.8",
+    version="1.0.0",
     description="Administation client for the Cachet status project",
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
@@ -12,7 +12,7 @@ setup(
     author_email="eforselv@gmail.com",
     maintainer="Einar Forselv",
     maintainer_email="eforselv@gmail.com",
-    packages=find_namespace_packages(include=['cachetclient', 'cachetclient.*']),
+    packages=['cachetclient', 'cachetclient.v1'],
     include_package_data=True,
     keywords=['cachet', 'client'],
     python_requires='>=3.5',
