@@ -13,7 +13,7 @@ class Resource:
         """The raw json respons from the server"""
         return self._data
 
-    def get(self, name) -> Union[int, str, float]:
+    def get(self, name) -> Union[int, str, float, bool]:
         """Obtain any attribute name for the resource"""
         return self._data.get(name)
 
