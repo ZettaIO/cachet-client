@@ -5,6 +5,7 @@ import re
 import string
 
 from requests.exceptions import HTTPError
+from cachetclient.v1 import enums
 
 
 class FakeData:
@@ -196,10 +197,10 @@ class FakeIncidents(FakeData):
             'name': data.get('name'),
             'message': data.get('message'),
             'status': data.get('status'),
+            'human_status': enums.incident_status_human(data.get('status')),
             'visible': data.get('visible'),
             'component_id': data.get('component_id'),
             'notify': data.get('notify'),
-            'human_status': 'Investigating',
             'created_at': '2019-05-25 15:21:34',
             'scheduled_at': '2019-05-25 15:21:34',
             'updated_at': '2019-05-25 15:21:34',
@@ -231,12 +232,17 @@ class FakeIncidents(FakeData):
 class FakeIncidentUpdates(FakeData):
 
     def post(self, incident_id=None, params=None, data=None):
+        new_id = self.next_id()
         instance = {
-            'id': self.next_id(),
-            'incident_id': incident_id,
+            'id': new_id,
+            'incident_id': int(incident_id),
             'status': data['status'],
+            'human_status': enums.incident_status_human(data['status']),
             'message': data['message'],
             'user_id': 1,  # We assume user 1 always
+            'permalink': 'http://status.test/incidents/1#update-{}'.format(new_id),
+            'created_at': '2019-05-25 15:21:34',
+            'updated_at': '2019-05-25 15:21:34',
         }
         self.add_entry(instance)
         return FakeHttpResponse(data={'data': instance})
