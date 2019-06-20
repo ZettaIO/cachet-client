@@ -49,7 +49,7 @@ class IndicentUpdate(Resource):
     @property
     def permlink(self) -> str:
         """Permanent url"""
-        return self.get('permlink')
+        return self.get('permalink')
 
     def update(self):
         """Update/save changes"""
