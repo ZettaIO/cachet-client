@@ -42,6 +42,19 @@ INCIDENT_WATCHING = 3
 # The fix has worked, you're happy to close the incident.
 INCIDENT_FIXED = 4
 
+
+def incident_status_human(status: int):
+    """Get human status from incident status id"""
+    data = {
+        INCIDENT_SCHEDULED: "Scheduled",
+        INCIDENT_INVESTIGATING: "Investigating",
+        INCIDENT_IDENTIFIED: "Identified",
+        INCIDENT_WATCHING: "Watching",
+        INCIDENT_FIXED: "Fixed",
+    }
+    return data[status]
+
+
 SCHEDULE_STATUS_UPCOMING = 0
 SCHEDULE_STATUS_IN_PROGRESS = 1
 SCHEDULE_STATUS_COMPLETE = 2
