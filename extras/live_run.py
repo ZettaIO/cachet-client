@@ -19,6 +19,28 @@ CACHET_ENDPOINT = os.environ.get('CACHET_ENDPOINT')
 CACHET_API_TOKEN = os.environ.get('CACHET_API_TOKEN')
 CLIENT = None
 
+class Stats:
+    """Basic stats for tests"""
+    NUM_TESTS = 0
+    NUM_TESTS_SUCCESS = 0
+    NUM_TESTS_FAIL = 0
+
+    @classmethod
+    def incr_tests(cls):
+        cls.NUM_TESTS += 1
+
+    @classmethod
+    def incr_success(cls):
+        cls.NUM_TESTS_SUCCESS += 1
+
+    @classmethod
+    def incr_fail(cls):
+        cls.NUM_TESTS_FAIL += 1
+
+    @classmethod
+    def success_percentage(cls):
+        return round(cls.NUM_TESTS_SUCCESS * 100 / cls.NUM_TESTS, 2)
+
 
 def client() -> Client:
     global CLIENT
@@ -28,6 +50,29 @@ def client() -> Client:
     return CLIENT
 
 
+def simple_test(halt_on_exception=False):
+    """Simple decorator for handling test functions"""
+    def decorator_func(func):
+        def wrapper(*args, **kwargs):
+            Stats.incr_tests()
+            print(func.__name__)
+            print("-" * 80)
+            try:
+                func(*args, **kwargs)
+                Stats.incr_success()
+                print()
+            except Exception as ex:
+                Stats.incr_fail()
+                if halt_on_exception:
+                    raise
+                else:
+                    print("### EXCEPTION ###")
+                    print(ex)
+                    print()
+        return wrapper
+    return decorator_func
+
+
 def main():
     if CACHET_ENDPOINT is None:
         raise ValueError("CACHET_ENDPOINT enviroment variable missing")
@@ -35,24 +80,36 @@ def main():
     if CACHET_API_TOKEN is None:
         raise ValueError("CACHET_API_TOKEN enviroment variable missing")
 
+    # Version 2.3.x features
     test_ping()
     test_version()
     test_components()
     test_component_groups()
     test_subscribers()
     test_incidents()
-    # test_incident_updates()
     test_metrics()
     test_metric_points()
-    # test_schedules()
+
+    # Version 2.4.x features
+    test_incident_updates()
+    test_schedules()
+
+    print("=" * 80)
+    print("Numer of tests    :", Stats.NUM_TESTS)
+    print("Succesful         :", Stats.NUM_TESTS_SUCCESS)
+    print("Failure           :", Stats.NUM_TESTS_FAIL)
+    print("Percentage passed : {}%".format(Stats.success_percentage()))
+    print("=" * 80)
 
 
+@simple_test()
 def test_ping():
     result = client().ping()
     if result is not True:
         raise ValueError("Ping failed. {} ({}) returned instead of True (bool)".format(result, type(result)))
 
 
+@simple_test()
 def test_version():
     version = client().version()
     if version.value is not str and len(version.value) < 3:
@@ -63,6 +120,7 @@ def test_version():
     print("latest    :", version.latest)
 
 
+@simple_test()
 def test_components():
     comp = client().components.create(
         "Test Component",
@@ -115,6 +173,7 @@ def test_components():
     comp.delete()
 
 
+@simple_test()
 def test_component_groups():
     grp = client().component_groups.create("Test Group", order=1)
     assert grp.id > 0
@@ -142,6 +201,7 @@ def test_component_groups():
     grp.delete()
 
 
+@simple_test()
 def test_subscribers():
     new_sub = client().subscribers.create('einar2@zetta.io')
 
@@ -165,6 +225,7 @@ def test_subscribers():
         raise ValueError("subscriber count {} != {}".format(count, count_pre))
 
 
+@simple_test()
 def test_incidents():
     issue = client().incidents.create(
         "Something blew up!",
@@ -178,6 +239,7 @@ def test_incidents():
     issue.delete()
 
 
+@simple_test()
 def test_incident_updates():
     """Requires 2.4"""
     incident = client().incidents.create(
@@ -199,15 +261,18 @@ def test_incident_updates():
     incident.delete()
 
 
-# def test_schedules():
-#     sch = client().schedules.create("Test Schedule", "Shits gonna happen", None)
-#     pprint(sch.attrs, indent=2)
+@simple_test()
+def test_schedules():
+    sch = client().schedules.create("Test Schedule", "Shits gonna happen", None)
+    pprint(sch.attrs, indent=2)
 
 
+@simple_test()
 def test_metrics():
-    pass
+    print("HELLO")
 
 
+@simple_test()
 def test_metric_points():
     pass
 
