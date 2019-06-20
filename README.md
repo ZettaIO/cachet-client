@@ -28,9 +28,27 @@ python setup.py develop
 
 Cachet can easily be set up locally with docker: https://github.com/CachetHQ/Docker
 
-# Running Tests
+## Local Development
 
+Local setup:
+
+```bash
+python3.7 -m virtualenv .venv
+. .venv/bin/activate
+pip install -e .
 ```
+
+
+Running tests:
+
+```bash
 pip install -r tests/requirements.txt
 tox
+
+# Optionally
+tox -e py36  # tests only
+tox -e pep8  # for pep8 run only
+
+# Running tests wity pytest also works, but this works poorly in combination with enviroment variables for the live test script (tox separates enviroments)
+pytest tests/
 ```
