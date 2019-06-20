@@ -51,8 +51,22 @@ class MetricsManager(Manager):
     def create(self):
         pass
 
-    def list(self):
-        pass
+    def list(self, page: int = 1, per_page: int = 20):
+        """
+        List all metrics
+
+        Keyword Args:
+            page (int): Page to start listing
+            per_page (int): Number of entries per page
+
+        Returns:
+            Generator of Metrics instances
+        """
+        return self._list_paginated(
+            self.path,
+            page=page,
+            per_page=per_page,
+        )
 
     def get(self):
         pass
