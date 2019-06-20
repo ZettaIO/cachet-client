@@ -243,6 +243,7 @@ class FakeIncidentUpdates(FakeData):
 
     def put(self, incident_id=None, update_id=None, params=None, data=None):
         instance = self.get_by_id(update_id)
+        print("data", data)
         instance.update({
             'status': data['status'],
             'message': data['message'],
@@ -256,7 +257,7 @@ class FakeIncidentUpdates(FakeData):
                 page=params.get('page') or 1,
             )
         else:
-            return super()._get(incident_id)
+            return super()._get(update_id)
 
 
 class FakePing(FakeData):
