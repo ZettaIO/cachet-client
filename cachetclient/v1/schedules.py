@@ -32,13 +32,13 @@ class ScheduleManager(Manager):
     resource_class = Schedule
 
     def create(self, *args, **kwargs):
-        raise NotImplementedError()
+        raise NotImplementedError("Create schedule not implementd")
 
     def update(self, *args, **kwargs):
-        raise NotImplementedError()
+        raise NotImplementedError("update schedule not implemented")
 
     def list(self, *args, **kwargs):
-        raise NotImplementedError()
+        raise NotImplementedError("List scedules not implemented")
 
     def delete(self, schedule_id):
-        raise NotImplementedError()
+        raise NotImplementedError("Delete schedules not implemented")
