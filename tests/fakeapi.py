@@ -220,6 +220,20 @@ class FakeIncidents(FakeData):
         self.delete_by_id(incident_id)
         return FakeHttpResponse()
 
+
+class FakeIncidentUpdates(FakeData):
+
+    def post(self, incident_id=None, params=None, data=None):
+        instance = {
+            'id': self.next_id(),
+            'incident_id': incident_id,
+            'status': data['status'],
+            'message': data['message'],
+        }
+        self.add_entry(instance)
+        return FakeHttpResponse(data={'data': instance})
+
+
 class FakePing(FakeData):
 
     def get(self, *args, **kwargs):
@@ -251,7 +265,7 @@ class Routes:
         self.components = FakeComponents(self)
         self.component_groups = FakeComponentGroups(self)
         self.incidents = FakeIncidents(self)
-        self.incident_updates = None
+        self.incident_updates = FakeIncidentUpdates(self)
         self.metrics = None
         self.metric_points = None
         self.subscribers = FakeSubscribers(self)
@@ -263,8 +277,8 @@ class Routes:
             (r'^components/groups', self.component_groups, ['get', 'post']),
             (r'^components/(?P<component_id>\w+)', self.components, ['get', 'post', 'put', 'delete']),
             (r'^components', self.components, ['get', 'post']),
-            (r'^incidents/(?P<incident_id>\w+)/updates/(?P<update_id>\w+)', ['get', 'post', 'delete']),
-            (r'^incident/(?P<incident_id>\w+)/updates', self.incident_updates, ['get', 'post']),
+            (r'^incidents/(?P<incident_id>\w+)/updates/(?P<update_id>\w+)', self.incident_updates, ['get', 'post', 'delete']),
+            (r'^incidents/(?P<incident_id>\w+)/updates', self.incident_updates, ['get', 'post']),
             (r'^incidents/(?P<incident_id>\w+)', self.incidents, ['get', 'put', 'delete']),
             (r'^incidents', self.incidents, ['get', 'post']),
             (r'^metric/points', self.metric_points, ['get']),
@@ -275,13 +289,15 @@ class Routes:
 
     def dispatch(self, method, path, data=None, params=None):
         for route in self._routes:
-            # print(route[0], path, params, data)
-            match = re.search(route[0], path)
+            pattern, manager, allowed_methods = route
+            # print(pattern, manager, allowed_methods)
+
+            match = re.search(pattern, path)
             if not match:
                 continue
 
-            if method in route[2]:
-                func = getattr(route[1], method, None)
+            if method in allowed_methods:
+                func = getattr(manager, method, None)
                 if func:
                     return func(params=params, data=data, **match.groupdict())
 

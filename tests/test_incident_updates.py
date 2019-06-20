@@ -18,7 +18,12 @@ class IncidentUpdatesTests(CachetTestcase):
             "We are investigating",
             enums.INCIDENT_INVESTIGATING,
         )
-        incident.updates()
+        self.client.incident_updates.create(
+            incident.id,
+            enums.INCIDENT_IDENTIFIED,
+            "We have located the issue"
+        )
+        # incident.updates()
 
     def test_list(self):
         pass
