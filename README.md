@@ -38,8 +38,16 @@ python3.7 -m virtualenv .venv
 pip install -e .
 ```
 
+## Tests
 
-Running tests:
+This project has a fairly extensive test setup.
+
+* Unit tests are located in `tests/` including a fake
+  implementation of the Cachet API.
+* A simpler test script under `extras/live_run.py` that
+  needs a running test instance of Cachet.
+
+### Running unit tests
 
 ```bash
 pip install -r tests/requirements.txt
@@ -51,4 +59,29 @@ tox -e pep8  # for pep8 run only
 
 # Running tests wity pytest also works, but this works poorly in combination with enviroment variables for the live test script (tox separates enviroments)
 pytest tests/
+```
+
+### Testing with real Cachet service
+
+Do not run this script againt a system in production.
+This is only for a test service.
+
+You need to set the following environment variables.
+
+```bash
+CACHET_ENDPOINT
+CACHET_API_TOKEN
+```
+
+Running tests:
+
+```bash
+python3.7 extras/live_run.sh
+...
+=================================================
+Numer of tests    : 10
+Succesful         : 8
+Failure           : 2
+Percentage passed : 80.0%
+=================================================
 ```
