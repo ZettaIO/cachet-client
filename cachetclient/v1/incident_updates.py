@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Generator
 
 from cachetclient.base import Manager, Resource
 from cachetclient import utils
@@ -51,11 +52,17 @@ class IndicentUpdate(Resource):
         """Permanent url"""
         return self.get('permalink')
 
-    def update(self):
-        """Update/save changes"""
+    def update(self) -> 'IndicentUpdate':
+        """
+        Update/save changes
+
+        Returns:
+            Updated IncidentUpdate instance
+        """
         return self._manager.update(**self.attrs)
 
-    def delete(self):
+    def delete(self) -> None:
+        """Deletes the incident update"""
         self._manager.delete(self.incident_id, self.id)
 
 
@@ -63,7 +70,7 @@ class IncidentUpdatesManager(Manager):
     resource_class = IndicentUpdate
     path = 'incidents/{}/updates'
 
-    def create(self, incident_id: int, status: int, message: str):
+    def create(self, incident_id: int, status: int, message: str) -> IndicentUpdate:
         """
         Create an incident update
 
@@ -83,7 +90,13 @@ class IncidentUpdatesManager(Manager):
             }
         )
 
-    def update(self, incident_id: int = None, id: int = None, status: int = None, message: str = None, **kwargs):
+    def update(
+            self,
+            incident_id: int = None,
+            id: int = None,
+            status: int = None,
+            message: str = None,
+            **kwargs) -> IndicentUpdate:
         """
         Update an incident update
 
@@ -108,7 +121,7 @@ class IncidentUpdatesManager(Manager):
             }
         )
 
-    def count(self, incident_id):
+    def count(self, incident_id) -> int:
         """
         Count the number of indicent update for an issue
 
@@ -117,7 +130,7 @@ class IncidentUpdatesManager(Manager):
         """
         return self._count(self.path.format(incident_id))
 
-    def list(self, incident_id: int, page=1, per_page=20):
+    def list(self, incident_id: int, page: int = 1, per_page: int = 20) -> Generator[IndicentUpdate, None, None]:
         """
         List updates for an issue
 
@@ -137,7 +150,7 @@ class IncidentUpdatesManager(Manager):
             per_page=per_page,
         )
 
-    def get(self, incident_id, update_id):
+    def get(self, incident_id: int, update_id: int) -> IndicentUpdate:
         """
         Get an incident update
 
@@ -150,7 +163,7 @@ class IncidentUpdatesManager(Manager):
         """
         return self._get(self.path.format(incident_id), update_id)
 
-    def delete(self, incident_id, update_id):
+    def delete(self, incident_id: int, update_id: int) -> None:
         """
         Delete an incident update
         """
