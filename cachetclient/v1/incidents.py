@@ -242,6 +242,15 @@ class IncidentManager(Manager):
         """
         return self._get(self.path, incident_id)
 
+    def count(self) -> int:
+        """
+        Count the number of incidents
+
+        Returns:
+            (int) Total number of incidents
+        """
+        return self._count(self.path)
+
     def delete(self, incident_id: int) -> None:
         """
         Delete an incident

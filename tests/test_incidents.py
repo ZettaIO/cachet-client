@@ -19,6 +19,8 @@ class IncidentTests(CachetTestcase):
         self.client.incidents.create("Issue 2", "Descr", enums.INCIDENT_INVESTIGATING)
         self.client.incidents.create("Issue 3", "Descr", enums.INCIDENT_INVESTIGATING)
 
+        self.assertEqual(self.client.incidents.count(), 3)
+
         incidents = self.client.incidents.list()
         incidents = list(incidents)
         self.assertEqual(len(incidents), 3)
