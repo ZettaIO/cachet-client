@@ -53,7 +53,7 @@ class IndicentUpdate(Resource):
 
     def update(self):
         """Update/save changes"""
-        return self._manager.update(self.incident_id, self.id)
+        return self._manager.update(**self.attrs)
 
     def delete(self):
         self._manager.delete(self.incident_id, self.id)
@@ -83,13 +83,13 @@ class IncidentUpdatesManager(Manager):
             }
         )
 
-    def update(self, incident_id: int, update_id: int, status: int = None, message: str = None):
+    def update(self, incident_id: int = None, id: int = None, status: int = None, message: str = None, **kwargs):
         """
         Update an incident update
 
         Args:
             incident_id (int): The incident
-            update_id (int): The incident update id to update
+            id (int): The incident update id to update
 
         Keyword Args:
             status (int): New status id
@@ -101,7 +101,7 @@ class IncidentUpdatesManager(Manager):
         # TODO: Documentation claims data is set as query params
         return self._update(
             self.path.format(incident_id),
-            update_id,
+            id,
             {
                 'status': status,
                 'message': message,
