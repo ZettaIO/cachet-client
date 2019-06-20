@@ -1,4 +1,5 @@
 from unittest import mock
+from datetime import datetime
 
 from base import CachetTestcase
 from fakeapi import FakeHttpClient
@@ -23,9 +24,18 @@ class IncidentUpdatesTests(CachetTestcase):
         first = self.client.incident_updates.create(
             incident.id,
             enums.INCIDENT_IDENTIFIED,
-            "We have located the issue"
+            "We have located the issue",
         )
         # Test all properties
+        self.assertEqual(first.id, 1)
+        self.assertEqual(first.incident_id, 1)
+        self.assertEqual(first.status, enums.INCIDENT_IDENTIFIED)
+        self.assertEqual(first.message, "We have located the issue")
+        self.assertEqual(first.user_id, 1)
+        self.assertIsInstance(first.created_at, datetime)
+        self.assertIsInstance(first.updated_at, datetime)
+        self.assertEqual(first.human_status, "Identified")
+        self.assertIsInstance(first.permlink, str)
 
         self.client.incident_updates.create(
             incident.id,
@@ -43,9 +53,9 @@ class IncidentUpdatesTests(CachetTestcase):
         self.assertEqual(len(updates), 3)
         self.assertEqual(
             [{k: i.attrs[k] for k in ['id', 'incident_id', 'status', 'message']} for i in updates],
-            [{'id': 1, 'incident_id': '1', 'status': 2, 'message': 'We have located the issue'},
-            {'id': 2, 'incident_id': '1', 'status': 3, 'message': 'We have located the issue'},
-            {'id': 3, 'incident_id': '1', 'status': 4, 'message': 'We have located the issue'}]
+            [{'id': 1, 'incident_id': 1, 'status': 2, 'message': 'We have located the issue'},
+            {'id': 2, 'incident_id': 1, 'status': 3, 'message': 'We have located the issue'},
+            {'id': 3, 'incident_id': 1, 'status': 4, 'message': 'We have located the issue'}]
         )
 
         # Update an entry
