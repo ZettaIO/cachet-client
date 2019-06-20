@@ -53,7 +53,7 @@ class IndicentUpdate(Resource):
 
 class IncidentUpdatesManager(Manager):
     resource_class = IndicentUpdate
-    path = 'incidents/{resource_id}/updates'
+    path = 'incidents/{}/updates'
 
     def create(self, incident_id: int, status: int, message: str):
         """
