@@ -221,7 +221,22 @@ class IncidentManager(Manager):
             per_page=per_page,
         )
 
-    def delete(self, incident_id):
+    def get(self, incident_id: int):
+        """
+        Get a single incident
+
+        Args:
+            incident_id (int): The incident id to get
+
+        Returns:
+            Incident instance
+
+        Raises:
+            HttpError if incident do not exist
+        """
+        return self._get(self.path, incident_id)
+
+    def delete(self, incident_id: int):
         """
         Delete an incident
 
