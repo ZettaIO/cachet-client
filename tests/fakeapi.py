@@ -50,11 +50,18 @@ class FakeData:
         data = self.get_by_id(resource_id)
         return FakeHttpResponse(data={'data': data})
 
-    def _list(self, per_page=20, page=1):
+    def _list(self, per_page=20, page=1, filter_data=None):
         """Generic list with pagination"""
         start = per_page * (page - 1)
         end = per_page * page
-        entries = self.data[start:end]
+
+        # Filter data on a single key/value pair
+        data = self.data
+        if filter_data:
+            item = filter_data.popitem()
+            data = [i for i in self.data if item in i.items()]
+
+        entries = data[start:end]
 
         return FakeHttpResponse(
             data={
@@ -229,9 +236,27 @@ class FakeIncidentUpdates(FakeData):
             'incident_id': incident_id,
             'status': data['status'],
             'message': data['message'],
+            'user_id': 1,  # We assume user 1 always
         }
         self.add_entry(instance)
         return FakeHttpResponse(data={'data': instance})
+
+    def put(self, incident_id=None, update_id=None, params=None, data=None):
+        instance = self.get_by_id(update_id)
+        instance.update({
+            'status': data['status'],
+            'message': data['message'],
+        })
+        return FakeHttpResponse(data={'data': instance})
+
+    def get(self, incident_id=None, update_id=None, params=None, data=None):
+        if update_id is None:
+            return super()._list(
+                per_page=params.get('per_page') or 20,
+                page=params.get('page') or 1,
+            )
+        else:
+            return super()._get(incident_id)
 
 
 class FakePing(FakeData):
@@ -277,7 +302,7 @@ class Routes:
             (r'^components/groups', self.component_groups, ['get', 'post']),
             (r'^components/(?P<component_id>\w+)', self.components, ['get', 'post', 'put', 'delete']),
             (r'^components', self.components, ['get', 'post']),
-            (r'^incidents/(?P<incident_id>\w+)/updates/(?P<update_id>\w+)', self.incident_updates, ['get', 'post', 'delete']),
+            (r'^incidents/(?P<incident_id>\w+)/updates/(?P<update_id>\w+)', self.incident_updates, ['get', 'post', 'put', 'delete']),
             (r'^incidents/(?P<incident_id>\w+)/updates', self.incident_updates, ['get', 'post']),
             (r'^incidents/(?P<incident_id>\w+)', self.incidents, ['get', 'put', 'delete']),
             (r'^incidents', self.incidents, ['get', 'post']),
