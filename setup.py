@@ -15,7 +15,14 @@ setup(
     packages=['cachetclient', 'cachetclient.v1'],
     include_package_data=True,
     keywords=['cachet', 'client'],
-    python_requires='>=3.5',
+    python_requires='>=3.6',
+    classifiers=[
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
+        'License :: OSI Approved :: BSD License',
+    ],
     install_requires=[
         'requests==2.21.0'
     ],
