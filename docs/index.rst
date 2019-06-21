@@ -8,9 +8,9 @@ Welcome to cachet-client's documentation!
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: Reference:
 
-
+   reference/index
 
 Indices and tables
 ==================
