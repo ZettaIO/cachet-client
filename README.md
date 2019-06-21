@@ -108,7 +108,6 @@ Do not run this script againt a system in production.
 This is only for a test service.
 Cachet can easily be set up locally with docker: https://github.com/CachetHQ/Docker
 
-
 You need to set the following environment variables.
 
 ```bash
@@ -127,6 +126,13 @@ Succesful         : 8
 Failure           : 2
 Percentage passed : 80.0%
 =================================================
+```
+
+## Building Docs
+
+```bash
+pip install -r docs/requirements.txt
+python setup.py build_sphinx
 ```
 
 ## Contributing
