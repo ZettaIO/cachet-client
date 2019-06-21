@@ -18,7 +18,7 @@
 # -- Project information -----------------------------------------------------
 
 project = 'cachet-client'
-copyright = '2019, Einar Forselv'
+copyright = '2019, Zetta.IO Technology'
 author = 'Einar Forselv'
 
 # The full version, including alpha/beta/rc tags
