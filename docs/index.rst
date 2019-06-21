@@ -8,7 +8,6 @@ Welcome to cachet-client's documentation!
 
 .. toctree::
    :maxdepth: 2
-   :caption: Reference:
 
    reference/index
 

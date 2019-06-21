@@ -43,6 +43,7 @@ class Subscriber(Resource):
 
 
 class SubscriberManager(Manager):
+    """Manager for subscriber endpoints"""
     resource_class = Subscriber
     path = 'subscribers'
 
