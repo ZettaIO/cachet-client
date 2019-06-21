@@ -258,7 +258,6 @@ class FakeIncidentUpdates(FakeData):
 
     def put(self, incident_id=None, update_id=None, params=None, data=None):
         instance = self.get_by_id(update_id)
-        print("data", data)
         instance.update({
             'status': data['status'],
             'message': data['message'],
@@ -385,12 +384,3 @@ class FakeHttpResponse:
     def raise_for_status(self):
         if self.status_code > 300:
             raise HTTPError(self.status_code)
-
-
-if __name__ == '__main__':
-    client = FakeHttpClient('http://status.example.com', 's4cr337k33y')
-    client.post('subscribers', data={'email': 'user@example.com'})
-    subs = client.get('subscribers')
-    print("Subscribers:", subs)
-    client.delete('subscribers', subs[0]['id'])
-    print("Subscribers:", subs)

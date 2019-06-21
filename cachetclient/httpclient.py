@@ -1,6 +1,9 @@
+import logging
 from urllib.parse import urljoin
 
 import requests
+
+logger = logging.getLogger(__name__)
 
 
 class HttpClient:
@@ -49,9 +52,9 @@ class HttpClient:
             verify=self.verify_tls,
             timeout=self.timeout,
         )
-        print(method, response.url)
+        logger.debug('%s %s', method, response.url)
         if response.ok:
             return response
 
-        print(response.text)
+        logger.debug(response.text)
         response.raise_for_status()

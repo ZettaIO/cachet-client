@@ -76,11 +76,10 @@ class Manager:
 
             page += 1
 
-    def _search(self, path, params=None):
-        params = params or {}
-        result = self._http.get(path, params={'per_page': 1, **params})
-        json_data = result.json()
-        print(json_data)
+    # def _search(self, path, params=None):
+    #     params = params or {}
+    #     result = self._http.get(path, params={'per_page': 1, **params})
+    #     json_data = result.json()
 
     def _get(self, path, resource_id):
         result = self._http.get("{}/{}".format(path, resource_id))

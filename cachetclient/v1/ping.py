@@ -1,4 +1,7 @@
+import logging
 from cachetclient.base import Manager
+
+logger = logging.getLogger(__name__)
 
 
 class PingManager(Manager):
@@ -16,7 +19,7 @@ class PingManager(Manager):
             data = response.json()
             return data['data'] == 'Pong!'
         except Exception as ex:
-            print(ex)
+            logger.warning("Ping: %s", ex)
             return False
 
         return True
