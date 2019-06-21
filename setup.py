@@ -3,7 +3,7 @@ from setuptools import setup
 
 setup(
     name="cachet-client",
-    version="1.0.0",
+    version="0.9.0",
     description="A python 3 client for the Cachet API",
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
@@ -14,7 +14,7 @@ setup(
     maintainer_email="eforselv@gmail.com",
     packages=['cachetclient', 'cachetclient.v1'],
     include_package_data=True,
-    keywords=['cachet', 'client'],
+    keywords=['cachet', 'client', 'api'],
     python_requires='>=3.6',
     classifiers=[
         'Programming Language :: Python',
@@ -24,7 +24,7 @@ setup(
         'License :: OSI Approved :: BSD License',
     ],
     install_requires=[
-        'requests==2.21.0'
+        'requests>=2.21.0'
     ],
     entry_points={'console_scripts': [
         'cachet = cachetclient.cli:execute_from_command_line',
