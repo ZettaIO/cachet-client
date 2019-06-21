@@ -35,7 +35,7 @@ extensions = [
     # Autodoc
     'sphinx.ext.autodoc',
     # google style docstrings
-    'sphinxcontrib.napoleon',    
+    'sphinx.ext.napoleon',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
