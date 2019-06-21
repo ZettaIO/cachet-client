@@ -5,14 +5,34 @@ logger = logging.getLogger(__name__)
 
 
 class PingManager(Manager):
+    """
+    Manager for ping endpoints.
+    """
     path = 'ping'
 
     def __call__(self) -> bool:
-        """Get version info"""
+        """
+        Shotcut for the :py:data:`get` method.
+
+        Example::
+
+            >> client.ping()
+            True
+        """
         return self.get()
 
     def get(self) -> bool:
-        """Get version info"""
+        """
+        Check if the cachet api is responding.
+
+        Example::
+
+            >> client.ping.get()
+            True
+
+        Returns:
+            bool: ``True`` if a successful response. Otherwise ``False``.
+        """
         # FIXME: Test more explicit exceptions
         try:
             response = self._http.get(self.path)
