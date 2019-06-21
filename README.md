@@ -131,6 +131,6 @@ Percentage passed : 80.0%
 
 ## Contributing
 
-Do not hesitete opening issues or submit completed
+Do not hesitate opening issues or submit completed
 or partial pull requests. Contributors of all
 experience levels are welcome.
