@@ -5,9 +5,7 @@ logger = logging.getLogger(__name__)
 
 
 class PingManager(Manager):
-    """
-    Manager for ping endpoints.
-    """
+    """Manager for ping endpoints"""
     path = 'ping'
 
     def __call__(self) -> bool:
