@@ -41,4 +41,3 @@ Manager
 .. automethod:: ComponentManager.get
 .. automethod:: ComponentManager.count
 .. automethod:: ComponentManager.delete
-
