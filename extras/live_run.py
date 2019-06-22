@@ -66,7 +66,7 @@ def simple_test(halt_on_exception=False):
                 print()
             except AssertionError as ex:
                 _, _, tb = sys.exc_info()
-                traceback.print_tb(tb) # Fixed format
+                traceback.print_tb(tb)  # Fixed format
                 tb_info = traceback.extract_tb(tb)
                 filename, line, function, text = tb_info[-1]
                 print("### EXCEPTION ###")
