@@ -8,7 +8,7 @@ A python 3.6+ API client for then open source status page system
 
 * [cachet-client on github](https://github.com/ZettaIO/cachet-client)
 * [cachet-client on PyPI](https://pypi.org/project/cachet-client/)
-* Documentation (WIP)
+* [cachet-client documentation](https://cachet-client.readthedocs.io/)
 
 The goal of this package is to create a user friendly interface
 to the Cachet API.
