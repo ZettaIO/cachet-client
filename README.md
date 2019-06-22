@@ -1,5 +1,5 @@
 [![pypi](https://badge.fury.io/py/cachet-client.svg)](https://pypi.python.org/pypi/cachet-client)
-[![travis](https://api.travis-ci.org/ZettaIO/cachet-client.svg?branch=master)](https://travis-ci.org/ZettaIO/cachet-client)
+[![travis](https://api.travis-ci.org/ZettaIO/cachet-client.svg?branch=master)](https://travis-ci.org/ZettaIO/cachet-client) [![Documentation Status](https://readthedocs.org/projects/cachet-client/badge/?version=latest&nop)](https://cachet-client.readthedocs.io/en/latest/?badge=latest)
 
 # cachet-client
 
