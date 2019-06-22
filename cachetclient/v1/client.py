@@ -1,4 +1,4 @@
-from cachetclient.httpclient import HttpClient  # noqa
+from cachetclient.httpclient import HttpClient
 from cachetclient.v1.component_groups import CompontentGroupManager
 from cachetclient.v1.components import ComponentManager
 from cachetclient.v1.incidents import IncidentManager
@@ -12,7 +12,7 @@ from cachetclient.v1.schedules import ScheduleManager
 
 class Client:
 
-    def __init__(self, http_client):
+    def __init__(self, http_client: HttpClient):
         """
         Args:
             http_client: The http client class to use
