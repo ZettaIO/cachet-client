@@ -5,24 +5,22 @@ class Version(Resource):
 
     @property
     def value(self) -> str:
-        """Version string"""
+        """str: Version string from Cachet service"""
         return self._data['data']
 
     @property
     def on_latest(self) -> bool:
-        """
-        Are we on latest version?
+        """bool: Are we on latest version?
         Requires beacon enabled on server.
         """
         return self._data['meta']['on_latest']
 
     @property
     def latest(self) -> dict:
-        """
-        Obtains info dict about latest version.
+        """dict: Obtains info dict about latest version.
         Requires beacon enabled on server.
 
-        Response::
+        Dict format is::
 
             {
                 "tag_name": "v2.3.10",
@@ -39,10 +37,27 @@ class VersionManager(Manager):
     path = 'version'
 
     def __call__(self) -> Version:
-        """Get version info"""
+        """Shortcut to :py:data:`get`
+        
+        Example::
+
+            >> version = client.version()
+            >> version.value
+            v2.3.10
+        """
         return self.get()
 
     def get(self) -> Version:
-        """Get version info"""
+        """Get version info from the server
+
+        Example::
+
+            >> version = client.version.get()
+            >> version.value
+            v2.3.10
+
+        Returns:
+            :py:data:`Version` instance
+        """
         response = self._http.get(self.path)
         return Version(self, response.json())
