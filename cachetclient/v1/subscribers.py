@@ -51,12 +51,12 @@ class SubscriberManager(Manager):
     resource_class = Subscriber
     path = 'subscribers'
 
-    def create(self, email: str, components: List[int] = None, verify: bool = True) -> Subscriber:
+    def create(self, *, email: str, components: List[int] = None, verify: bool = True) -> Subscriber:
         """Create a subscriber.
         If a subscriber already exists the existing one will be returned.
         Note that this endoint cannot be used to edit the user.
 
-        Args:
+        Keyword Args:
             email (str): Email address to subscribe
             components (List[int]): The components to subscribe to. If omitted all components are subscribed.
             verify (bool): Verification status. If ``False`` a verification email is sent to the user
@@ -76,7 +76,7 @@ class SubscriberManager(Manager):
     def list(self, page: int = 1, per_page: int = 20) -> Generator[Subscriber, None, None]:
         """List all subscribers
 
-        Args:
+        Keyword Args:
             page (int): The page to start listing
             per_page: Number of entires per page
 
@@ -85,8 +85,11 @@ class SubscriberManager(Manager):
         """
         yield from self._list_paginated(self.path, page=page, per_page=per_page)
 
-    def delete(self, subscriber_id) -> None:
+    def delete(self, subscriber_id: int) -> None:
         """Delete a specific subscriber id
+
+        Args:
+            subscriber_id (int): Subscriber id to delete
 
         Raises:
             :py:data:`requests.exceptions.HttpError`: if subscriber do not exist
