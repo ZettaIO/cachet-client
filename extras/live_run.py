@@ -8,6 +8,8 @@ Set the following enviroment variables before running the script:
 - CACHET_API_TOKEN (eg. Wohc7eeGhaewae7zie1E)
 """
 import os
+import sys
+import traceback
 from datetime import datetime
 from pprint import pprint
 
@@ -62,14 +64,24 @@ def simple_test(halt_on_exception=False):
                 func(*args, **kwargs)
                 Stats.incr_success()
                 print()
+            except AssertionError as ex:
+                _, _, tb = sys.exc_info()
+                traceback.print_tb(tb) # Fixed format
+                tb_info = traceback.extract_tb(tb)
+                filename, line, function, text = tb_info[-1]
+                print("### EXCEPTION ###")
+                print('An error occurred on line {} in statement {}'.format(line, text))
+                print(ex)
+                print()
             except Exception as ex:
+                print("### EXCEPTION ###")
+                print(ex)
+                print()
+            finally:
                 Stats.incr_fail()
                 if halt_on_exception:
                     raise
-                else:
-                    print("### EXCEPTION ###")
-                    print(ex)
-                    print()
+
         return wrapper
     return decorator_func
 
@@ -92,8 +104,8 @@ def main():
     test_metric_points()
 
     # Version 2.4.x features
-    test_incident_updates()
-    test_schedules()
+    # test_incident_updates()
+    # test_schedules()
 
     print("=" * 80)
     print("Numer of tests    :", Stats.NUM_TESTS)
@@ -124,17 +136,17 @@ def test_version():
 @simple_test()
 def test_components():
     comp = client().components.create(
-        "Test Component",
-        enums.COMPONENT_STATUS_OPERATIONAL,
+        name="Test Component",
+        status=enums.COMPONENT_STATUS_OPERATIONAL,
         description="This is a test",
         tags="test, thing",
         order=1,
         group_id=1,
     )
     pprint(comp.attrs, indent=2)
-    assert comp.status == enums.COMPONENT_STATUS_OPERATIONAL
-    assert isinstance(comp.created_at, datetime)
-    assert isinstance(comp.updated_at, datetime)
+    assert comp.status == enums.COMPONENT_STATUS_OPERATIONAL, "Incorrect status"
+    assert isinstance(comp.created_at, datetime), "created_at not datetime"
+    assert isinstance(comp.updated_at, datetime), "updated_at not datetime"
 
     # Create component using properties
     comp.name = 'Test Thing'
@@ -147,14 +159,14 @@ def test_components():
     comp = comp.update()
 
     # Test if values are correctly updates
-    assert comp.name == 'Test Thing'
-    assert comp.description == 'This is a test'
-    assert comp.status == enums.COMPONENT_STATUS_MAJOR_OUTAGE
-    assert comp.link == 'http://status.example.com'
-    assert comp.order == 10
-    assert comp.group_id == 1000
-    assert comp.enabled is False
-    assert comp.tags == {'moo', 'boo'}
+    assert comp.name == 'Test Thing', "Component name differs"
+    assert comp.description == 'This is a test', "Component description differs"
+    assert comp.status == enums.COMPONENT_STATUS_MAJOR_OUTAGE, "Component status differs"
+    assert comp.link == 'http://status.example.com', "Component link differs"
+    assert comp.order == 10, "Component oder differs"
+    assert comp.group_id == 1000, "Group id differs"
+    assert comp.enabled is False, "Component enable status differs"
+    assert comp.tags == {'moo', 'boo'}, "Tags differs"
 
     # Call update directly on the manager
     comp = client().components.update(
@@ -169,7 +181,7 @@ def test_components():
     assert comp.link == 'http://status.example.com'
     assert comp.order == 10
     assert comp.group_id == 1000
-    assert comp.enabled is False
+    assert comp.enabled is True
     assert comp.tags == {'bolle', 'kake'}
     comp.delete()
 
@@ -204,7 +216,7 @@ def test_component_groups():
 
 @simple_test()
 def test_subscribers():
-    new_sub = client().subscribers.create('einar2@zetta.io')
+    new_sub = client().subscribers.create(email='user@example.test')
 
     assert isinstance(new_sub.created_at, datetime)
     assert isinstance(new_sub.updated_at, datetime)
