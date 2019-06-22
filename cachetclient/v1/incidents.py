@@ -107,9 +107,9 @@ class IncidentManager(Manager):
 
     def create(
             self,
-            name: str,
-            message: str,
-            status: int,
+            name: str = None,
+            message: str = None,
+            status: int = None,
             visible: bool = True,
             component_id: int = None,
             component_status: int = None,

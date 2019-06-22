@@ -44,29 +44,42 @@ client = cachetclient.Client(
     endpoint='https://status.test/api/v1',
     api_token='secrettoken',
 )
+```
 
-# Check if api is responding
+Check if api is responding
+
+```python
 if client.ping():
     print("Cachet is up and running!")
+```
 
-# Create and delete a subscriber
+Create and delete a subscriber
+
+```python
 sub = client.subscribers.create('user@example.test', verify=True)
 sub.delete()
+```
 
-# List all subscribers paginated (generator)
-for sub in client.subscribers.list():
+List all subscribers paginated (generator). Each new page is fetched
+from the server under the hood.
+
+```python
+for sub in client.subscribers.list(page=1, per_page=100):
     print(sub.id, sub.email)
+```
 
-# Create an issue
+Create an issue
+
+```python
 issue = client.incidents.create(
-    "Something blew up!",
-    "We are looking into it",
-    enums.INCIDENT_INVESTIGATING,
+    name="Something blew up!",
+    message="We are looking into it",
+    status=enums.INCIDENT_INVESTIGATING,
     component_status=enums.COMPONENT_STATUS_MAJOR_OUTAGE,
 )
-
-# .. and most other features supported by the Cachet API
 ```
+
+.. and most other features supported by the Cachet API
 
 
 ## Local Development
