@@ -15,16 +15,16 @@ class Component(Resource):
 
     @property
     def id(self) -> int:
-        """(int) The unique ID of the component"""
+        """int: The unique ID of the component"""
         return self._data['id']
 
     @property
     def name(self) -> str:
-        """(str) Name of the component"""
+        """str: Name of the component"""
         return self._data['name']
 
     @name.setter
-    def name(self, value):
+    def name(self, value: str):
         self._data['name'] = value
 
     @property
@@ -32,62 +32,62 @@ class Component(Resource):
         return self._data['description']
 
     @description.setter
-    def description(self, value):
+    def description(self, value: str):
         self._data['description'] = value
 
     @property
     def link(self) -> str:
-        """(str) http link to the component"""
+        """str: http link to the component"""
         return self._data['link']
 
     @link.setter
-    def link(self, value):
+    def link(self, value: str):
         self._data['link'] = value
 
     @property
     def status(self) -> int:
-        """(int) Status id of the component (see enums)"""
+        """int: Status id of the component (see enums)"""
         return self._data['status']
 
     @status.setter
-    def status(self, value):
+    def status(self, value: int):
         self._data['status'] = value
 
     @property
     def status_name(self) -> str:
-        """(str) Human readable status representation"""
+        """str: Human readable status representation"""
         return self._data['status_name']
 
     @property
     def order(self) -> int:
-        """(int) Order of the component in a group"""
+        """int: Order of the component in a group"""
         return self._data['order']
 
     @order.setter
-    def order(self, value):
+    def order(self, value: int):
         self._data['order'] = value
 
     @property
-    def group_id(self):
-        """(int) The component group id"""
+    def group_id(self) -> int:
+        """int: The component group id"""
         return self._data['group_id']
 
     @group_id.setter
-    def group_id(self, value):
+    def group_id(self, value: int):
         self._data['group_id'] = value
 
     @property
-    def enabled(self):
-        """(bool) If the component is enabled"""
+    def enabled(self) -> bool:
+        """bool: If the component is enabled"""
         return self._data['enabled']
 
     @enabled.setter
-    def enabled(self, value):
+    def enabled(self, value: bool):
         self._data['enabled'] = value
 
     @property
     def tags(self) -> set:
-        """(set) Tags for the component"""
+        """set: Tags for the component"""
         return set(self._data['tags'].keys()) if self._data['tags'] else set()
 
     @tags.setter
@@ -95,8 +95,7 @@ class Component(Resource):
         self._data['tags'] = {val: val for val in value}
 
     def add_tag(self, name: str) -> None:
-        """
-        Add a new tag.
+        """Add a new tag.
 
         Args:
             name (str): Name of the tag
@@ -104,20 +103,18 @@ class Component(Resource):
         self._data['tags'][name] = name
 
     def del_tag(self, name: str) -> None:
-        """
-        Delete a tag.
+        """Delete a tag.
 
         Args:
             name (str): Name of tag to remove
 
         Raises:
-            KeyError if tag does not exist
+            KeyError: if tag does not exist
         """
         del self._data['tags'][name]
 
     def has_tag(self, name: str) -> bool:
-        """
-        Check if a tag exists.
+        """Check if a tag exists.
 
         Args:
             name (str): Tag name
@@ -129,10 +126,12 @@ class Component(Resource):
 
     @property
     def created_at(self) -> datetime:
+        """datetime: When the component was created"""
         return utils.to_datetime(self.get('created_at'))
 
     @property
     def updated_at(self) -> datetime:
+        """datetime: Last time the component was updated"""
         return utils.to_datetime(self.get('updated_at'))
 
 
@@ -150,8 +149,7 @@ class ComponentManager(Manager):
             group_id: int = None,
             enabled: bool = True,
             tags: Set[str] = None):
-        """
-        Create a component.
+        """Create a component.
 
         Args:
             name (str): Name of the component
@@ -198,9 +196,8 @@ class ComponentManager(Manager):
             group_id: int = None,
             enabled: bool = None,
             tags: Set[str] = None,
-            **kwargs):
-        """
-        Update a component by id.
+            **kwargs) -> Component:
+        """Update a component by id.
 
         Args:
             component_id (int): The component to update
@@ -210,6 +207,9 @@ class ComponentManager(Manager):
             name (str): New name
             description (str): New description
             tags (list): List of strings
+
+        Returns:
+            Updated Component from server
         """
         return self._update(
             self.path,
@@ -226,50 +226,46 @@ class ComponentManager(Manager):
         )
 
     def list(self, page: int = 1, per_page: int = 20) -> Generator[Component, None, None]:
-        """
-        List all components
+        """List all components
 
         Keyword Args:
             page (int): The page to start listing
-            per_page: Number of entires per page
+            per_page (int): Number of entires per page
 
         Returns:
-            Generator with Component instances
+            Generator of Component instances
         """
         yield from self._list_paginated(self.path, page=page, per_page=per_page)
 
     def get(self, component_id: int) -> Component:
-        """
-        Get a component by id
+        """Get a component by id
 
-        Params:
+        Args:
             component_id (int): Id of the component
 
         Returns:
             Component instance
 
         Raises:
-            HttpError if not found
+            HttpError: if not found
         """
         return self._get(self.path, component_id)
 
     def delete(self, component_id: int) -> None:
-        """
-        Delete a component
+        """Delete a component
 
-        Params:
+        Args:
             component_id (int): Id of the component
 
         Raises:
-            HTTPError if compontent do not exist
+            HTTPError: if compontent do not exist
         """
         self._delete(self.path, component_id)
 
     def count(self) -> int:
-        """
-        Count the number of components
+        """Count the number of components
 
         Returns:
-            (int) Total number of components
+            int: Total number of components
         """
         return self._count(self.path)
