@@ -20,7 +20,7 @@ class Component(Resource):
 
     @property
     def name(self) -> str:
-        """str: Name of the component"""
+        """str: Get or set name of the component"""
         return self._data['name']
 
     @name.setter
@@ -29,7 +29,8 @@ class Component(Resource):
 
     @property
     def description(self) -> str:
-        return self._data['description']
+        """str: Get or set component description"""
+        return self.get('description')
 
     @description.setter
     def description(self, value: str):
@@ -37,7 +38,7 @@ class Component(Resource):
 
     @property
     def link(self) -> str:
-        """str: http link to the component"""
+        """str: Get or set http link to the component"""
         return self._data['link']
 
     @link.setter
@@ -46,7 +47,7 @@ class Component(Resource):
 
     @property
     def status(self) -> int:
-        """int: Status id of the component (see enums)"""
+        """int: Get or set dtatus id of the component (see :py:data:`enums`)"""
         return self._data['status']
 
     @status.setter
@@ -60,7 +61,7 @@ class Component(Resource):
 
     @property
     def order(self) -> int:
-        """int: Order of the component in a group"""
+        """int: Get or set order of the component in a group"""
         return self._data['order']
 
     @order.setter
@@ -69,7 +70,7 @@ class Component(Resource):
 
     @property
     def group_id(self) -> int:
-        """int: The component group id"""
+        """int: Get or set the component group id"""
         return self._data['group_id']
 
     @group_id.setter
@@ -78,7 +79,7 @@ class Component(Resource):
 
     @property
     def enabled(self) -> bool:
-        """bool: If the component is enabled"""
+        """bool: Get or set enabled state"""
         return self._data['enabled']
 
     @enabled.setter
@@ -87,12 +88,25 @@ class Component(Resource):
 
     @property
     def tags(self) -> set:
-        """set: Tags for the component"""
+        """set: Get or set tags for the component
+
+        Also see :py:data:`add_tag`, :py:data:`del_tag` and :py:data:`has_tag` methods.
+        """
         return set(self._data['tags'].keys()) if self._data['tags'] else set()
 
     @tags.setter
     def tags(self, value: set):
         self._data['tags'] = {val: val for val in value}
+
+    @property
+    def created_at(self) -> datetime:
+        """datetime: When the component was created"""
+        return utils.to_datetime(self.get('created_at'))
+
+    @property
+    def updated_at(self) -> datetime:
+        """datetime: Last time the component was updated"""
+        return utils.to_datetime(self.get('updated_at'))
 
     def add_tag(self, name: str) -> None:
         """Add a new tag.
@@ -124,16 +138,6 @@ class Component(Resource):
         """
         return name in self.get('tags')
 
-    @property
-    def created_at(self) -> datetime:
-        """datetime: When the component was created"""
-        return utils.to_datetime(self.get('created_at'))
-
-    @property
-    def updated_at(self) -> datetime:
-        """datetime: Last time the component was updated"""
-        return utils.to_datetime(self.get('updated_at'))
-
 
 class ComponentManager(Manager):
     resource_class = Component
@@ -141,8 +145,9 @@ class ComponentManager(Manager):
 
     def create(
             self,
-            name,
-            status,
+            *,
+            name: str,
+            status: int,
             description: str = None,
             link: str = None,
             order: int = None,
@@ -151,11 +156,9 @@ class ComponentManager(Manager):
             tags: Set[str] = None):
         """Create a component.
 
-        Args:
+        Keyword Args:
             name (str): Name of the component
             status (int): Status if of the component (see enums module)
-
-        Keyword Args:
             description (str): Description of the component (required)
             link (str): Link to the component
             order (int): Order of the component in its group
@@ -189,8 +192,10 @@ class ComponentManager(Manager):
     def update(
             self,
             component_id: int,
-            status: int = None,
+            *,
+            status: int,
             name: str = None,
+            description: str = None,
             link: str = None,
             order: int = None,
             group_id: int = None,
@@ -201,11 +206,15 @@ class ComponentManager(Manager):
 
         Args:
             component_id (int): The component to update
-            status (int): Status of the component (see enums)
 
         Keyword Args:
+            status (int): Status of the component (see enums)
             name (str): New name
             description (str): New description
+            link (str): Link to component
+            order (int): Order in component group
+            group_id (int): Component group id
+            enabled (bool): Enable status of component
             tags (list): List of strings
 
         Returns:
@@ -214,15 +223,16 @@ class ComponentManager(Manager):
         return self._update(
             self.path,
             component_id,
-            {
-                'status': status,
-                'name': name,
-                'link': link,
-                'order': order,
-                'group_id': group_id,
-                'enabled': enabled,
-                'tags': ','.join(tags) if tags else None,
-            },
+            self._build_data_dict(
+                status=status,
+                name=name,
+                description=description,
+                link=link,
+                order=order,
+                group_id=group_id,
+                enabled=enabled,
+                tags=','.join(tags) if tags else None,
+            ),
         )
 
     def list(self, page: int = 1, per_page: int = 20) -> Generator[Component, None, None]:
