@@ -38,7 +38,7 @@ class VersionManager(Manager):
 
     def __call__(self) -> Version:
         """Shortcut to :py:data:`get`
-        
+
         Example::
 
             >> version = client.version()
