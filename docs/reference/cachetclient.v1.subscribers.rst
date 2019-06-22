@@ -10,11 +10,14 @@ Resource
 Methods
 *******
 
+.. automethod:: Subscriber.update
+.. automethod:: Subscriber.get
 .. automethod:: Subscriber.delete
 
 Attributes
 **********
 
+.. autoattribute:: Subscriber.attrs
 .. autoattribute:: Subscriber.id
 .. autoattribute:: Subscriber.email
 .. autoattribute:: Subscriber.verify_code
@@ -25,3 +28,8 @@ Attributes
 
 Manager
 -------
+
+.. automethod:: SubscriberManager.create
+.. automethod:: SubscriberManager.list
+.. automethod:: SubscriberManager.delete
+.. automethod:: SubscriberManager.count
