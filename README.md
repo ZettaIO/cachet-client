@@ -118,7 +118,7 @@ CACHET_API_TOKEN
 Running tests:
 
 ```bash
-python extras/live_run.sh
+python extras/live_run.py
 ...
 =================================================
 Numer of tests    : 10
