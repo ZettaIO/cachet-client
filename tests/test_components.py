@@ -22,8 +22,8 @@ class ComponentsTests(CachetTestcase):
             description="General API server"):
 
         return client.components.create(
-            name,
-            status,
+            name=name,
+            status=status,
             description=description,
         )
 
