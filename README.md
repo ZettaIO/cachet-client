@@ -74,7 +74,7 @@ issue = client.incidents.create(
 Local setup:
 
 ```bash
-python3.7 -m virtualenv .venv
+python -m virtualenv .venv
 . .venv/bin/activate
 pip install -e .
 ```
@@ -118,7 +118,7 @@ CACHET_API_TOKEN
 Running tests:
 
 ```bash
-python3.7 extras/live_run.sh
+python extras/live_run.sh
 ...
 =================================================
 Numer of tests    : 10
