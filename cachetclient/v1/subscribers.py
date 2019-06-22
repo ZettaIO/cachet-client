@@ -7,9 +7,6 @@ from cachetclient import utils
 
 class Subscriber(Resource):
 
-    def __init__(self, manager, data):
-        super().__init__(manager, data)
-
     @property
     def id(self) -> int:
         """int: Resource ID"""
