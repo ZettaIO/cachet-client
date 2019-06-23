@@ -15,9 +15,9 @@ class IncidentTests(CachetTestcase):
         self.client = self.create_client()
 
     def test_get(self):
-        first = self.client.incidents.create("Issue 1", "Descr", enums.INCIDENT_INVESTIGATING)
-        self.client.incidents.create("Issue 2", "Descr", enums.INCIDENT_INVESTIGATING)
-        self.client.incidents.create("Issue 3", "Descr", enums.INCIDENT_INVESTIGATING)
+        first = self.client.incidents.create(name="Issue 1", message="Descr", status=enums.INCIDENT_INVESTIGATING)
+        self.client.incidents.create(name="Issue 2",  message="Descr", status=enums.INCIDENT_INVESTIGATING)
+        self.client.incidents.create(name="Issue 3",  message="Descr", status=enums.INCIDENT_INVESTIGATING)
 
         self.assertEqual(self.client.incidents.count(), 3)
 
@@ -31,9 +31,9 @@ class IncidentTests(CachetTestcase):
 
     def test_create(self):
         issue = self.client.incidents.create(
-            "Something blew up!",
-            "We are looking into it",
-            enums.INCIDENT_INVESTIGATING,
+            name="Something blew up!",
+            message="We are looking into it",
+            status=enums.INCIDENT_INVESTIGATING,
         )
 
         self.assertEqual(issue.id, 1)

@@ -15,9 +15,9 @@ class IncidentUpdatesTests(CachetTestcase):
 
     def test_create(self):
         incident = self.client.incidents.create(
-            "Boom!",
-            "We are investigating",
-            enums.INCIDENT_INVESTIGATING,
+            name="Boom!",
+            message="We are investigating",
+            status=enums.INCIDENT_INVESTIGATING,
         )
 
         # Add 3 updates
