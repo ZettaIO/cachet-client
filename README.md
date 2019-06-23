@@ -56,7 +56,7 @@ if client.ping():
 Create and delete a subscriber
 
 ```python
-sub = client.subscribers.create('user@example.test', verify=True)
+sub = client.subscribers.create(email='user@example.test', verify=True)
 sub.delete()
 ```
 
@@ -68,13 +68,15 @@ for sub in client.subscribers.list(page=1, per_page=100):
     print(sub.id, sub.email)
 ```
 
-Create an issue
+Create a component issue
 
 ```python
 issue = client.incidents.create(
     name="Something blew up!",
     message="We are looking into it",
     status=enums.INCIDENT_INVESTIGATING,
+    # Optional for component issues
+    component_id=mycomponent.id,
     component_status=enums.COMPONENT_STATUS_MAJOR_OUTAGE,
 )
 ```
