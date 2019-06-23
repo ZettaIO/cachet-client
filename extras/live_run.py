@@ -242,10 +242,9 @@ def test_subscribers():
 @simple_test()
 def test_incidents():
     issue = client().incidents.create(
-        "Something blew up!",
-        "We are looking into it",
-        enums.INCIDENT_INVESTIGATING,
-        visible=True,
+        name="Something blew up!",
+        message="We are looking into it",
+        status=enums.INCIDENT_INVESTIGATING,
         component_id=1,
         component_status=enums.COMPONENT_STATUS_MAJOR_OUTAGE,
     )
