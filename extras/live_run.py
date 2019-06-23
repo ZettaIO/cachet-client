@@ -65,6 +65,7 @@ def simple_test(halt_on_exception=False):
                 Stats.incr_success()
                 print()
             except AssertionError as ex:
+                Stats.incr_fail()
                 _, _, tb = sys.exc_info()
                 traceback.print_tb(tb)  # Fixed format
                 tb_info = traceback.extract_tb(tb)
@@ -74,11 +75,11 @@ def simple_test(halt_on_exception=False):
                 print(ex)
                 print()
             except Exception as ex:
+                Stats.incr_fail()
                 print("### EXCEPTION ###")
                 print(ex)
                 print()
             finally:
-                Stats.incr_fail()
                 if halt_on_exception:
                     raise
 
@@ -188,7 +189,7 @@ def test_components():
 
 @simple_test()
 def test_component_groups():
-    grp = client().component_groups.create("Test Group", order=1)
+    grp = client().component_groups.create(name="Test Group", order=1)
     assert grp.id > 0
     assert grp.name == "Test Group"
     assert grp.order == 1

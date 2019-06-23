@@ -18,7 +18,7 @@ class ComponentGroupTests(CachetTestcase):
     def test_create(self):
         """Create and obtain groups"""
         client = self.create_client()
-        client.component_groups.create("Global Services")
+        client.component_groups.create(name="Global Services")
         self.assertEqual(client.component_groups.count(), 1)
 
         # Check attributes
@@ -61,7 +61,7 @@ class ComponentGroupTests(CachetTestcase):
     def test_delete(self):
         """Create and delete component"""
         client = self.create_client()
-        client.component_groups.create("Global Services")
+        client.component_groups.create(name="Global Services")
         self.assertEqual(client.component_groups.count(), 1)
         group = next(client.component_groups.list())
         group.delete()
@@ -76,7 +76,7 @@ class ComponentGroupTests(CachetTestcase):
     def test_self_update(self):
         """Test self updating resource"""
         client = self.create_client()
-        client.component_groups.create("Global Services")
+        client.component_groups.create(name="Global Services")
         group = next(client.component_groups.list())
         group.name = "Global Stuff"
         group.order = 1
