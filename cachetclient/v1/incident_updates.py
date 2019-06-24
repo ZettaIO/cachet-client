@@ -9,14 +9,17 @@ class IndicentUpdate(Resource):
 
     @property
     def id(self) -> int:
+        """int: Resource id"""
         return self.get('id')
 
     @property
     def incident_id(self) -> int:
+        """int: The incident id this update belongs to"""
         return self.get('incident_id')
 
     @property
     def status(self) -> int:
+        """int: Get or set incident status. See :py:data:`enums`."""
         return self.get('status')
 
     @status.setter
@@ -25,6 +28,7 @@ class IndicentUpdate(Resource):
 
     @property
     def messages(self) -> str:
+        """str: Get or set message"""
         return self.get('message')
 
     @messages.setter
@@ -33,23 +37,27 @@ class IndicentUpdate(Resource):
 
     @property
     def user_id(self) -> int:
+        """int: The user id creating the update"""
         return self.get('user_id')
 
     @property
     def created_at(self) -> datetime:
+        """datetime: when the resource was created"""
         return utils.to_datetime(self.get('created_at'))
 
     @property
     def updated_at(self) -> datetime:
+        """datetime: When the resource as last updated"""
         return utils.to_datetime(self.get('updated_at'))
 
     @property
     def human_status(self) -> str:
+        """str: Human readable status"""
         return self.get('human_status')
 
     @property
     def permlink(self) -> str:
-        """Permanent url"""
+        """str: Permanent url to the incident update"""
         return self.get('permalink')
 
     def update(self) -> 'IndicentUpdate':
