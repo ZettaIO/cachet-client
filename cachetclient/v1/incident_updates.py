@@ -70,17 +70,17 @@ class IncidentUpdatesManager(Manager):
     resource_class = IndicentUpdate
     path = 'incidents/{}/updates'
 
-    def create(self, incident_id: int, status: int, message: str) -> IndicentUpdate:
+    def create(self, *, incident_id: int, status: int, message: str) -> IndicentUpdate:
         """
         Create an incident update
 
-        Args:
+        Keyword Args:
             incident_id (int): The incident to update
             status (int): New status id
             message (str): Update message
 
         Returns:
-            IndicentUpdate instance
+            :py:data:`IndicentUpdate` instance
         """
         return self._create(
             self.path.format(incident_id),
@@ -92,8 +92,9 @@ class IncidentUpdatesManager(Manager):
 
     def update(
             self,
-            incident_id: int = None,
-            id: int = None,
+            *,
+            id: int,
+            incident_id: int,
             status: int = None,
             message: str = None,
             **kwargs) -> IndicentUpdate:
@@ -109,7 +110,7 @@ class IncidentUpdatesManager(Manager):
             message (str): New message
 
         Returns:
-            The updated IncidentUpdate instance
+            The updated :py:data:`IncidentUpdate` instance
         """
         # TODO: Documentation claims data is set as query params
         return self._update(
@@ -129,7 +130,7 @@ class IncidentUpdatesManager(Manager):
             incident_id (int): The incident
 
         Returns:
-            (int) Number of incident updates for the incident
+            int: Number of incident updates for the incident
         """
         return self._count(self.path.format(incident_id))
 
@@ -145,7 +146,7 @@ class IncidentUpdatesManager(Manager):
             per_page (int): Entires per page
 
         Return:
-            Generator of incident updates
+            Generator of :py:data:`IncidentUpdate`s
         """
         return self._list_paginated(
             self.path.format(incident_id),
@@ -162,7 +163,7 @@ class IncidentUpdatesManager(Manager):
             update_id (int): The indicent update id to obtain
 
         Returns:
-            IncidentUpdate instance
+            :py:data:`IncidentUpdate` instance
         """
         return self._get(self.path.format(incident_id), update_id)
 
