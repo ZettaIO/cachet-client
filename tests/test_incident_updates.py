@@ -22,9 +22,9 @@ class IncidentUpdatesTests(CachetTestcase):
 
         # Add 3 updates
         first = self.client.incident_updates.create(
-            incident.id,
-            enums.INCIDENT_IDENTIFIED,
-            "We have located the issue",
+            incident_id=incident.id,
+            status=enums.INCIDENT_IDENTIFIED,
+            message="We have located the issue",
         )
         # Test all properties
         self.assertEqual(first.id, 1)
@@ -38,14 +38,14 @@ class IncidentUpdatesTests(CachetTestcase):
         self.assertIsInstance(first.permlink, str)
 
         self.client.incident_updates.create(
-            incident.id,
-            enums.INCIDENT_WATCHING,
-            "We have located the issue"
+            incident_id=incident.id,
+            status=enums.INCIDENT_WATCHING,
+            message="We have located the issue",
         )
         self.client.incident_updates.create(
-            incident.id,
-            enums.INCIDENT_FIXED,
-            "We have located the issue"
+            incident_id=incident.id,
+            status=enums.INCIDENT_FIXED,
+            message="We have located the issue",
         )
 
         self.assertEqual(self.client.incident_updates.count(incident.id), 3)
