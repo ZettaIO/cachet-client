@@ -12,3 +12,4 @@ Reference
    cachetclient.v1.components
    cachetclient.v1.component_groups
    cachetclient.v1.incidents
+   cachetclient.v1.incident_updates
