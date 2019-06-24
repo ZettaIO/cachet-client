@@ -13,3 +13,6 @@ Reference
    cachetclient.v1.component_groups
    cachetclient.v1.incidents
    cachetclient.v1.incident_updates
+   cachetclient.v1.metrics
+   cachetclient.v1.metric_points
+   cachetclient.v1.schedules
