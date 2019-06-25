@@ -26,7 +26,7 @@ to the Cachet API.
   making more complex work a lot faster (connection reuse)
 * A very extensive set of tests/unit tests.
 * Easy to extend and test
-* Hopefully good documentation (soon!?)
+* Documentation
 
 ## Install
 
