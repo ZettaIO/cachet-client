@@ -14,11 +14,12 @@ def Client(
     compatibility in the future.
 
     Args:
-        endpoint (str): The api endpoint. for example 'https://status.examples.test/api/v1.
-                        The endpoint can also be specificed using the CACHET_ENDPOINT env variable.
-        api_token (str): The api token. Can also be specified using CACHET_API_TOKEN env variable.
+        endpoint (str): The api endpoint. for example 'https://status.examples.test/api/v1'.
+                        The endpoint can also be specificed using the ``CACHET_ENDPOINT`` env variable.
+        api_token (str): The api token. Can also be specified using ``CACHET_API_TOKEN`` env variable.
         version (str): The api version. If not specified the version will be derived from the
                        endpoint url. The value "1" will create a v1 cachet client.
+        verify_tls (bool): Enable/disable tls verify. When using self signed certificates this has to be ``False``.
     """
     if not api_token:
         api_token = os.environ.get('CACHET_API_TOKEN')
