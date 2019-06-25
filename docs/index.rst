@@ -6,9 +6,13 @@
 Welcome to cachet-client's documentation!
 =========================================
 
+cachet-client is a python 3.6+ client library for the open source status
+page system  `Cachet <https://github.com/CachetHQ/Cachet>`_ .
+
 .. toctree::
    :maxdepth: 2
 
+   guide/index
    reference/index
 
 Indices and tables
@@ -17,3 +21,4 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
