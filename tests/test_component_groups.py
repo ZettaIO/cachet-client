@@ -32,6 +32,7 @@ class ComponentGroupTests(CachetTestcase):
         self.assertFalse(group.is_collapsed, False)
         self.assertTrue(group.is_open)
         self.assertTrue(group.is_operational)
+        self.assertIsInstance(group.enabled_components, list)
 
         # update group
         group.name = "Global Websites"

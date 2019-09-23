@@ -170,6 +170,7 @@ class FakeComponentGroups(FakeData):
             'collapsed': data.get('collapsed'),
             'updated_at': '2015-11-07 16:35:13',
             'created_at': '2015-11-07 16:35:13',
+            'enabled_components': [],
         }
         self.add_entry(instance)
         return FakeHttpResponse(data={'data': instance})
