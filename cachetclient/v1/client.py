@@ -22,8 +22,8 @@ class Client:
         # Managers
         self.ping = PingManager(self._http)
         self.version = VersionManager(self._http)
-        self.component_groups = CompontentGroupManager(self._http)
         self.components = ComponentManager(self._http)
+        self.component_groups = CompontentGroupManager(self._http, self.components)
         self.incident_updates = IncidentUpdatesManager(self._http)
         self.incidents = IncidentManager(self._http, self.incident_updates)
         self.metrics = MetricsManager(self._http)

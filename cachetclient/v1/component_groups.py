@@ -1,9 +1,11 @@
 from datetime import datetime
-from typing import Generator
+from typing import Generator, List
 
 from cachetclient.base import Manager, Resource
 from cachetclient import utils
 from cachetclient.v1 import enums
+from cachetclient.v1.components import Component, ComponentManager
+from cachetclient.httpclient import HttpClient
 
 
 class CompontentGroup(Resource):
@@ -21,6 +23,11 @@ class CompontentGroup(Resource):
     @name.setter
     def name(self, value: str):
         self._data['name'] = value
+
+    @property
+    def enabled_components(self) -> List[Component]:
+        return [Component(self.manager.components, comp)
+                for comp in self._data['enabled_components']]
 
     @property
     def order(self) -> int:
@@ -80,6 +87,10 @@ class CompontentGroup(Resource):
 class CompontentGroupManager(Manager):
     resource_class = CompontentGroup
     path = 'components/groups'
+
+    def __init__(self, http_client: HttpClient, components_manager: ComponentManager):
+        super().__init__(http_client)
+        self.components = components_manager
 
     def create(self, *, name: str, order: int = 0, collapsed: int = 0) -> CompontentGroup:
         """
