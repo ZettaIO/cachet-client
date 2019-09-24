@@ -18,6 +18,7 @@ Attributes
 
 .. autoattribute:: CompontentGroup.id
 .. autoattribute:: CompontentGroup.name
+.. autoattribute:: CompontentGroup.enabled_components
 .. autoattribute:: CompontentGroup.order
 .. autoattribute:: CompontentGroup.collapsed
 .. autoattribute:: CompontentGroup.lowest_human_status

@@ -26,7 +26,8 @@ class CompontentGroup(Resource):
 
     @property
     def enabled_components(self) -> List[Component]:
-        return [Component(self.manager.components, comp)
+        """List[Component]: Enabled components in this group"""
+        return [Component(self._manager.components, comp)
                 for comp in self._data['enabled_components']]
 
     @property
