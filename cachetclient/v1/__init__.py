@@ -7,3 +7,5 @@ from cachetclient.v1.incident_updates import IndicentUpdate  # noqa
 from cachetclient.v1.metrics import Metrics  # noqa
 from cachetclient.v1.metric_points import MetricPoints  # noqa
 from cachetclient.v1 import enums  # noqa
+
+__version__ = '1.1.0'
