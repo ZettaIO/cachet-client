@@ -28,6 +28,8 @@ to the Cachet API.
 * Easy to extend and test
 * Documentation
 
+**Please don't hesitate opening an issue about anything related to this package.**
+
 ## Install
 
 ```
