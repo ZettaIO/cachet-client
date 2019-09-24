@@ -3,7 +3,7 @@
 
 # cachet-client
 
-A python 3.6+ API client for then open source status page system
+A python 3.5+ API client for then open source status page system
 [Cachet](https://github.com/CachetHQ/Cachet).
 
 * [cachet-client on github](https://github.com/ZettaIO/cachet-client)
@@ -110,8 +110,9 @@ pip install -r tests/requirements.txt
 tox
 
 # Optionally
-tox -e py36  # tests only
 tox -e pep8  # for pep8 run only
+tox -e py36  # tests only
+
 
 # Running tests wity pytest also works, but this works poorly in combination with enviroment variables for the live test script (tox separates enviroments)
 pytest tests/

@@ -6,7 +6,7 @@
 Welcome to cachet-client's documentation!
 =========================================
 
-cachet-client is a python 3.6+ client library for the open source status
+cachet-client is a python 3.5+ client library for the open source status
 page system  `Cachet <https://github.com/CachetHQ/Cachet>`_ .
 
 .. toctree::
