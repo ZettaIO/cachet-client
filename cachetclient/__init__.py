@@ -1,3 +1,3 @@
 from cachetclient.client import Client  # noqa
 
-___version__ = '1.0.0'
+___version__ = '1.2.0'

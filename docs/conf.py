@@ -23,7 +23,7 @@ copyright = '2019, Zetta.IO Technology'
 author = 'Einar Forselv'
 
 # The full version, including alpha/beta/rc tags
-version = '1.0.0'
+version = '1.2.0'
 release = version
 
 # The master toctree document.
