@@ -77,6 +77,11 @@ class Manager:
         enables us to create a resource class instance from
         dictionary data. This can be useful when caching
         data from cachet in memcache or databases.
+
+        Args:
+            data (dict): dictionary containing the instance data
+        Returns:
+            Resource: The resource class instance
         """
         return self.resource_class(self, data)
 
@@ -87,6 +92,11 @@ class Manager:
         enables us to create a resource class instance from
         dictionary data. This can be useful when caching
         data from cachet in memcache or databases.
+
+        Args:
+            data (str): json string containing the instance data
+        Returns:
+            Resource: The resource class instance
         """
         return self.resource_class(self, json.loads(data))
 
