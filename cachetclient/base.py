@@ -1,5 +1,7 @@
-from cachetclient.httpclient import HttpClient
+import json
 from typing import Generator, Union
+
+from cachetclient.httpclient import HttpClient
 
 
 class Resource:
@@ -67,6 +69,26 @@ class Manager:
 
         if self.path is None:
             raise ValueError('path not defined for class {}'.format(self.__class__))
+
+    def instance_from_dict(self, data: dict) -> Resource:
+        """Creates a resource instance from a dictionary.
+
+        This doesn't hit any endpoints in cachet, but rather
+        enables us to create a resource class instance from
+        dictionary data. This can be useful when caching
+        data from cachet in memcache or databases.
+        """
+        return self.resource_class(self, data)
+
+    def instance_from_json(self, data: str) -> Resource:
+        """Creates a resource instance from a json string.
+
+        This doesn't hit any endpoints in cachet, but rather
+        enables us to create a resource class instance from
+        dictionary data. This can be useful when caching
+        data from cachet in memcache or databases.
+        """
+        return self.resource_class(self, json.loads(data))
 
     def _create(self, path: str, data: dict):
         response = self._http.post(path, data=data)

@@ -1,3 +1,4 @@
+import json
 from datetime import datetime
 from unittest import mock
 from requests.exceptions import HTTPError
@@ -88,3 +89,19 @@ class ComponentGroupTests(CachetTestcase):
         self.assertEqual(new_group.name, "Global Stuff")
         self.assertEqual(new_group.order, 1)
         self.assertEqual(new_group.collapsed, enums.COMPONENT_GROUP_COLLAPSED_TRUE)
+
+    def test_instance_from(self):
+        """Recreate instance from json or dict"""
+        client = self.create_client()
+        client.component_groups.create(name="Global Services")
+        group = next(client.component_groups.list())
+
+        new_group = client.component_groups.instance_from_dict(group.attrs)
+        self.assertEqual(new_group.id, 1)
+        self.assertEqual(new_group.name, "Global Services")
+        self.assertIsInstance(new_group.enabled_components, list)
+
+        new_group = client.component_groups.instance_from_json(json.dumps(group.attrs))
+        self.assertEqual(new_group.id, 1)
+        self.assertEqual(new_group.name, "Global Services")
+        self.assertIsInstance(new_group.enabled_components, list)
