@@ -35,3 +35,5 @@ Manager
 .. automethod:: IncidentUpdatesManager.list
 .. automethod:: IncidentUpdatesManager.get
 .. automethod:: IncidentUpdatesManager.delete
+.. automethod:: IncidentUpdatesManager.instance_from_dict
+.. automethod:: IncidentUpdatesManager.instance_from_json

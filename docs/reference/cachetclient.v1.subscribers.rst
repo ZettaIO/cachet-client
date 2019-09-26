@@ -33,3 +33,5 @@ Manager
 .. automethod:: SubscriberManager.list
 .. automethod:: SubscriberManager.delete
 .. automethod:: SubscriberManager.count
+.. automethod:: SubscriberManager.instance_from_dict
+.. automethod:: SubscriberManager.instance_from_json

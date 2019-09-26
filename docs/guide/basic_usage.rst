@@ -2,7 +2,10 @@
 Basic Usage
 ===========
 
-Creating a client::
+Creating a client
+-----------------
+
+.. code:: python
 
     import cachetclient
 
@@ -11,17 +14,26 @@ Creating a client::
         api_token='secrettoken',
     )
 
-Add a new subscriber with email verification::
+Add a new subscriber with email verification
+--------------------------------------------
+
+.. code:: python
 
     sub = client.subscribers.create(email='user@example.test', verify=False)
 
-List subscribers paginated::
+List subscribers paginated
+--------------------------
+
+.. code:: python
 
     # Pagination under the hood scaling better with large numbers of subscribers
     for sub in client.subscribers.list(page=1, per_page=100):
         print(sub.id, sub.email, sub.verify_code)
 
-Creating a component issue::
+Creating a component issue
+--------------------------
+
+.. code:: python
 
     from cachetclient.v1 import enums
 
@@ -34,7 +46,10 @@ Creating a component issue::
         component_status=enums.COMPONENT_STATUS_MAJOR_OUTAGE,
     )
 
-Creating component group with components::
+Creating component group with components
+----------------------------------------
+
+.. code:: python
 
     from cachetclient.v1 import enums
 
@@ -46,3 +61,16 @@ Creating component group with components::
         tags="test, web, something",
         group_id=group.id,
     )
+
+Recreating resource from json or dict
+-------------------------------------
+
+Every manager has a method for recreating a resource
+instance from a json string or dictionary. This can be
+useful if data from cachet is cached or stored somewhere
+like memcache or a database.
+
+.. code:: python
+
+    subscriber = client.subscribers.instance_from_json(json_str)
+    subscriber = client.subscribers.instance_from_dict(data_dict)
