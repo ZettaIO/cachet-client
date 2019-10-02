@@ -105,3 +105,16 @@ class ComponentGroupTests(CachetTestcase):
         self.assertEqual(new_group.id, 1)
         self.assertEqual(new_group.name, "Global Services")
         self.assertIsInstance(new_group.enabled_components, list)
+
+        # from json list
+        json_data = json.dumps([group.attrs, group.attrs, group.attrs])
+        groups = client.component_groups.instance_list_from_json(json_data)
+        self.assertEqual(len(groups), 3)
+        group = groups[1]
+        self.assertEqual(new_group.id, 1)
+        self.assertEqual(new_group.name, "Global Services")
+        self.assertIsInstance(new_group.enabled_components, list)
+
+        # Attempt to deserialize a single object as a list
+        with self.assertRaises(ValueError):
+            groups = client.component_groups.instance_list_from_json(json.dumps(group.attrs))

@@ -1,5 +1,5 @@
 import json
-from typing import Generator, Union
+from typing import Generator, Union, List
 
 from cachetclient.httpclient import HttpClient
 
@@ -90,7 +90,7 @@ class Manager:
 
         This doesn't hit any endpoints in cachet, but rather
         enables us to create a resource class instance from
-        dictionary data. This can be useful when caching
+        json data. This can be useful when caching
         data from cachet in memcache or databases.
 
         Args:
@@ -99,6 +99,27 @@ class Manager:
             Resource: The resource class instance
         """
         return self.resource_class(self, json.loads(data))
+
+    def instance_list_from_json(self, data: str) -> List[Resource]:
+        """Creates a resource instance list from a json string.
+
+        This doesn't hit any endpoints in cachet, but rather
+        enables us to create a resource class instances from
+        json data. This can be useful when caching
+        data from cachet in memcache or databases.
+
+        Args:
+            data (str): json string containing the instance data
+        Returns:
+            Resource: The resource class instance
+        Raises:
+            ValueError: if json data do not deserialize into a list
+        """
+        instances = json.loads(data)
+        if not isinstance(instances, list):
+            raise ValueError("json data is {}, not a list : {}".format(type(instances), instances))
+
+        return [self.resource_class(self, inst) for inst in instances]
 
     def _create(self, path: str, data: dict):
         response = self._http.post(path, data=data)
