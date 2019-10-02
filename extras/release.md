@@ -1,6 +1,6 @@
 # Creating a release
 
-- Bump version in `setup.py` and `__init__.py`
+- Bump version in `setup.py`, `__init__.py` and `docs/conf.py`
 - run `tox`
 - Ensure docs are updated
 - `twine upload dist/...`
