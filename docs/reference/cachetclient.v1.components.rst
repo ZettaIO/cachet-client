@@ -43,3 +43,4 @@ Manager
 .. automethod:: ComponentManager.delete
 .. automethod:: ComponentManager.instance_from_dict
 .. automethod:: ComponentManager.instance_from_json
+.. automethod:: ComponentManager.instance_list_from_json

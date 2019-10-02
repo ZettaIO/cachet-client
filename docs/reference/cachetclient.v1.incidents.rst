@@ -41,3 +41,4 @@ Manager
 .. automethod:: IncidentManager.delete
 .. automethod:: IncidentManager.instance_from_dict
 .. automethod:: IncidentManager.instance_from_json
+.. automethod:: IncidentManager.instance_list_from_json

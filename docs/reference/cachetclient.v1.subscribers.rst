@@ -35,3 +35,4 @@ Manager
 .. automethod:: SubscriberManager.count
 .. automethod:: SubscriberManager.instance_from_dict
 .. automethod:: SubscriberManager.instance_from_json
+.. automethod:: SubscriberManager.instance_list_from_json

@@ -39,3 +39,4 @@ Manager
 .. automethod:: CompontentGroupManager.delete
 .. automethod:: CompontentGroupManager.instance_from_dict
 .. automethod:: CompontentGroupManager.instance_from_json
+.. automethod:: CompontentGroupManager.instance_list_from_json
