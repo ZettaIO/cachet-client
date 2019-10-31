@@ -196,6 +196,7 @@ def test_component_groups():
     assert grp.is_collapsed is False
     assert grp.is_open is True
     assert grp.is_operational is True
+    # assert grp.visible is False
 
     # Re-fetch by id
     grp = client().component_groups.get(grp.id)
@@ -210,6 +211,7 @@ def test_component_groups():
     assert grp.is_collapsed is True
     assert grp.is_open is False
     assert grp.is_operational is True
+    # assert grp.visible is False
 
     pprint(grp.attrs, indent=2)
     grp.delete()
