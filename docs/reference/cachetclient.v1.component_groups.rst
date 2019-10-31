@@ -27,6 +27,7 @@ Attributes
 .. autoattribute:: ComponentGroup.is_operational
 .. autoattribute:: ComponentGroup.created_at
 .. autoattribute:: ComponentGroup.updated_at
+.. autoattribute:: ComponentGroup.visible
 
 Manager
 -------
