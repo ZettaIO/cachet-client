@@ -12,7 +12,7 @@ class Resource:
 
     @property
     def attrs(self) -> dict:
-        """dict: The raw json respons from the server"""
+        """dict: The raw json response from the server"""
         return self._data
 
     def get(self, name) -> Union[int, str, float, bool]:
@@ -147,7 +147,7 @@ class Manager:
 
         Keyword Args:
             page (int): Page to start on
-            per_page (int): Number of entires per page
+            per_page (int): Number of entries per page
 
         Returns:
             Generator of resources
@@ -218,7 +218,7 @@ class Manager:
     def _build_data_dict(self, **kwargs) -> dict:
         """Builds a data dictionary for posting to the server.
 
-        Will ommit key/value pars with None values.
+        Will omit key/value pars with None values.
         This makes partial updates less error prone.
 
         Returns:

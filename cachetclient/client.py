@@ -15,7 +15,7 @@ def Client(
 
     Args:
         endpoint (str): The api endpoint. for example 'https://status.examples.test/api/v1'.
-                        The endpoint can also be specificed using the ``CACHET_ENDPOINT`` env variable.
+                        The endpoint can also be specified using the ``CACHET_ENDPOINT`` env variable.
         api_token (str): The api token. Can also be specified using ``CACHET_API_TOKEN`` env variable.
         version (str): The api version. If not specified the version will be derived from the
                        endpoint url. The value "1" will create a v1 cachet client.
@@ -27,8 +27,8 @@ def Client(
     if not api_token:
         raise ValueError(
             "No api_token specified. "
-            "The endpoint must be supplied in the Client fuction "
-            "or through the CACHET_API_TOKEN enviroment variable."
+            "The endpoint must be supplied in the Client function "
+            "or through the CACHET_API_TOKEN environment variable."
         )
 
     if not endpoint:
@@ -37,8 +37,8 @@ def Client(
     if not endpoint:
         raise ValueError(
             "No api endpoint specified. "
-            "The token must be supplied in the Client fuction "
-            "or through the CACHET_ENDPOINT enviroment variable."
+            "The token must be supplied in the Client function "
+            "or through the CACHET_ENDPOINT environment variable."
         )
 
     if not version:

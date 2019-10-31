@@ -1,5 +1,5 @@
 from cachetclient.httpclient import HttpClient
-from cachetclient.v1.component_groups import CompontentGroupManager
+from cachetclient.v1.component_groups import ComponentGroupManager
 from cachetclient.v1.components import ComponentManager
 from cachetclient.v1.incidents import IncidentManager
 from cachetclient.v1.incident_updates import IncidentUpdatesManager
@@ -23,7 +23,7 @@ class Client:
         self.ping = PingManager(self._http)
         self.version = VersionManager(self._http)
         self.components = ComponentManager(self._http)
-        self.component_groups = CompontentGroupManager(self._http, self.components)
+        self.component_groups = ComponentGroupManager(self._http, self.components)
         self.incident_updates = IncidentUpdatesManager(self._http)
         self.incidents = IncidentManager(self._http, self.incident_updates)
         self.metrics = MetricsManager(self._http)

@@ -151,7 +151,7 @@ class IncidentUpdatesManager(Manager):
 
         Keyword Args:
             page (int): The first page to request
-            per_page (int): Entires per page
+            per_page (int): Entries per page
 
         Return:
             Generator of :py:data:`IncidentUpdate`s

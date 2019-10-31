@@ -10,7 +10,7 @@ class PingManager(Manager):
 
     def __call__(self) -> bool:
         """
-        Shotcut for the :py:data:`get` method.
+        Shortcut for the :py:data:`get` method.
 
         Example::
 
@@ -39,5 +39,3 @@ class PingManager(Manager):
         except Exception as ex:
             logger.warning("Ping: %s", ex)
             return False
-
-        return True

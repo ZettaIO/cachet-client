@@ -66,7 +66,7 @@ class Incident(Resource):
 
     @property
     def visible(self) -> int:
-        """bool: Get or set visibility of the indcinent"""
+        """bool: Get or set visibility of the incident"""
         return self.get('visible') == 1
 
     @visible.setter
@@ -219,7 +219,7 @@ class IncidentManager(Manager):
 
         Keyword Args:
             page (int): Page to start on
-            per_page (int): Entires per page
+            per_page (int): entries per page
 
         Returns:
             Generator of :py:data:`Incident`s

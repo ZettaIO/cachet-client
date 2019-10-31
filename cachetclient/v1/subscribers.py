@@ -78,7 +78,7 @@ class SubscriberManager(Manager):
 
         Keyword Args:
             page (int): The page to start listing
-            per_page: Number of entires per page
+            per_page: Number of entries per page
 
         Returns:
             Generator of Subscriber instances
