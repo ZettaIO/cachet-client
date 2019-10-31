@@ -85,7 +85,7 @@ class ComponentGroup(Resource):
         return utils.to_datetime(self.get('updated_at'))
 
     @property
-    def visible(self) -> int:
+    def visible(self) -> bool:
         """bool: Get or set visibility of the group"""
         return self.get('visible') == 1
 
