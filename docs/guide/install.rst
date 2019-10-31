@@ -6,7 +6,7 @@ A package is available on PyPI::
 
    pip install cachet-client
 
-Bulding from source::
+Building from source::
 
    git clone https://github.com/ZettaIO/cachet-client.git (or use ssh)
    python setup.py bdist_wheel
@@ -37,14 +37,14 @@ Running unit tests::
    tox -e py36  # tests only
    tox -e pep8  # for pep8 run only
 
-   # Running tests wity pytest also works, but this works poorly in combination
-   # with enviroment variables for the live test script (tox separates enviroments)
+   # Running tests with pytest also works, but this works poorly in combination
+   # with environment variables for the live test script (tox separates environments)
    pytest tests/
 
 Testing with real Cachet service
 --------------------------------
 
-Do not run this script againt a system in production.
+Do not run this script against a system in production.
 This is only for a test service. Cachet can easily be set up locally
 with docker: https://github.com/CachetHQ/Docker
 
