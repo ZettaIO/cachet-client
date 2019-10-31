@@ -8,7 +8,7 @@ from cachetclient.v1.components import Component, ComponentManager
 from cachetclient.httpclient import HttpClient
 
 
-class CompontentGroup(Resource):
+class ComponentGroup(Resource):
 
     @property
     def id(self) -> int:
@@ -76,7 +76,7 @@ class CompontentGroup(Resource):
 
     @property
     def created_at(self) -> datetime:
-        """datatime: When the group was created"""
+        """datetime: When the group was created"""
         return utils.to_datetime(self.get('created_at'))
 
     @property
@@ -85,15 +85,15 @@ class CompontentGroup(Resource):
         return utils.to_datetime(self.get('updated_at'))
 
 
-class CompontentGroupManager(Manager):
-    resource_class = CompontentGroup
+class ComponentGroupManager(Manager):
+    resource_class = ComponentGroup
     path = 'components/groups'
 
     def __init__(self, http_client: HttpClient, components_manager: ComponentManager):
         super().__init__(http_client)
         self.components = components_manager
 
-    def create(self, *, name: str, order: int = 0, collapsed: int = 0) -> CompontentGroup:
+    def create(self, *, name: str, order: int = 0, collapsed: int = 0) -> ComponentGroup:
         """
         Create a component group
 
@@ -103,19 +103,19 @@ class CompontentGroupManager(Manager):
             collapsed (int): Collapse value (see enums)
 
         Returns:
-            :py:data:`CompoentGroup` instance
+            :py:data:`ComponentGroup` instance
         """
         return self._create(
             self.path,
             {
                 'name': name,
                 'order': order,
-                'collapsed': collapsed,
+                'collapsed': collapsed
             }
         )
 
     def update(self, group_id: int, *, name: str, order: int = None,
-               collapsed: int = None, **kwargs) -> CompontentGroup:
+               collapsed: int = None, **kwargs) -> ComponentGroup:
         """
         Update component group
 
@@ -133,7 +133,7 @@ class CompontentGroupManager(Manager):
             self._build_data_dict(
                 name=name,
                 order=order,
-                collapsed=collapsed,
+                collapsed=collapsed
             ),
         )
 
@@ -146,20 +146,20 @@ class CompontentGroupManager(Manager):
         """
         return self._count(self.path)
 
-    def list(self, page: int = 1, per_page: int = 20) -> Generator[CompontentGroup, None, None]:
+    def list(self, page: int = 1, per_page: int = 20) -> Generator[ComponentGroup, None, None]:
         """
         List all component groups
 
         Keyword Args:
             page (int): The page to start listing
-            per_page: Number of entires per page
+            per_page: Number of entries per page
 
         Returns:
             Generator of :py:data:`ComponentGroup` instances
         """
         yield from self._list_paginated(self.path, page=page, per_page=per_page)
 
-    def get(self, group_id) -> CompontentGroup:
+    def get(self, group_id) -> ComponentGroup:
         """
         Get a component group by id
 

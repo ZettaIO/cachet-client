@@ -10,33 +10,33 @@ Resource
 Methods
 *******
 
-.. automethod:: CompontentGroup.update
-.. automethod:: CompontentGroup.delete
+.. automethod:: ComponentGroup.update
+.. automethod:: ComponentGroup.delete
 
 Attributes
 **********
 
-.. autoattribute:: CompontentGroup.id
-.. autoattribute:: CompontentGroup.name
-.. autoattribute:: CompontentGroup.enabled_components
-.. autoattribute:: CompontentGroup.order
-.. autoattribute:: CompontentGroup.collapsed
-.. autoattribute:: CompontentGroup.lowest_human_status
-.. autoattribute:: CompontentGroup.is_collapsed
-.. autoattribute:: CompontentGroup.is_open
-.. autoattribute:: CompontentGroup.is_operational
-.. autoattribute:: CompontentGroup.created_at
-.. autoattribute:: CompontentGroup.updated_at
+.. autoattribute:: ComponentGroup.id
+.. autoattribute:: ComponentGroup.name
+.. autoattribute:: ComponentGroup.enabled_components
+.. autoattribute:: ComponentGroup.order
+.. autoattribute:: ComponentGroup.collapsed
+.. autoattribute:: ComponentGroup.lowest_human_status
+.. autoattribute:: ComponentGroup.is_collapsed
+.. autoattribute:: ComponentGroup.is_open
+.. autoattribute:: ComponentGroup.is_operational
+.. autoattribute:: ComponentGroup.created_at
+.. autoattribute:: ComponentGroup.updated_at
 
 Manager
 -------
 
-.. automethod:: CompontentGroupManager.create
-.. automethod:: CompontentGroupManager.update
-.. automethod:: CompontentGroupManager.count
-.. automethod:: CompontentGroupManager.list
-.. automethod:: CompontentGroupManager.get
-.. automethod:: CompontentGroupManager.delete
-.. automethod:: CompontentGroupManager.instance_from_dict
-.. automethod:: CompontentGroupManager.instance_from_json
-.. automethod:: CompontentGroupManager.instance_list_from_json
+.. automethod:: ComponentGroupManager.create
+.. automethod:: ComponentGroupManager.update
+.. automethod:: ComponentGroupManager.count
+.. automethod:: ComponentGroupManager.list
+.. automethod:: ComponentGroupManager.get
+.. automethod:: ComponentGroupManager.delete
+.. automethod:: ComponentGroupManager.instance_from_dict
+.. automethod:: ComponentGroupManager.instance_from_json
+.. automethod:: ComponentGroupManager.instance_list_from_json

@@ -21,7 +21,7 @@ COMPONENT_STATUS_LIST = [
     COMPONENT_STATUS_MAJOR_OUTAGE
 ]
 
-# Componet group collapse value
+# Component group collapse value
 #: [0] No
 COMPONENT_GROUP_COLLAPSED_FALSE = 0
 #: [1] Yes

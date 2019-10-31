@@ -240,7 +240,7 @@ class ComponentManager(Manager):
 
         Keyword Args:
             page (int): The page to start listing
-            per_page (int): Number of entires per page
+            per_page (int): Number of entries per page
 
         Returns:
             Generator of Component instances
@@ -268,7 +268,7 @@ class ComponentManager(Manager):
             component_id (int): Id of the component
 
         Raises:
-            HTTPError: if compontent do not exist
+            HTTPError: if component do not exist
         """
         self._delete(self.path, component_id)
 

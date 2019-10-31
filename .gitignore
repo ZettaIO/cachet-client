@@ -15,6 +15,7 @@ __pycache__
 .venv2
 .env
 env
+venv
 
 # Test and docs
 .tox
