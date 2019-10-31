@@ -84,6 +84,15 @@ class ComponentGroup(Resource):
         """datetime: Last time updated"""
         return utils.to_datetime(self.get('updated_at'))
 
+    @property
+    def visible(self) -> int:
+        """bool: Get or set visibility of the group"""
+        return self.get('visible') == 1
+
+    @visible.setter
+    def visible(self, value: bool):
+        self._data['visible'] = value
+
 
 class ComponentGroupManager(Manager):
     resource_class = ComponentGroup
@@ -93,7 +102,7 @@ class ComponentGroupManager(Manager):
         super().__init__(http_client)
         self.components = components_manager
 
-    def create(self, *, name: str, order: int = 0, collapsed: int = 0) -> ComponentGroup:
+    def create(self, *, name: str, order: int = 0, collapsed: int = 0, visible: bool = False) -> ComponentGroup:
         """
         Create a component group
 
@@ -101,6 +110,7 @@ class ComponentGroupManager(Manager):
             name (str): Name of the group
             order (int): group order
             collapsed (int): Collapse value (see enums)
+            visible (bool): Publicly visible group
 
         Returns:
             :py:data:`ComponentGroup` instance
@@ -110,12 +120,13 @@ class ComponentGroupManager(Manager):
             {
                 'name': name,
                 'order': order,
-                'collapsed': collapsed
+                'collapsed': collapsed,
+                'visible': 1 if visible else 0
             }
         )
 
     def update(self, group_id: int, *, name: str, order: int = None,
-               collapsed: int = None, **kwargs) -> ComponentGroup:
+               collapsed: int = None, visible: bool = None, **kwargs) -> ComponentGroup:
         """
         Update component group
 
@@ -126,6 +137,7 @@ class ComponentGroupManager(Manager):
             name (str): New name for group
             order (int): Order value of the group
             collapsed (int): Collapsed value. See enums module.
+            visible (bool): Publicly visible group
         """
         return self._update(
             self.path,
@@ -133,7 +145,8 @@ class ComponentGroupManager(Manager):
             self._build_data_dict(
                 name=name,
                 order=order,
-                collapsed=collapsed
+                collapsed=collapsed,
+                visible=1 if visible else 0,
             ),
         )
 
