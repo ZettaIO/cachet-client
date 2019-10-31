@@ -25,6 +25,7 @@ class ComponentGroupTests(CachetTestcase):
         # Check attributes
         group = next(client.component_groups.list())
         self.assertEqual(group.id, 1)
+        self.assertEqual(group.visible, False)
         self.assertEqual(group.name, "Global Services")
         self.assertEqual(group.collapsed, enums.COMPONENT_GROUP_COLLAPSED_FALSE)
         self.assertEqual(group.order, 0)
@@ -38,9 +39,11 @@ class ComponentGroupTests(CachetTestcase):
         # update group
         group.name = "Global Websites"
         group.order = 2
+        group.visible = True
         group.collapsed = enums.COMPONENT_GROUP_COLLAPSED_TRUE
         group = group.update()
         self.assertEqual(group.id, 1)
+        self.assertEqual(group.visible, True)
         self.assertEqual(group.name, "Global Websites")
         self.assertEqual(group.collapsed, enums.COMPONENT_GROUP_COLLAPSED_TRUE)
         self.assertEqual(group.order, 2)
@@ -82,12 +85,14 @@ class ComponentGroupTests(CachetTestcase):
         group = next(client.component_groups.list())
         group.name = "Global Stuff"
         group.order = 1
+        group.visible = True
         group.collapsed = enums.COMPONENT_GROUP_COLLAPSED_TRUE
 
         new_group = group.update()
         self.assertEqual(new_group.id, 1)
         self.assertEqual(new_group.name, "Global Stuff")
         self.assertEqual(new_group.order, 1)
+        self.assertEqual(new_group.visible, True)
         self.assertEqual(new_group.collapsed, enums.COMPONENT_GROUP_COLLAPSED_TRUE)
 
     def test_instance_from(self):
