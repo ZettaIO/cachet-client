@@ -19,13 +19,13 @@ class ComponentGroupTests(CachetTestcase):
     def test_create(self):
         """Create and obtain groups"""
         client = self.create_client()
-        client.component_groups.create(name="Global Services")
+        client.component_groups.create(name="Global Services", visible=True)
         self.assertEqual(client.component_groups.count(), 1)
 
         # Check attributes
         group = next(client.component_groups.list())
         self.assertEqual(group.id, 1)
-        self.assertEqual(group.visible, False)
+        self.assertEqual(group.visible, True)
         self.assertEqual(group.name, "Global Services")
         self.assertEqual(group.collapsed, enums.COMPONENT_GROUP_COLLAPSED_FALSE)
         self.assertEqual(group.order, 0)

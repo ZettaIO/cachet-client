@@ -167,6 +167,7 @@ class FakeComponentGroups(FakeData):
             'id': self.next_id(),
             'name': data.get('name'),
             'order': data.get('order'),
+            'visible': data.get('visible'),
             'collapsed': data.get('collapsed'),
             'updated_at': '2015-11-07 16:35:13',
             'created_at': '2015-11-07 16:35:13',
