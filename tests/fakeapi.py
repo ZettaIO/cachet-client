@@ -202,7 +202,12 @@ class FakeIncidents(FakeData):
         # Fields we don't store but instead triggers behaviour
         # 'component_status': data.get('component_status'),
         # 'template': data.get('template'),
-        # 'vars': data.get('vars'),
+
+        # Some cachet versions don't handle empty template vars
+        template_vars = data.get('vars')
+        if template_vars is None:
+            raise ValueError("tempate vars is None")
+
         instance = {
             'id': self.next_id(),
             'name': data.get('name'),
