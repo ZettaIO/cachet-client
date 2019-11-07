@@ -121,7 +121,7 @@ class IncidentManager(Manager):
             notify: bool = True,
             created_at: datetime = None,
             template: str = None,
-            template_vars: List[str] = None) -> Incident:
+            template_vars: List[str] = []) -> Incident:
         """
         Create and general issue or issue for a component.
         component_id and component_status must be supplied when making
