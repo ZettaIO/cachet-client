@@ -1,4 +1,9 @@
 
+# 2.0.1
+
+* Fix Internal Server Error when creating incidents due to
+  empty `vars`. (Likely a 2.4+ issue)
+
 # 2.0.0
 
 * Python 3.8 support
