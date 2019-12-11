@@ -158,3 +158,9 @@ python setup.py build_sphinx
 Do not hesitate opening issues or submit completed
 or partial pull requests. Contributors of all
 experience levels are welcome.
+
+---
+This project is sponsored by [zetta.io](https://www.zetta.io)
+
+[![Zetta.IO](https://raw.githubusercontent.com/ZettaIO/cachet-client
+/master/.github/logo.png)](https://www.zetta.io)
