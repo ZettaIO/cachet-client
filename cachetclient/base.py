@@ -7,6 +7,12 @@ from cachetclient.httpclient import HttpClient
 class Resource:
     """Bag of attributes"""
     def __init__(self, manager, data):
+        """Resource initializer.
+
+        Args:
+            manager: The manager this resource belongs to
+            data: The raw json data
+        """
         self._manager = manager
         self._data = data
 
