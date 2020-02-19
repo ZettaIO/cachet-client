@@ -5,7 +5,7 @@ from cachetclient.base import Manager, Resource
 from cachetclient import utils
 
 
-class IndicentUpdate(Resource):
+class IncidentUpdate(Resource):
 
     @property
     def id(self) -> int:
@@ -56,11 +56,11 @@ class IndicentUpdate(Resource):
         return self.get('human_status')
 
     @property
-    def permlink(self) -> str:
+    def permalink(self) -> str:
         """str: Permanent url to the incident update"""
         return self.get('permalink')
 
-    def update(self) -> 'IndicentUpdate':
+    def update(self) -> 'IncidentUpdate':
         """
         Update/save changes
 
@@ -75,10 +75,10 @@ class IndicentUpdate(Resource):
 
 
 class IncidentUpdatesManager(Manager):
-    resource_class = IndicentUpdate
+    resource_class = IncidentUpdate
     path = 'incidents/{}/updates'
 
-    def create(self, *, incident_id: int, status: int, message: str) -> IndicentUpdate:
+    def create(self, *, incident_id: int, status: int, message: str) -> IncidentUpdate:
         """
         Create an incident update
 
@@ -88,7 +88,7 @@ class IncidentUpdatesManager(Manager):
             message (str): Update message
 
         Returns:
-            :py:data:`IndicentUpdate` instance
+            :py:data:`IncidentUpdate` instance
         """
         return self._create(
             self.path.format(incident_id),
@@ -105,7 +105,7 @@ class IncidentUpdatesManager(Manager):
             incident_id: int,
             status: int = None,
             message: str = None,
-            **kwargs) -> IndicentUpdate:
+            **kwargs) -> IncidentUpdate:
         """
         Update an incident update
 
@@ -132,7 +132,7 @@ class IncidentUpdatesManager(Manager):
 
     def count(self, incident_id) -> int:
         """
-        Count the number of indicent update for an incident
+        Count the number of incident update for an incident
 
         Args:
             incident_id (int): The incident
@@ -142,7 +142,7 @@ class IncidentUpdatesManager(Manager):
         """
         return self._count(self.path.format(incident_id))
 
-    def list(self, incident_id: int, page: int = 1, per_page: int = 20) -> Generator[IndicentUpdate, None, None]:
+    def list(self, incident_id: int, page: int = 1, per_page: int = 20) -> Generator[IncidentUpdate, None, None]:
         """
         List updates for an issue
 
@@ -162,7 +162,7 @@ class IncidentUpdatesManager(Manager):
             per_page=per_page,
         )
 
-    def get(self, incident_id: int, update_id: int) -> IndicentUpdate:
+    def get(self, incident_id: int, update_id: int) -> IncidentUpdate:
         """
         Get an incident update
 

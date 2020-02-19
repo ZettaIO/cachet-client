@@ -10,21 +10,21 @@ Resource
 Methods
 *******
 
-.. automethod:: IndicentUpdate.update
-.. automethod:: IndicentUpdate.delete
+.. automethod:: IncidentUpdate.update
+.. automethod:: IncidentUpdate.delete
 
 Attributes
 **********
 
-.. autoattribute:: IndicentUpdate.id
-.. autoattribute:: IndicentUpdate.incident_id
-.. autoattribute:: IndicentUpdate.status
-.. autoattribute:: IndicentUpdate.message
-.. autoattribute:: IndicentUpdate.user_id
-.. autoattribute:: IndicentUpdate.created_at
-.. autoattribute:: IndicentUpdate.updated_at
-.. autoattribute:: IndicentUpdate.human_status
-.. autoattribute:: IndicentUpdate.permalink
+.. autoattribute:: IncidentUpdate.id
+.. autoattribute:: IncidentUpdate.incident_id
+.. autoattribute:: IncidentUpdate.status
+.. autoattribute:: IncidentUpdate.message
+.. autoattribute:: IncidentUpdate.user_id
+.. autoattribute:: IncidentUpdate.created_at
+.. autoattribute:: IncidentUpdate.updated_at
+.. autoattribute:: IncidentUpdate.human_status
+.. autoattribute:: IncidentUpdate.permalink
 
 Manager
 -------
