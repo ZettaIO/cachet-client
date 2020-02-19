@@ -35,7 +35,7 @@ class IncidentUpdatesTests(CachetTestcase):
         self.assertIsInstance(first.created_at, datetime)
         self.assertIsInstance(first.updated_at, datetime)
         self.assertEqual(first.human_status, "Identified")
-        self.assertIsInstance(first.permlink, str)
+        self.assertIsInstance(first.permalink, str)
 
         self.client.incident_updates.create(
             incident_id=incident.id,
