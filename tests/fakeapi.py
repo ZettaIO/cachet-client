@@ -281,6 +281,62 @@ class FakeIncidentUpdates(FakeData):
             return super()._get(update_id)
 
 
+class FakeMetrics(FakeData):
+
+    def get(self, metric_id=None, params=None, data=None):
+        if metric_id:
+            return self._get(metric_id)
+        else:
+            return self._list(
+                per_page=params.get('per_page') or 20,
+                page=params.get('page') or 1,
+            )
+
+    def post(self, params=None, data=None):
+
+        instance = {
+            'id': self.next_id(),
+            'name': data.get('name'),
+            'description': data.get('description'),
+            'suffix': data.get('suffix'),
+            'default_value': data.get('default_value'),
+            'display_chart': data.get('display_chart'),
+            'created_at': '2019-05-25 15:21:34',
+            'updated_at': '2019-05-25 15:21:34',
+        }
+        self.add_entry(instance)
+        return FakeHttpResponse(data={'data': instance})
+
+
+    def delete(self, metric_id=None, params=None, data=None):
+        self.delete_by_id(metric_id)
+        return FakeHttpResponse()
+
+
+class FakeMetricPoints(FakeData):
+
+    def post(self, metric_id=None, params=None, data=None):
+        new_id = self.next_id()
+        instance = {
+            'id': new_id,
+            'metric_id': int(metric_id),
+            'value': data['value'],
+            'created_at': '2019-05-25 15:21:34',
+            'updated_at': '2019-05-25 15:21:34',
+        }
+        self.add_entry(instance)
+        return FakeHttpResponse(data={'data': instance})
+
+    def get(self, metric_id=None, params=None, data=None):
+        return self._list(
+            per_page=params.get('per_page') or 20,
+            page=params.get('page') or 1,
+        )
+
+    def delete(self, metric_id=None, point_id=None, params=None, data=None):
+        self.delete_by_id(metric_id, point_id)
+        return FakeHttpResponse()
+
 class FakePing(FakeData):
 
     def get(self, *args, **kwargs):
@@ -313,8 +369,8 @@ class Routes:
         self.component_groups = FakeComponentGroups(self)
         self.incidents = FakeIncidents(self)
         self.incident_updates = FakeIncidentUpdates(self)
-        self.metrics = None
-        self.metric_points = None
+        self.metrics = FakeMetrics(self)
+        self.metric_points = FakeMetricPoints(self)
         self.subscribers = FakeSubscribers(self)
 
         self._routes = [
@@ -328,8 +384,10 @@ class Routes:
             (r'^incidents/(?P<incident_id>\w+)/updates', self.incident_updates, ['get', 'post']),
             (r'^incidents/(?P<incident_id>\w+)', self.incidents, ['get', 'put', 'delete']),
             (r'^incidents', self.incidents, ['get', 'post']),
-            (r'^metric/points', self.metric_points, ['get']),
-            (r'^metrics', self.metrics, ['get']),
+            (r'^metrics/(?P<metric_id>\w+)/points/(?P<point_id>\w+)', self.metric_points, ['delete']),
+            (r'^metrics/(?P<metric_id>\w+)/points', self.metric_points, ['get', 'post']),
+            (r'^metrics/(?P<metric_id>\w+)', self.metrics, ['get', 'delete']),
+            (r'^metrics', self.metrics, ['get', 'post']),
             (r'^subscribers/(?P<subscriber_id>\w+)', self.subscribers, ['delete']),
             (r'^subscribers', self.subscribers, ['get', 'post']),
         ]

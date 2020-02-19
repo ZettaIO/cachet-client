@@ -4,6 +4,7 @@ from cachetclient.v1.components import ComponentManager
 from cachetclient.v1.incidents import IncidentManager
 from cachetclient.v1.incident_updates import IncidentUpdatesManager
 from cachetclient.v1.metrics import MetricsManager
+from cachetclient.v1.metric_points import MetricPointsManager
 from cachetclient.v1.subscribers import SubscriberManager
 from cachetclient.v1.ping import PingManager
 from cachetclient.v1.version import VersionManager
@@ -26,6 +27,7 @@ class Client:
         self.component_groups = ComponentGroupManager(self._http, self.components)
         self.incident_updates = IncidentUpdatesManager(self._http)
         self.incidents = IncidentManager(self._http, self.incident_updates)
-        self.metrics = MetricsManager(self._http)
+        self.metric_points = MetricPointsManager(self._http)
+        self.metrics = MetricsManager(self._http, self.metric_points)
         self.subscribers = SubscriberManager(self._http)
         self.schedules = ScheduleManager(self._http)
