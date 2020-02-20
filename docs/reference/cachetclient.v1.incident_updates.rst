@@ -10,12 +10,15 @@ Resource
 Methods
 *******
 
+.. automethod:: IncidentUpdate.__init__
 .. automethod:: IncidentUpdate.update
+.. automethod:: IncidentUpdate.get
 .. automethod:: IncidentUpdate.delete
 
 Attributes
 **********
 
+.. autoattribute:: IncidentUpdate.attrs
 .. autoattribute:: IncidentUpdate.id
 .. autoattribute:: IncidentUpdate.incident_id
 .. autoattribute:: IncidentUpdate.status
@@ -29,6 +32,9 @@ Attributes
 Manager
 -------
 
+Methods
+*******
+
 .. automethod:: IncidentUpdatesManager.create
 .. automethod:: IncidentUpdatesManager.update
 .. automethod:: IncidentUpdatesManager.count
@@ -38,3 +44,6 @@ Manager
 .. automethod:: IncidentUpdatesManager.instance_from_dict
 .. automethod:: IncidentUpdatesManager.instance_from_json
 .. automethod:: IncidentUpdatesManager.instance_list_from_json
+
+Attributes
+**********
