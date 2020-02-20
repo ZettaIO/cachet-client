@@ -10,12 +10,15 @@ Resource
 Methods
 *******
 
+.. automethod:: ComponentGroup.__init__
 .. automethod:: ComponentGroup.update
+.. automethod:: ComponentGroup.get
 .. automethod:: ComponentGroup.delete
 
 Attributes
 **********
 
+.. autoattribute:: ComponentGroup.attrs
 .. autoattribute:: ComponentGroup.id
 .. autoattribute:: ComponentGroup.name
 .. autoattribute:: ComponentGroup.enabled_components
@@ -32,6 +35,10 @@ Attributes
 Manager
 -------
 
+Methods
+*******
+
+.. automethod:: ComponentGroupManager.__init__
 .. automethod:: ComponentGroupManager.create
 .. automethod:: ComponentGroupManager.update
 .. automethod:: ComponentGroupManager.count
@@ -41,3 +48,9 @@ Manager
 .. automethod:: ComponentGroupManager.instance_from_dict
 .. automethod:: ComponentGroupManager.instance_from_json
 .. automethod:: ComponentGroupManager.instance_list_from_json
+
+Attributes
+**********
+
+.. autoattribute:: ComponentGroupManager.resource_class
+.. autoattribute:: ComponentGroupManager.path
