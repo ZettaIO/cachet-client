@@ -68,6 +68,11 @@ class Manager:
     path = None  # Type: str
 
     def __init__(self, http_client: HttpClient):
+        """Manager initializer.
+
+        Args:
+            http_client: The httpclient
+        """
         self._http = http_client
 
         if self.resource_class is None:
