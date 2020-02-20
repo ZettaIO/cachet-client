@@ -1,4 +1,16 @@
 
+# 3.0.0
+
+## Additions / Improvements
+
+* Support for metrics and metric points
+* Documentation improvements
+
+## Breaking changes
+
+* Fixed class name typo: `IndicentUpdate` properly renamed to `IncidentUpdate`
+* `IncidentUpdate.permlink` renamed to `permalink` (in line with the actual field name)
+
 # 2.0.1
 
 * Fix Internal Server Error when creating incidents due to
@@ -7,8 +19,8 @@
 # 2.0.0
 
 * Python 3.8 support
-* Fix embarrasing class name typo `CompontentGroup` -> `ComponentGroup`
-* Fix embarrasing class name typo `CompontentGroupManager` -> `ComponentGroupManager`
+* Fix class name typo `CompontentGroup` -> `ComponentGroup`
+* Fix class name typo `CompontentGroupManager` -> `ComponentGroupManager`
 * Various other typos
 * ComponentGroup now supports the `visible` flag
 
