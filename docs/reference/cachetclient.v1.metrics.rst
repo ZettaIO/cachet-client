@@ -41,17 +41,18 @@ Manager
 Methods
 *******
 
-.. automethod:: MetricPointsManager.__init__
-.. automethod:: MetricPointsManager.create
-.. automethod:: MetricPointsManager.list
-.. automethod:: MetricPointsManager.count
-.. automethod:: MetricPointsManager.delete
-.. automethod:: MetricPointsManager.instance_from_dict
-.. automethod:: MetricPointsManager.instance_from_json
-.. automethod:: MetricPointsManager.instance_list_from_json
+.. automethod:: MetricsManager.__init__
+.. automethod:: MetricsManager.create
+.. automethod:: MetricsManager.get
+.. automethod:: MetricsManager.list
+.. automethod:: MetricsManager.count
+.. automethod:: MetricsManager.delete
+.. automethod:: MetricsManager.instance_from_dict
+.. automethod:: MetricsManager.instance_from_json
+.. automethod:: MetricsManager.instance_list_from_json
 
 Attributes
 **********
 
-.. autoattribute:: MetricPointsManager.path
-.. autoattribute:: MetricPointsManager.resource_class
+.. autoattribute:: MetricsManager.path
+.. autoattribute:: MetricsManager.resource_class
