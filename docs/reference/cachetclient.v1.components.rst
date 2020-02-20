@@ -10,15 +10,18 @@ Resource
 Methods
 *******
 
+.. automethod:: Component.__init__
 .. automethod:: Component.add_tag
 .. automethod:: Component.del_tag
 .. automethod:: Component.has_tag
 .. automethod:: Component.update
+.. automethod:: Component.get
 .. automethod:: Component.delete
 
 Attributes
 **********
 
+.. autoattribute:: Component.attrs
 .. autoattribute:: Component.id
 .. autoattribute:: Component.name
 .. autoattribute:: Component.description
@@ -35,6 +38,10 @@ Attributes
 Manager
 -------
 
+Methods
+*******
+
+.. automethod:: ComponentManager.__init__
 .. automethod:: ComponentManager.create
 .. automethod:: ComponentManager.update
 .. automethod:: ComponentManager.list
@@ -44,3 +51,9 @@ Manager
 .. automethod:: ComponentManager.instance_from_dict
 .. automethod:: ComponentManager.instance_from_json
 .. automethod:: ComponentManager.instance_list_from_json
+
+Attributes
+**********
+
+.. autoattribute:: ComponentManager.path
+.. autoattribute:: ComponentManager.resource_class
