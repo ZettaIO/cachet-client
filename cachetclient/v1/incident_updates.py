@@ -27,11 +27,11 @@ class IncidentUpdate(Resource):
         self._data['status'] = value
 
     @property
-    def messages(self) -> str:
+    def message(self) -> str:
         """str: Get or set message"""
         return self.get('message')
 
-    @messages.setter
+    @message.setter
     def message(self, value: str):
         self._data['message'] = value
 
