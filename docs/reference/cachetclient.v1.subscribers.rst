@@ -10,6 +10,7 @@ Resource
 Methods
 *******
 
+.. automethod:: Subscriber.__init__
 .. automethod:: Subscriber.update
 .. automethod:: Subscriber.get
 .. automethod:: Subscriber.delete
@@ -29,6 +30,10 @@ Attributes
 Manager
 -------
 
+Methods
+*******
+
+.. automethod:: SubscriberManager.__init__
 .. automethod:: SubscriberManager.create
 .. automethod:: SubscriberManager.list
 .. automethod:: SubscriberManager.delete
@@ -36,3 +41,9 @@ Manager
 .. automethod:: SubscriberManager.instance_from_dict
 .. automethod:: SubscriberManager.instance_from_json
 .. automethod:: SubscriberManager.instance_list_from_json
+
+Attributes
+**********
+
+.. autoattribute:: SubscriberManager.path
+.. autoattribute:: SubscriberManager.resource_class
