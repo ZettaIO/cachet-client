@@ -35,6 +35,7 @@ Manager
 Methods
 *******
 
+.. automethod:: IncidentUpdatesManager.__init__
 .. automethod:: IncidentUpdatesManager.create
 .. automethod:: IncidentUpdatesManager.update
 .. automethod:: IncidentUpdatesManager.count
@@ -47,3 +48,6 @@ Methods
 
 Attributes
 **********
+
+.. autoattribute:: IncidentUpdatesManager.path
+.. autoattribute:: IncidentUpdatesManager.resource_class
