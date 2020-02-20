@@ -7,6 +7,16 @@ Version
 Resource
 --------
 
+Methods
+*******
+
+.. automethod:: Version.__init__
+.. automethod:: Version.get
+
+Attributes
+**********
+
+.. autoattribute:: Version.attrs
 .. autoattribute:: Version.value
 .. autoattribute:: Version.on_latest
 .. autoattribute:: Version.latest
@@ -14,5 +24,18 @@ Resource
 Manager
 -------
 
+Methods
+*******
+
+.. automethod:: VersionManager.__init__
 .. automethod:: VersionManager.get
 .. automethod:: VersionManager.__call__
+.. automethod:: VersionManager.instance_list_from_json
+.. automethod:: VersionManager.instance_from_dict
+.. automethod:: VersionManager.instance_from_json
+
+Attributes
+**********
+
+.. autoattribute:: VersionManager.path
+.. autoattribute:: VersionManager.resource_class
