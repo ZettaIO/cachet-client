@@ -1,0 +1,22 @@
+version: '3'
+services:
+  status:
+    image: cachethq/docker:2.3.15
+    env_file:
+      - cachet.env
+    ports:
+      - "8000:8000"
+    depends_on:
+      - status_db
+  status_db:
+    image: mariadb:10.5
+    volumes:
+      - status_db:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=status
+      - MYSQL_USER=test
+      - MYSQL_PASSWORD=test
+
+volumes:
+  status_db:
