@@ -126,6 +126,10 @@ Do not run this script against a system in production.
 This is only for a test service.
 Cachet can easily be set up locally with docker: https://github.com/CachetHQ/Docker
 
+Optionally we can run cachet from source: https://github.com/CachetHQ/Docker
+
+A local setup is also located in the root or the repo (`docker-compose.yaml`).
+
 You need to set the following environment variables.
 
 ```bash
