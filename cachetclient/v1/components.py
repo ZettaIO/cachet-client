@@ -47,7 +47,7 @@ class Component(Resource):
 
     @property
     def status(self) -> int:
-        """int: Get or set dtatus id of the component (see :py:data:`enums`)"""
+        """int: Get or set status id of the component (see :py:data:`enums`)"""
         return self._data['status']
 
     @status.setter
