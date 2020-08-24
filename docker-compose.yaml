@@ -1,22 +1,46 @@
 version: '3'
 services:
-  status:
+  # Cachet 2.3.x
+  cachet23:
     image: cachethq/docker:2.3.15
     env_file:
-      - cachet.env
+      - cachet23.env
     ports:
       - "8000:8000"
     depends_on:
-      - status_db
-  status_db:
+      - cachet23_db
+  cachet23_db:
     image: mariadb:10.5
     volumes:
-      - status_db:/var/lib/mysql
+      - db23:/var/lib/mysql
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=status
       - MYSQL_USER=test
       - MYSQL_PASSWORD=test
 
+  # Cachet 2.4.x
+  # Assumes you cloned https://github.com/CachetHQ/Docker
+  cachet24:
+    build:
+      context: ../Docker
+    env_file:
+      - cachet24.env
+    ports:
+      - "8080:8000"
+    depends_on:
+      - cachet24_db
+  cachet24_db:
+    image: mariadb:10.5
+    volumes:
+      - db24:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=status
+      - MYSQL_USER=test
+      - MYSQL_PASSWORD=test
+
+
 volumes:
-  status_db:
+  db23:
+  db24:
