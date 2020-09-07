@@ -140,3 +140,11 @@ class ScheduleManager(Manager):
             HTTPError: if schedule do not exist
         """
         self._delete(self.path, schedule_id)
+
+    def count(self) -> int:
+        """Count the total number of scheduled events
+
+        Returns:
+            int: Number of subscribers
+        """
+        return self._count(self.path)
