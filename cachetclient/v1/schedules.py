@@ -1,6 +1,6 @@
 from datetime import datetime
 from cachetclient.v1 import enums
-from typing import Generator, Set
+from typing import Generator
 
 from cachetclient.base import Resource, Manager
 from cachetclient import utils
@@ -97,7 +97,6 @@ class ScheduleManager(Manager):
                 scheduled_at=scheduled_at
             ),
         )
-
 
     def list(self, page: int = 1, per_page: int = 20) -> Generator[Schedule, None, None]:
         """List all schedules

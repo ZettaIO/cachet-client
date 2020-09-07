@@ -225,7 +225,7 @@ def test_subscribers():
     assert isinstance(new_sub.updated_at, datetime)
     assert isinstance(new_sub.verified_at, datetime)
 
-    # Rought subscriber count check
+    # Rough subscriber count check
     count = client().subscribers.count()
     if count == 0:
         raise ValueError("Subscriber count is 0")
@@ -247,11 +247,11 @@ def test_incidents():
         name="Something blew up!",
         message="We are looking into it",
         status=enums.INCIDENT_INVESTIGATING,
-        component_id=1,
-        component_status=enums.COMPONENT_STATUS_MAJOR_OUTAGE,
+        # component_id=1,
+        # component_status=enums.COMPONENT_STATUS_MAJOR_OUTAGE,
     )
     pprint(issue.attrs)
-    issue.delete()
+    # issue.delete()
 
 
 @simple_test()
