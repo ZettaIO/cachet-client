@@ -37,6 +37,7 @@ Methods
 .. automethod:: ScheduleManager.list
 .. automethod:: ScheduleManager.get
 .. automethod:: ScheduleManager.delete
+.. automethod:: ScheduleManager.count
 .. automethod:: ScheduleManager.instance_from_dict
 .. automethod:: ScheduleManager.instance_from_json
 .. automethod:: ScheduleManager.instance_list_from_json
