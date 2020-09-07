@@ -10,26 +10,32 @@ class Schedule(Resource):
 
     @property
     def id(self) -> int:
+        """int: Resource ID"""
         return self.get('id')
 
     @property
     def name(self) -> str:
+        """str: Name of the scheduled event"""
         return self.get('name')
 
     @property
     def message(self) -> str:
+        """str: Message string"""
         return self.get('message')
 
     @property
     def status(self) -> int:
+        """int: Status of the scheduled event"""
         return self.get('status')
 
     @property
     def scheduled_at(self) -> datetime:
+        """datetime: When the event is schedule for"""
         return utils.to_datetime(self.get('scheduled_at'))
 
     @property
     def completed_at(self) -> datetime:
+        """datetime: When the event is completed"""
         return utils.to_datetime(self.get('completed_at'))
 
 
@@ -44,10 +50,10 @@ class ScheduleManager(Manager):
             status: int,
             message: str = None,
             scheduled_at: datetime = None):
-        """Create a shedule.
+        """Create a schedule.
 
         Returns:
-            :py:class:`Shedule` instance
+            :py:class:`Schedule` instance
         """
         if status not in enums.SCHEDULE_STATUS_LIST:
             raise ValueError("Invalid status id '{}'. Valid values :{}".format(
