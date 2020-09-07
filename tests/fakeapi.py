@@ -211,8 +211,8 @@ class FakeSchedules(FakeData):
         self.add_entry(instance)
         return FakeHttpResponse(data={'data': instance})
 
-    def put(self, schedule_id=None, params=None, data=None):
-        self.delete_by_id(incident_id)
+    def delete(self, schedule_id=None, params=None, data=None):
+        self.delete_by_id(schedule_id)
         return FakeHttpResponse()
 
 
@@ -421,7 +421,7 @@ class Routes:
             (r'^subscribers/(?P<subscriber_id>\w+)', self.subscribers, ['delete']),
             (r'^subscribers', self.subscribers, ['get', 'post']),
             (r'^schedules/(?P<schedule_id>\w+)', self.schedules, ['get', 'delete']),
-            (r'^schedules', self.schedules,['get', 'post'])
+            (r'^schedules', self.schedules, ['get', 'post'])
         ]
 
     def dispatch(self, method, path, data=None, params=None):
