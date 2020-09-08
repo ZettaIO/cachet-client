@@ -102,12 +102,13 @@ def simple_test(halt_on_exception=False):
 
 def main():
     if CACHET_ENDPOINT is None:
-        raise ValueError("CACHET_ENDPOINT enviroment variable missing")
+        raise ValueError("CACHET_ENDPOINT environment variable missing")
 
     if CACHET_API_TOKEN is None:
-        raise ValueError("CACHET_API_TOKEN enviroment variable missing")
+        raise ValueError("CACHET_API_TOKEN environment variable missing")
 
     setup()
+    version = client().version()
 
     # Version 2.3.x features
     test_ping()
@@ -119,9 +120,10 @@ def main():
     test_metrics()
     test_metric_points()
 
-    # Version 2.4.x features
-    # test_incident_updates()
-    # test_schedules()
+    # Version 2.4.x feature
+    if version.value.startswith("2.4"):
+        # test_incident_updates()
+        test_schedules()
 
     print("=" * 80)
     print("Numer of tests    :", Stats.NUM_TESTS)
@@ -134,7 +136,7 @@ def main():
 def setup():
     # Get the default component
     try:
-        component = client().components.get(DEFAULT_COMPONENT_GROUP)
+        client().components.get(DEFAULT_COMPONENT_GROUP)
     except HTTPError:
         print("Cannot find default component group. Creating.")
         client().components.create(
@@ -307,8 +309,27 @@ def test_incident_updates():
 
 @simple_test()
 def test_schedules():
-    sch = client().schedules.create("Test Schedule", "Shits gonna happen", None)
-    pprint(sch.attrs, indent=2)
+    start_time = datetime(2020, 9, 1, 20)
+    end_time = datetime(2020, 9, 1, 21)
+    sch = client().schedules.create(
+        name="Test Schedule",
+        status=enums.SCHEDULE_STATUS_UPCOMING,
+        message="Shits gonna happen",
+        scheduled_at=start_time,
+        completed_at=end_time,
+        notify=False,
+    )
+
+    sch = client().schedules.get(sch.id)
+
+    assert isinstance(sch.id, int)
+    assert sch.status == enums.SCHEDULE_STATUS_UPCOMING
+    assert sch.name == "Test Schedule"
+    assert sch.message == "Shits gonna happen"
+    assert sch.scheduled_at == start_time
+    assert sch.completed_at == end_time
+
+    sch.delete()
 
 
 @simple_test()
