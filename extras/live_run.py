@@ -1,10 +1,11 @@
 """
-Run some simple test on an actual cachet setup.
+Run some quick simple tests on an actual cachet setup.
+This modules is not pretty, but gets the work done.
 This can be set up locally with docker fairly quickly.
 
-Set the following enviroment variables before running the script:
+Set the following environment variables before running the script:
 
-- CACHET_ENDPOINT (eg: http://test.example.com/api/v1)
+- CACHET_ENDPOINT (eg: http://localhost:8000/api/v1)
 - CACHET_API_TOKEN (eg. Wohc7eeGhaewae7zie1E)
 """
 import os
@@ -18,6 +19,13 @@ from requests.exceptions import HTTPError
 import cachetclient
 from cachetclient.v1.client import Client
 from cachetclient.v1 import enums
+
+import logging
+logger = logging.getLogger('cachetclient')
+logger.setLevel(logging.DEBUG)
+
+# Initial component group we use for testing
+DEFAULT_COMPONENT_GROUP = 1
 
 CACHET_ENDPOINT = os.environ.get('CACHET_ENDPOINT')
 CACHET_API_TOKEN = os.environ.get('CACHET_API_TOKEN')
@@ -102,14 +110,14 @@ def main():
     setup()
 
     # Version 2.3.x features
-    # test_ping()
-    # test_version()
-    # test_components()
-    # test_component_groups()
-    # test_subscribers()
-    # test_incidents()
-    # test_metrics()
-    # test_metric_points()
+    test_ping()
+    test_version()
+    test_components()
+    test_component_groups()
+    test_subscribers()
+    test_incidents()
+    test_metrics()
+    test_metric_points()
 
     # Version 2.4.x features
     # test_incident_updates()
@@ -126,7 +134,7 @@ def main():
 def setup():
     # Get the default component
     try:
-        component = client().components.get(1)
+        component = client().components.get(DEFAULT_COMPONENT_GROUP)
     except HTTPError:
         print("Cannot find default component group. Creating.")
         client().components.create(
@@ -194,7 +202,8 @@ def test_components():
         comp.id,
         status=enums.COMPONENT_STATUS_OPERATIONAL,
         name="A new component name",
-        tags={'bolle', 'kake'}
+        tags={'bolle', 'kake'},
+        enabled=True,
     )
     assert comp.name == "A new component name"
     assert comp.description == 'This is a test'
@@ -267,11 +276,11 @@ def test_incidents():
         name="Something blew up!",
         message="We are looking into it",
         status=enums.INCIDENT_INVESTIGATING,
-        # component_id=1,
-        # component_status=enums.COMPONENT_STATUS_MAJOR_OUTAGE,
+        component_id=1,
+        component_status=enums.COMPONENT_STATUS_MAJOR_OUTAGE,
     )
     pprint(issue.attrs)
-    # issue.delete()
+    issue.delete()
 
 
 @simple_test()
