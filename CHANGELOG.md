@@ -1,4 +1,8 @@
 
+# 3.1.0
+
+* Added support for schedules (cachet 2.4)
+
 # 3.0.0
 
 ## Additions / Improvements
