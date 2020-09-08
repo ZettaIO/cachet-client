@@ -49,8 +49,18 @@ class ScheduleManager(Manager):
             name: str,
             status: int,
             message: str = None,
-            scheduled_at: datetime = None):
+            scheduled_at: datetime = None,
+            completed_at: datetime = None,
+            notify: bool = True):
         """Create a schedule.
+
+        Keyword Args:
+            name (str): Name of the scheduled event
+            status (int): Schedule status. See ``enums``
+            mesage (str): Message string
+            scheduled_at (datetime): When the event starts
+            completed_at (datetime): When the event ends
+            notify (bool): Notify subscribers
 
         Returns:
             :py:class:`Schedule` instance
@@ -66,8 +76,10 @@ class ScheduleManager(Manager):
             {
                 'name': name,
                 'message': message,
-                'status': status,
-                'scheduled_at': scheduled_at
+                'status': enums.SCHEDULE_STATUS_UPCOMING,
+                'scheduled_at': scheduled_at.strftime('%Y-%m-%d %H:%M'),
+                'completed_at': completed_at.strftime('%Y-%m-%d %H:%M') if completed_at else None,
+                'notify': 0,
             }
         )
 
