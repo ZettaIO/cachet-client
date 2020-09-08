@@ -13,6 +13,8 @@ import traceback
 from datetime import datetime
 from pprint import pprint
 
+from requests.exceptions import HTTPError
+
 import cachetclient
 from cachetclient.v1.client import Client
 from cachetclient.v1 import enums
@@ -42,6 +44,9 @@ class Stats:
 
     @classmethod
     def success_percentage(cls):
+        if cls.NUM_TESTS == 0:
+            return 0.0
+
         return round(cls.NUM_TESTS_SUCCESS * 100 / cls.NUM_TESTS, 2)
 
 
@@ -94,15 +99,17 @@ def main():
     if CACHET_API_TOKEN is None:
         raise ValueError("CACHET_API_TOKEN enviroment variable missing")
 
+    setup()
+
     # Version 2.3.x features
-    test_ping()
-    test_version()
-    test_components()
-    test_component_groups()
-    test_subscribers()
-    test_incidents()
-    test_metrics()
-    test_metric_points()
+    # test_ping()
+    # test_version()
+    # test_components()
+    # test_component_groups()
+    # test_subscribers()
+    # test_incidents()
+    # test_metrics()
+    # test_metric_points()
 
     # Version 2.4.x features
     # test_incident_updates()
@@ -114,6 +121,19 @@ def main():
     print("Failure           :", Stats.NUM_TESTS_FAIL)
     print("Percentage passed : {}%".format(Stats.success_percentage()))
     print("=" * 80)
+
+
+def setup():
+    # Get the default component
+    try:
+        component = client().components.get(1)
+    except HTTPError:
+        print("Cannot find default component group. Creating.")
+        client().components.create(
+            name="Generic Component",
+            status=enums.COMPONENT_STATUS_OPERATIONAL,
+            description="Generic component group for live testing",
+        )
 
 
 @simple_test()
