@@ -23,6 +23,7 @@ class SchedulerTests(CachetTestcase):
             status=enums.SCHEDULE_STATUS_UPCOMING,
             message="We're doing some maintenance today",
             scheduled_at=start_time,
+            notify=False,
         )
 
         self.assertEqual(instance.id, 1)
@@ -35,13 +36,15 @@ class SchedulerTests(CachetTestcase):
         instance.delete()
 
     def test_list(self):
-        start_time = datetime.strptime('2020-09-07 00:18:00', '%Y-%m-%d %H:%M:%S')
+        start_time = datetime.strptime('2020-09-17 16:00', '%Y-%m-%d %H:%M')
+        end_time = datetime.strptime('2020-09-17 18:00', '%Y-%m-%d %H:%M')
         for i in range(20):
             self.client.schedules.create(
                 name="Planned Maintenance",
                 status=enums.SCHEDULE_STATUS_UPCOMING,
                 message="We're doing some maintenance today",
                 scheduled_at=start_time,
+                completed_at=end_time,
             )
 
         self.assertEqual(self.client.schedules.count(), 20)

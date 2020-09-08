@@ -200,13 +200,21 @@ class FakeSchedules(FakeData):
             )
 
     def post(self, params=None, data=None):
+        # cachet takes HH:MM format and converts it to a datetime. Just fake it here.
+        scheduled_at = data.get('scheduled_at')
+        if scheduled_at:
+            scheduled_at += ":00"
+        completed_at = data.get('completed_at')
+        if completed_at:
+            completed_at += ":00"
+
         instance = {
             'id': self.next_id(),
             'name': data.get('name'),
             'message': data.get('message'),
             'status': data.get('status'),
-            'scheduled_at': data.get('scheduled_at').strftime("%Y-%m-%d %H:%M:%S"),
-            # 'completed_at': '2019-05-25 17:00:00',
+            'scheduled_at': scheduled_at,
+            'completed_at': completed_at,
         }
         self.add_entry(instance)
         return FakeHttpResponse(data={'data': instance})
