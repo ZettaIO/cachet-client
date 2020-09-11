@@ -1,4 +1,8 @@
 
+# 3.1.1
+
+* Added missing resource imports in `v1.__init__`
+
 # 3.1.0
 
 * Added support for schedules (cachet 2.4)
