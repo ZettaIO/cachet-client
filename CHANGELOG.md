@@ -2,6 +2,7 @@
 # 3.1.1
 
 * Added missing resource imports in `v1.__init__`
+* Removed irrelevant `__version__` value in `cachetclient.v1.__init__`
 
 # 3.1.0
 
