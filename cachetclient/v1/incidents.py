@@ -82,6 +82,11 @@ class Incident(Resource):
         return utils.to_datetime(self.get('scheduled_at'))
 
     @property
+    def occurred_at(self) -> datetime:
+        """datetime: When the issue was occurred"""
+        return utils.to_datetime(self.get('occurred_at'))
+
+    @property
     def created_at(self) -> datetime:
         """datetime: When the issue was created"""
         return utils.to_datetime(self.get('created_at'))
@@ -119,7 +124,7 @@ class IncidentManager(Manager):
             component_id: int = None,
             component_status: int = None,
             notify: bool = True,
-            created_at: datetime = None,
+            occurred_at: datetime = None,
             template: str = None,
             template_vars: List[str] = None) -> Incident:
         """
@@ -135,7 +140,7 @@ class IncidentManager(Manager):
             component_id (int): The component to update
             component_status (int): The status to apply on component
             notify (bool): If users should be notified
-            created_at: when the indicent was created
+            occurred_at: when the indicent was occurred
             template (str): Slug of template to use
             template_vars (list): Variables to the template
 
@@ -152,7 +157,7 @@ class IncidentManager(Manager):
                 'component_id': component_id,
                 'component_status': component_status,
                 'notify': 1 if notify else 0,
-                'created_at': created_at,
+                'occurred_at': occurred_at.strftime('%Y-%m-%d %H:%M') if occurred_at else None,
                 'template': template,
                 'vars': template_vars or [],
             }
@@ -168,7 +173,7 @@ class IncidentManager(Manager):
             component_id: int = None,
             component_status: int = None,
             notify: bool = True,
-            created_at: datetime = None,
+            occurred_at: datetime = None,
             template: str = None,
             template_vars: List[str] = None,
             **kwargs) -> Incident:
@@ -186,7 +191,7 @@ class IncidentManager(Manager):
             component_id (int): The component to update
             component_status (int): The status to apply on component
             notify (bool): If users should be notified
-            created_at: when the indicent was created
+            occurred_at: when the indicent was occurred
             template (str): Slug of template to use
             template_vars (list): Variables to the template
 
@@ -207,7 +212,7 @@ class IncidentManager(Manager):
                 component_id=component_id,
                 component_status=component_status,
                 notify=1 if notify else 0,
-                created_at=created_at,
+                occurred_at=occurred_at.strftime('%Y-%m-%d %H:%M') if occurred_at else None,
                 template=template,
                 vars=template_vars,
             )
