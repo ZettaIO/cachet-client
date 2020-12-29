@@ -185,7 +185,7 @@ class ComponentManager(Manager):
                 'order': order,
                 'group_id': group_id,
                 'enabled': enabled,
-                'tags': tags,
+                'tags': ','.join(tags) if isinstance(tags, set) else tags if isinstance(tags, str) else None,
             }
         )
 
@@ -231,7 +231,7 @@ class ComponentManager(Manager):
                 order=order,
                 group_id=group_id,
                 enabled=enabled,
-                tags=','.join(tags) if tags else None,
+                tags=','.join(tags) if isinstance(tags, set) else tags if isinstance(tags, str) else None,
             ),
         )
 
