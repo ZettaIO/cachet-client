@@ -134,6 +134,7 @@ class IncidentManager(Manager):
             component_id: int = None,
             component_status: int = None,
             notify: bool = True,
+            created_at: datetime = None,
             occurred_at: datetime = None,
             template: str = None,
             template_vars: List[str] = None) -> Incident:
@@ -151,7 +152,7 @@ class IncidentManager(Manager):
             component_id (int): The component to update
             component_status (int): The status to apply on component
             notify (bool): If users should be notified
-            occurred_at: when the indicent occurred (cachet 2.4)
+            occurred_at: when the incident occurred (cachet 2.4)
             created_at: when the incident was created (cachet 2.3)
             template (str): Slug of template to use
             template_vars (list): Variables to the template
@@ -188,6 +189,7 @@ class IncidentManager(Manager):
             component_id: int = None,
             component_status: int = None,
             notify: bool = True,
+            created_at: datetime = None,
             occurred_at: datetime = None,
             template: str = None,
             template_vars: List[str] = None,
@@ -207,7 +209,7 @@ class IncidentManager(Manager):
             component_id (int): The component to update
             component_status (int): The status to apply on component
             notify (bool): If users should be notified
-            occurred_at: when the indicent was occurred
+            occurred_at: when the incident was occurred
             created_at: when the incident was created
             template (str): Slug of template to use
             template_vars (list): Variables to the template
