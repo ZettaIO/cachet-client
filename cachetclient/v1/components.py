@@ -183,11 +183,10 @@ class Component(Resource):
         elif slug:
             del self._data['tags'][slug.lower()]
 
-
     def has_tag(self, name: str = None, slug: str = None) -> bool:
         """Check if a tag exists by tag or slug.
 
-        Tags and slugs are case insensitive.      
+        Tags and slugs are case insensitive.
 
         Args:
             name (str): Tag name
