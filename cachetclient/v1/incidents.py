@@ -64,7 +64,6 @@ class Incident(Resource):
         """str: Human representation of the status"""
         return self.get('human_status')
 
-
     @property
     def visible(self) -> int:
         """bool: Get or set visibility of the incident"""
@@ -76,7 +75,7 @@ class Incident(Resource):
 
     @property
     def stickied(self) -> int:
-        """bool: Get or set sticky of the incident"""
+        """bool: Get or set sticky value of the incident (cachet 2.4)"""
         return self.get('stickied') == 1
 
     @stickied.setter
@@ -147,7 +146,7 @@ class IncidentManager(Manager):
             component_id (int): The component to update
             component_status (int): The status to apply on component
             notify (bool): If users should be notified
-            created_at: when the indicent was created
+            created_at: when the incident was created
             template (str): Slug of template to use
             template_vars (list): Variables to the template
 
@@ -201,7 +200,7 @@ class IncidentManager(Manager):
             component_id (int): The component to update
             component_status (int): The status to apply on component
             notify (bool): If users should be notified
-            created_at: when the indicent was created
+            created_at: when the incident was created
             template (str): Slug of template to use
             template_vars (list): Variables to the template
 
