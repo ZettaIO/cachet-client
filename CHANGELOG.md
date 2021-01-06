@@ -1,4 +1,25 @@
 
+# 4.0.0
+
+## Tags
+
+Revamped how we interact with component tags. Previous
+versions was limited to inspecting component slugs.
+
+* ``Component.tags`` now returns a slug:name dict
+* ``Component.tag_names`` returns a list of tag names
+* ``Component.tag_slugs`` returns a list of slug names
+* ``Components.tags`` are now read-only
+* ``Components.set_tags()`` will overwrite all tags
+* ``Components.add_tag`` and ``add_tags`` can be used to add tags
+* All tag lookups are now case insensitive
+
+## Other Additions / Fixes
+
+* Incidents now support the ``occurred_at`` field in cachet 2.4
+" Updating components via incidents should no longer cause a 400 error if
+  `component_id` or `component_status` is missing
+
 # 3.1.1
 
 * Added missing resource imports in `v1.__init__`
@@ -17,7 +38,7 @@
 
 ## Breaking changes
 
-* Fixed class name typo: `IndicentUpdate` properly renamed to `IncidentUpdate`
+* Fixed class name typo: `IncidentUpdate` properly renamed to `IncidentUpdate`
 * `IncidentUpdate.permlink` renamed to `permalink` (in line with the actual field name)
 
 # 2.0.1
