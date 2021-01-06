@@ -1,6 +1,6 @@
 from datetime import datetime
 from cachetclient.v1 import enums
-from typing import Generator, Set
+from typing import Generator
 
 from cachetclient.base import Resource, Manager
 from cachetclient import utils
@@ -10,26 +10,32 @@ class Schedule(Resource):
 
     @property
     def id(self) -> int:
+        """int: Resource ID"""
         return self.get('id')
 
     @property
     def name(self) -> str:
+        """str: Name of the scheduled event"""
         return self.get('name')
 
     @property
     def message(self) -> str:
+        """str: Message string"""
         return self.get('message')
 
     @property
     def status(self) -> int:
+        """int: Status of the scheduled event"""
         return self.get('status')
 
     @property
     def scheduled_at(self) -> datetime:
+        """datetime: When the event is schedule for"""
         return utils.to_datetime(self.get('scheduled_at'))
 
     @property
     def completed_at(self) -> datetime:
+        """datetime: When the event is completed"""
         return utils.to_datetime(self.get('completed_at'))
 
 
@@ -43,11 +49,21 @@ class ScheduleManager(Manager):
             name: str,
             status: int,
             message: str = None,
-            scheduled_at: datetime = None):
-        """Create a shedule.
+            scheduled_at: datetime = None,
+            completed_at: datetime = None,
+            notify: bool = True):
+        """Create a schedule.
+
+        Keyword Args:
+            name (str): Name of the scheduled event
+            status (int): Schedule status. See ``enums``
+            mesage (str): Message string
+            scheduled_at (datetime): When the event starts
+            completed_at (datetime): When the event ends
+            notify (bool): Notify subscribers
 
         Returns:
-            :py:class:`Shedule` instance
+            :py:class:`Schedule` instance
         """
         if status not in enums.SCHEDULE_STATUS_LIST:
             raise ValueError("Invalid status id '{}'. Valid values :{}".format(
@@ -60,8 +76,10 @@ class ScheduleManager(Manager):
             {
                 'name': name,
                 'message': message,
-                'status': status,
-                'scheduled_at': scheduled_at
+                'status': enums.SCHEDULE_STATUS_UPCOMING,
+                'scheduled_at': scheduled_at.strftime('%Y-%m-%d %H:%M'),
+                'completed_at': completed_at.strftime('%Y-%m-%d %H:%M') if completed_at else None,
+                'notify': 0,
             }
         )
 
@@ -97,7 +115,6 @@ class ScheduleManager(Manager):
                 scheduled_at=scheduled_at
             ),
         )
-
 
     def list(self, page: int = 1, per_page: int = 20) -> Generator[Schedule, None, None]:
         """List all schedules
@@ -135,3 +152,11 @@ class ScheduleManager(Manager):
             HTTPError: if schedule do not exist
         """
         self._delete(self.path, schedule_id)
+
+    def count(self) -> int:
+        """Count the total number of scheduled events
+
+        Returns:
+            int: Number of subscribers
+        """
+        return self._count(self.path)

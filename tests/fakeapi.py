@@ -3,6 +3,7 @@ import math
 import random
 import re
 import string
+from datetime import datetime
 
 from requests.exceptions import HTTPError
 from cachetclient.v1 import enums
@@ -184,6 +185,42 @@ class FakeComponentGroups(FakeData):
 
     def delete(self, group_id=None, params=None, data=None):
         self.delete_by_id(group_id)
+        return FakeHttpResponse()
+
+
+class FakeSchedules(FakeData):
+
+    def get(self, schedule_id=None, params=None, data=None):
+        if schedule_id:
+            return self._get(schedule_id)
+        else:
+            return self._list(
+                per_page=params.get('per_page') or 20,
+                page=params.get('page') or 1,
+            )
+
+    def post(self, params=None, data=None):
+        # cachet takes HH:MM format and converts it to a datetime. Just fake it here.
+        scheduled_at = data.get('scheduled_at')
+        if scheduled_at:
+            scheduled_at += ":00"
+        completed_at = data.get('completed_at')
+        if completed_at:
+            completed_at += ":00"
+
+        instance = {
+            'id': self.next_id(),
+            'name': data.get('name'),
+            'message': data.get('message'),
+            'status': data.get('status'),
+            'scheduled_at': scheduled_at,
+            'completed_at': completed_at,
+        }
+        self.add_entry(instance)
+        return FakeHttpResponse(data={'data': instance})
+
+    def delete(self, schedule_id=None, params=None, data=None):
+        self.delete_by_id(schedule_id)
         return FakeHttpResponse()
 
 
@@ -372,6 +409,7 @@ class Routes:
         self.metrics = FakeMetrics(self)
         self.metric_points = FakeMetricPoints(self)
         self.subscribers = FakeSubscribers(self)
+        self.schedules = FakeSchedules(self)
 
         self._routes = [
             (r'^ping', self.ping, ['get']),
@@ -390,6 +428,8 @@ class Routes:
             (r'^metrics', self.metrics, ['get', 'post']),
             (r'^subscribers/(?P<subscriber_id>\w+)', self.subscribers, ['delete']),
             (r'^subscribers', self.subscribers, ['get', 'post']),
+            (r'^schedules/(?P<schedule_id>\w+)', self.schedules, ['get', 'delete']),
+            (r'^schedules', self.schedules, ['get', 'post'])
         ]
 
     def dispatch(self, method, path, data=None, params=None):

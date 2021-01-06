@@ -1,4 +1,13 @@
 
+# 3.1.1
+
+* Added missing resource imports in `v1.__init__`
+* Removed irrelevant `__version__` value in `cachetclient.v1.__init__`
+
+# 3.1.0
+
+* Added support for schedules (cachet 2.4)
+
 # 3.0.0
 
 ## Additions / Improvements

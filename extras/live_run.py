@@ -1,10 +1,11 @@
 """
-Run some simple test on an actual cachet setup.
+Run some quick simple tests on an actual cachet setup.
+This modules is not pretty, but gets the work done.
 This can be set up locally with docker fairly quickly.
 
-Set the following enviroment variables before running the script:
+Set the following environment variables before running the script:
 
-- CACHET_ENDPOINT (eg: http://test.example.com/api/v1)
+- CACHET_ENDPOINT (eg: http://localhost:8000/api/v1)
 - CACHET_API_TOKEN (eg. Wohc7eeGhaewae7zie1E)
 """
 import os
@@ -13,9 +14,18 @@ import traceback
 from datetime import datetime
 from pprint import pprint
 
+from requests.exceptions import HTTPError
+
 import cachetclient
 from cachetclient.v1.client import Client
 from cachetclient.v1 import enums
+
+import logging
+logger = logging.getLogger('cachetclient')
+logger.setLevel(logging.DEBUG)
+
+# Initial component group we use for testing
+DEFAULT_COMPONENT_GROUP = 1
 
 CACHET_ENDPOINT = os.environ.get('CACHET_ENDPOINT')
 CACHET_API_TOKEN = os.environ.get('CACHET_API_TOKEN')
@@ -42,6 +52,9 @@ class Stats:
 
     @classmethod
     def success_percentage(cls):
+        if cls.NUM_TESTS == 0:
+            return 0.0
+
         return round(cls.NUM_TESTS_SUCCESS * 100 / cls.NUM_TESTS, 2)
 
 
@@ -89,10 +102,13 @@ def simple_test(halt_on_exception=False):
 
 def main():
     if CACHET_ENDPOINT is None:
-        raise ValueError("CACHET_ENDPOINT enviroment variable missing")
+        raise ValueError("CACHET_ENDPOINT environment variable missing")
 
     if CACHET_API_TOKEN is None:
-        raise ValueError("CACHET_API_TOKEN enviroment variable missing")
+        raise ValueError("CACHET_API_TOKEN environment variable missing")
+
+    setup()
+    version = client().version()
 
     # Version 2.3.x features
     test_ping()
@@ -104,16 +120,30 @@ def main():
     test_metrics()
     test_metric_points()
 
-    # Version 2.4.x features
-    # test_incident_updates()
-    # test_schedules()
+    # Version 2.4.x feature
+    if version.value.startswith("2.4"):
+        # test_incident_updates()
+        test_schedules()
 
     print("=" * 80)
-    print("Numer of tests    :", Stats.NUM_TESTS)
-    print("Succesful         :", Stats.NUM_TESTS_SUCCESS)
+    print("Number of tests   :", Stats.NUM_TESTS)
+    print("Successful        :", Stats.NUM_TESTS_SUCCESS)
     print("Failure           :", Stats.NUM_TESTS_FAIL)
     print("Percentage passed : {}%".format(Stats.success_percentage()))
     print("=" * 80)
+
+
+def setup():
+    # Get the default component
+    try:
+        client().components.get(DEFAULT_COMPONENT_GROUP)
+    except HTTPError:
+        print("Cannot find default component group. Creating.")
+        client().components.create(
+            name="Generic Component",
+            status=enums.COMPONENT_STATUS_OPERATIONAL,
+            description="Generic component group for live testing",
+        )
 
 
 @simple_test()
@@ -140,7 +170,7 @@ def test_components():
         name="Test Component",
         status=enums.COMPONENT_STATUS_OPERATIONAL,
         description="This is a test",
-        tags="test, thing",
+        tags=("Test Tag", "Another Test Tag"),
         order=1,
         group_id=1,
     )
@@ -156,8 +186,9 @@ def test_components():
     comp.order = 10
     comp.group_id = 1000
     comp.enabled = False
-    comp.tags = {'moo', 'boo'}
+    comp.set_tags(("Updated Tag 1", "Updated Tag 2"))
     comp = comp.update()
+    pprint(comp.attrs, indent=2)
 
     # Test if values are correctly updates
     assert comp.name == 'Test Thing', "Component name differs"
@@ -167,14 +198,15 @@ def test_components():
     assert comp.order == 10, "Component oder differs"
     assert comp.group_id == 1000, "Group id differs"
     assert comp.enabled is False, "Component enable status differs"
-    assert comp.tags == {'moo', 'boo'}, "Tags differs"
+    assert comp.tags_names == ["Updated Tag 1", "Updated Tag 2"], "Tags differs"
 
     # Call update directly on the manager
     comp = client().components.update(
         comp.id,
         status=enums.COMPONENT_STATUS_OPERATIONAL,
         name="A new component name",
-        tags={'bolle', 'kake'}
+        tags=("Some Tag", "Another Tag"),
+        enabled=True,
     )
     assert comp.name == "A new component name"
     assert comp.description == 'This is a test'
@@ -183,7 +215,7 @@ def test_components():
     assert comp.order == 10
     assert comp.group_id == 1000
     assert comp.enabled is True
-    assert comp.tags == {'bolle', 'kake'}
+    assert sorted(comp.tags_names) == ['Another Tag', 'Some Tag']
     comp.delete()
 
 
@@ -225,7 +257,7 @@ def test_subscribers():
     assert isinstance(new_sub.updated_at, datetime)
     assert isinstance(new_sub.verified_at, datetime)
 
-    # Rought subscriber count check
+    # Rough subscriber count check
     count = client().subscribers.count()
     if count == 0:
         raise ValueError("Subscriber count is 0")
@@ -278,8 +310,27 @@ def test_incident_updates():
 
 @simple_test()
 def test_schedules():
-    sch = client().schedules.create("Test Schedule", "Shits gonna happen", None)
-    pprint(sch.attrs, indent=2)
+    start_time = datetime(2020, 9, 1, 20)
+    end_time = datetime(2020, 9, 1, 21)
+    sch = client().schedules.create(
+        name="Test Schedule",
+        status=enums.SCHEDULE_STATUS_UPCOMING,
+        message="Shits gonna happen",
+        scheduled_at=start_time,
+        completed_at=end_time,
+        notify=False,
+    )
+
+    sch = client().schedules.get(sch.id)
+
+    assert isinstance(sch.id, int)
+    assert sch.status == enums.SCHEDULE_STATUS_UPCOMING
+    assert sch.name == "Test Schedule"
+    assert sch.message == "Shits gonna happen"
+    assert sch.scheduled_at == start_time
+    assert sch.completed_at == end_time
+
+    sch.delete()
 
 
 @simple_test()
