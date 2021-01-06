@@ -1,3 +1,4 @@
+import copy
 from datetime import datetime
 from typing import List, Generator
 
@@ -114,6 +115,25 @@ class Incident(Resource):
         """Generator['Incident', None, None]: Incident updates for this issue"""
         return self._manager.updates.list(self.id)
 
+    def update(self):
+        """
+        Posts the values in the resource to the server.
+
+        Example::
+
+            # Change an attribute and save the resource
+            >> resource.value = something
+            >> updated_resource = resource.update()
+
+        Returns:
+            The updated resource from the server
+        """
+        # Convert date strings to datetime
+        data = copy.deepcopy(self.attrs)
+        data["created_at"] = self.created_at
+        data["occurred_at"] = self.occurred_at
+        return self._manager.update(self.get('id'), **data)
+
 
 class IncidentManager(Manager):
     resource_class = Incident
@@ -160,22 +180,24 @@ class IncidentManager(Manager):
         Returns:
             Incident instance
         """
+        is_component_update = component_id is not None and component_status is not None
+
         return self._create(
             self.path,
-            {
-                'name': name,
-                'message': message,
-                'status': status,
-                'visible': 1 if visible else 0,
-                'stickied': 1 if stickied else 0,
-                'component_id': component_id,
-                'component_status': component_status,
-                'notify': 1 if notify else 0,
-                'created_at': created_at.strftime('%Y-%m-%d %H:%M') if created_at else None,
-                'occurred_at': occurred_at.strftime('%Y-%m-%d %H:%M') if occurred_at else None,
-                'template': template,
-                'vars': template_vars or [],
-            }
+            self._build_data_dict(
+                name=name,
+                message=message,
+                status=status,
+                visible=1 if visible else 0,
+                stickied=1 if stickied else 0,
+                component_id=component_id if is_component_update else None,
+                component_status=component_status if is_component_update else None,
+                notify=1 if notify else 0,
+                created_at=created_at.strftime('%Y-%m-%d %H:%M:%S') if created_at else None,
+                occurred_at=occurred_at.strftime('%Y-%m-%d %H:%M:%S') if occurred_at else None,
+                template=template,
+                vars=template_vars or [],
+            ),
         )
 
     def update(
@@ -189,7 +211,6 @@ class IncidentManager(Manager):
             component_id: int = None,
             component_status: int = None,
             notify: bool = True,
-            created_at: datetime = None,
             occurred_at: datetime = None,
             template: str = None,
             template_vars: List[str] = None,
@@ -209,8 +230,7 @@ class IncidentManager(Manager):
             component_id (int): The component to update
             component_status (int): The status to apply on component
             notify (bool): If users should be notified
-            occurred_at: when the incident was occurred
-            created_at: when the incident was created
+            occurred_at (datetime): when the incident was occurred
             template (str): Slug of template to use
             template_vars (list): Variables to the template
 
@@ -219,6 +239,8 @@ class IncidentManager(Manager):
         """
         if name is None or message is None or status is None or visible is None:
             raise ValueError('name, message, status and visible are required parameters')
+
+        is_component_update = component_id is not None and component_status is not None
 
         return self._update(
             self.path,
@@ -229,10 +251,9 @@ class IncidentManager(Manager):
                 status=status,
                 visible=1 if visible else 0,
                 stickied=1 if stickied else 0,
-                component_id=component_id,
-                component_status=component_status,
+                component_id=component_id if is_component_update else None,
+                component_status=component_status if is_component_update else None,
                 notify=1 if notify else 0,
-                created_at=created_at.strftime('%Y-%m-%d %H:%M') if created_at else None,
                 occurred_at=occurred_at.strftime('%Y-%m-%d %H:%M') if occurred_at else None,
                 template=template,
                 vars=template_vars,

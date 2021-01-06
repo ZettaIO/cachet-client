@@ -79,4 +79,4 @@ class ComponentsTests(CachetTestcase):
         self.assertTrue(comp.has_tag('Tag 1'))
         self.assertTrue(comp.has_tag('Tag 2'))
         self.assertFalse(comp.has_tag('test'))
-        self.assertEqual(sorted(comp.tags_names), ["Tag 1", "Tag 2"])
+        self.assertEqual(sorted(comp.tag_names), ["Tag 1", "Tag 2"])

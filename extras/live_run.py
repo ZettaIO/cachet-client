@@ -198,7 +198,7 @@ def test_components():
     assert comp.order == 10, "Component oder differs"
     assert comp.group_id == 1000, "Group id differs"
     assert comp.enabled is False, "Component enable status differs"
-    assert comp.tags_names == ["Updated Tag 1", "Updated Tag 2"], "Tags differs"
+    assert comp.tag_names == ["Updated Tag 1", "Updated Tag 2"], "Tags differs"
 
     # Call update directly on the manager
     comp = client().components.update(
@@ -215,7 +215,7 @@ def test_components():
     assert comp.order == 10
     assert comp.group_id == 1000
     assert comp.enabled is True
-    assert sorted(comp.tags_names) == ['Another Tag', 'Some Tag']
+    assert sorted(comp.tag_names) == ['Another Tag', 'Some Tag']
     comp.delete()
 
 
@@ -283,6 +283,7 @@ def test_incidents():
         component_status=enums.COMPONENT_STATUS_MAJOR_OUTAGE,
     )
     pprint(issue.attrs)
+    issue.update()
     issue.delete()
 
 
