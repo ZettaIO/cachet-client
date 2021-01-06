@@ -64,6 +64,7 @@ class Incident(Resource):
         """str: Human representation of the status"""
         return self.get('human_status')
 
+
     @property
     def visible(self) -> int:
         """bool: Get or set visibility of the incident"""
@@ -72,6 +73,15 @@ class Incident(Resource):
     @visible.setter
     def visible(self, value: bool):
         self._data['visible'] = value
+
+    @property
+    def stickied(self) -> int:
+        """bool: Get or set sticky of the incident"""
+        return self.get('stickied') == 1
+
+    @stickied.setter
+    def stickied(self, value: bool):
+        self._data['stickied'] = value
 
     @property
     def scheduled_at(self) -> datetime:
@@ -116,6 +126,7 @@ class IncidentManager(Manager):
             message: str,
             status: int,
             visible: bool = True,
+            stickied: bool = False,
             component_id: int = None,
             component_status: int = None,
             notify: bool = True,
@@ -132,6 +143,7 @@ class IncidentManager(Manager):
             message (str): Mesage body for the issue
             status (int): Status of the incident (see enums)
             visible (bool): Publicly visible incident
+            stickied (bool): Stickied incident
             component_id (int): The component to update
             component_status (int): The status to apply on component
             notify (bool): If users should be notified
@@ -149,6 +161,7 @@ class IncidentManager(Manager):
                 'message': message,
                 'status': status,
                 'visible': 1 if visible else 0,
+                'stickied': 1 if stickied else 0,
                 'component_id': component_id,
                 'component_status': component_status,
                 'notify': 1 if notify else 0,
@@ -165,6 +178,7 @@ class IncidentManager(Manager):
             message: str = None,
             status: int = None,
             visible: bool = None,
+            stickied: bool = False,
             component_id: int = None,
             component_status: int = None,
             notify: bool = True,
@@ -183,6 +197,7 @@ class IncidentManager(Manager):
             message (str): Mesage body for the issue
             status (int): Status of the incident (see enums)
             visible (bool): Publicly visible incident
+            stickied (bool): Stickied incident
             component_id (int): The component to update
             component_status (int): The status to apply on component
             notify (bool): If users should be notified
@@ -204,6 +219,7 @@ class IncidentManager(Manager):
                 message=message,
                 status=status,
                 visible=1 if visible else 0,
+                stickied=1 if stickied else 0,
                 component_id=component_id,
                 component_status=component_status,
                 notify=1 if notify else 0,
