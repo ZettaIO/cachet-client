@@ -34,8 +34,8 @@ Attributes
 .. autoattribute:: Component.group_id
 .. autoattribute:: Component.enabled
 .. autoattribute:: Component.tags
-.. autoattribute:: Component.tags_names
-.. autoattribute:: Component.tags_slugs
+.. autoattribute:: Component.tag_names
+.. autoattribute:: Component.tag_slugs
 .. autoattribute:: Component.created_at
 .. autoattribute:: Component.updated_at
 

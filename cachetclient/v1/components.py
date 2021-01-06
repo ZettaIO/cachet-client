@@ -107,12 +107,12 @@ class Component(Resource):
         return self._data['tags'] or {}
 
     @property
-    def tags_names(self) -> List[str]:
+    def tag_names(self) -> List[str]:
         """List[str]: Get the tag names as a list"""
         return list(self.tags.values())
 
     @property
-    def tags_slugs(self) -> List[str]:
+    def tag_slugs(self) -> List[str]:
         """List[str]: Get the tag slugs as a list"""
         return list(self.tags.keys())
 
