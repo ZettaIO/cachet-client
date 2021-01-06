@@ -1,5 +1,11 @@
-from typing import Generator, Set
+import copy
+from typing import (
+    Dict,
+    Iterable,
+    Generator, List,
+)
 from datetime import datetime
+from collections import abc
 
 from cachetclient.base import Manager, Resource
 from cachetclient.v1 import enums
@@ -87,16 +93,28 @@ class Component(Resource):
         self._data['enabled'] = value
 
     @property
-    def tags(self) -> set:
-        """set: Get or set tags for the component
+    def tags(self) -> Dict[str, str]:
+        """dict: Get the raw ``slug: name`` tag dictionary.
 
-        Also see :py:data:`add_tag`, :py:data:`del_tag` and :py:data:`has_tag` methods.
+        Example::
+
+            >> component.tags
+            {'another-test-tag': 'Another Test Tag', 'test-tag': 'Test Tag'}
+
+        Also see :py:data:`add_tag`, :py:data:`add_tags`, :py:data:`set_tags`,
+        :py:data:`del_tag` and :py:data:`has_tag` methods.
         """
-        return set(self._data['tags'].keys()) if self._data['tags'] else set()
+        return self._data['tags'] or {}
 
-    @tags.setter
-    def tags(self, value: set):
-        self._data['tags'] = {val: val for val in value}
+    @property
+    def tags_names(self) -> List[str]:
+        """List[str]: Get the tag names as a list"""
+        return list(self.tags.values())
+
+    @property
+    def tags_slugs(self) -> List[str]:
+        """List[str]: Get the tag slugs as a list"""
+        return list(self.tags.keys())
 
     @property
     def created_at(self) -> datetime:
@@ -108,35 +126,106 @@ class Component(Resource):
         """datetime: Last time the component was updated"""
         return utils.to_datetime(self.get('updated_at'))
 
+    def set_tags(self, names: Iterable[str]):
+        """Replace the current tags.
+
+        Note: We use the provided names also as the slugs.
+        When the resource is returned from the server the next time
+        it will be slugified.
+        """
+        self._data['tags'] = {n: n for n in names}
+
+    def add_tags(self, names: Iterable[str]) -> None:
+        """Add multiple tags.
+
+        Note: We use the provided name also as the slug.
+        When the resource is returned from the server the next time
+        it will be slugified.
+
+        Args:
+            names (Iterable[str]): Iterable with names such as a list or set
+        """
+        for name in names:
+            self.add_tag(name)
+
     def add_tag(self, name: str) -> None:
         """Add a new tag.
+
+        Note: We use the provided name also as the slug.
+        When the resource is returned from the server the next time
+        it will be slugified.
 
         Args:
             name (str): Name of the tag
         """
         self._data['tags'][name] = name
 
-    def del_tag(self, name: str) -> None:
+    def del_tag(self, name: str = None, slug: str = None) -> None:
         """Delete a tag.
 
+        We can delete a tag by using the slug or actual name.
+        Names and slugs are case insensitive.
+
         Args:
-            name (str): Name of tag to remove
+            name (str): name to remove
+            slug (str): slug to remove
 
         Raises:
             KeyError: if tag does not exist
         """
-        del self._data['tags'][name]
+        if name:
+            for _slug, _name in self._data['tags'].items():
+                if name.lower() == _name.lower():
+                    del self._data['tags'][_slug]
+                    break
+            else:
+                raise KeyError
+        elif slug:
+            del self._data['tags'][slug.lower()]
 
-    def has_tag(self, name: str) -> bool:
-        """Check if a tag exists.
+
+    def has_tag(self, name: str = None, slug: str = None) -> bool:
+        """Check if a tag exists by tag or slug.
+
+        Tags and slugs are case insensitive.      
 
         Args:
             name (str): Tag name
+            slug (str): Slug name
 
         Returns:
             bool: If the tag exists
         """
-        return name in self.get('tags')
+        if slug:
+            return slug.lower() in self.tags
+        elif name:
+            for _name in self.tags.values():
+                if name.lower() == _name.lower():
+                    return True
+            else:
+                return False
+
+        return False
+
+    def update(self):
+        """
+        Posts the values in the resource to the server.
+
+        Example::
+
+            # Change an attribute and save the resource
+            >> resource.value = something
+            >> updated_resource = resource.update()
+
+        Returns:
+            The updated resource from the server
+        """
+        # Transform tags into an iterable
+        data = copy.deepcopy(self.attrs)
+        if data.get("tags") is not None:
+            data["tags"] = data["tags"].values()
+
+        return self._manager.update(self.get('id'), **data)
 
 
 class ComponentManager(Manager):
@@ -153,7 +242,7 @@ class ComponentManager(Manager):
             order: int = None,
             group_id: int = None,
             enabled: bool = True,
-            tags: Set[str] = None):
+            tags: Iterable[str] = None):
         """Create a component.
 
         Keyword Args:
@@ -164,7 +253,7 @@ class ComponentManager(Manager):
             order (int): Order of the component in its group
             group_id (int): The group it belongs to
             enabled (bool): Enabled status
-            tags (list): String tags
+            tags (Iterable[str]): A list, set or other iterable containing string tags
 
         Returns:
             :py:class:`Component` instance
@@ -174,6 +263,12 @@ class ComponentManager(Manager):
                 status,
                 enums.COMPONENT_STATUS_LIST,
             ))
+
+        if tags is not None and not isinstance(tags, abc.Iterable):
+            raise ValueError("tags is not an iterable")
+
+        if isinstance(tags, str):
+            raise ValueError("tags cannot be a string. It needs to be an iterable of strings.")
 
         return self._create(
             self.path,
@@ -185,7 +280,7 @@ class ComponentManager(Manager):
                 'order': order,
                 'group_id': group_id,
                 'enabled': enabled,
-                'tags': ','.join(tags) if isinstance(tags, (set, list)) else tags if isinstance(tags, str) else None,
+                'tags': ','.join(tags) if tags else None,
             }
         )
 
@@ -200,7 +295,7 @@ class ComponentManager(Manager):
             order: int = None,
             group_id: int = None,
             enabled: bool = None,
-            tags: Set[str] = None,
+            tags: Iterable[str] = None,
             **kwargs) -> Component:
         """Update a component by id.
 
@@ -215,11 +310,14 @@ class ComponentManager(Manager):
             order (int): Order in component group
             group_id (int): Component group id
             enabled (bool): Enable status of component
-            tags (list): List of strings
+            tags (Iterable[str]): Iterable of tag strings
 
         Returns:
             Updated Component from server
         """
+        if tags is not None and not isinstance(tags, abc.Iterable):
+            raise ValueError("tags is not an iterable")
+
         return self._update(
             self.path,
             component_id,
@@ -231,7 +329,7 @@ class ComponentManager(Manager):
                 order=order,
                 group_id=group_id,
                 enabled=enabled,
-                tags=','.join(tags) if isinstance(tags, (set, list)) else tags if isinstance(tags, str) else None,
+                tags=','.join(tags) if tags else None,
             ),
         )
 

@@ -12,6 +12,8 @@ Methods
 
 .. automethod:: Component.__init__
 .. automethod:: Component.add_tag
+.. automethod:: Component.add_tags
+.. automethod:: Component.set_tags
 .. automethod:: Component.del_tag
 .. automethod:: Component.has_tag
 .. automethod:: Component.update
@@ -32,6 +34,8 @@ Attributes
 .. autoattribute:: Component.group_id
 .. autoattribute:: Component.enabled
 .. autoattribute:: Component.tags
+.. autoattribute:: Component.tags_names
+.. autoattribute:: Component.tags_slugs
 .. autoattribute:: Component.created_at
 .. autoattribute:: Component.updated_at
 

@@ -126,8 +126,8 @@ def main():
         test_schedules()
 
     print("=" * 80)
-    print("Numer of tests    :", Stats.NUM_TESTS)
-    print("Succesful         :", Stats.NUM_TESTS_SUCCESS)
+    print("Number of tests   :", Stats.NUM_TESTS)
+    print("Successful        :", Stats.NUM_TESTS_SUCCESS)
     print("Failure           :", Stats.NUM_TESTS_FAIL)
     print("Percentage passed : {}%".format(Stats.success_percentage()))
     print("=" * 80)
@@ -170,7 +170,7 @@ def test_components():
         name="Test Component",
         status=enums.COMPONENT_STATUS_OPERATIONAL,
         description="This is a test",
-        tags="test, thing",
+        tags=("Test Tag", "Another Test Tag"),
         order=1,
         group_id=1,
     )
@@ -186,8 +186,9 @@ def test_components():
     comp.order = 10
     comp.group_id = 1000
     comp.enabled = False
-    comp.tags = {'moo', 'boo'}
+    comp.set_tags(("Updated Tag 1", "Updated Tag 2"))
     comp = comp.update()
+    pprint(comp.attrs, indent=2)
 
     # Test if values are correctly updates
     assert comp.name == 'Test Thing', "Component name differs"
@@ -197,14 +198,14 @@ def test_components():
     assert comp.order == 10, "Component oder differs"
     assert comp.group_id == 1000, "Group id differs"
     assert comp.enabled is False, "Component enable status differs"
-    assert comp.tags == {'moo', 'boo'}, "Tags differs"
+    assert comp.tags_names == ["Updated Tag 1", "Updated Tag 2"], "Tags differs"
 
     # Call update directly on the manager
     comp = client().components.update(
         comp.id,
         status=enums.COMPONENT_STATUS_OPERATIONAL,
         name="A new component name",
-        tags={'bolle', 'kake'},
+        tags=("Some Tag", "Another Tag"),
         enabled=True,
     )
     assert comp.name == "A new component name"
@@ -214,7 +215,7 @@ def test_components():
     assert comp.order == 10
     assert comp.group_id == 1000
     assert comp.enabled is True
-    assert comp.tags == {'bolle', 'kake'}
+    assert sorted(comp.tags_names) == ['Another Tag', 'Some Tag']
     comp.delete()
 
 
