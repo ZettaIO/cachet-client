@@ -28,8 +28,10 @@ Attributes
 .. autoattribute:: Incident.status
 .. autoattribute:: Incident.human_status
 .. autoattribute:: Incident.visible
+.. autoattribute:: Incident.stickied
 .. autoattribute:: Incident.scheduled_at
 .. autoattribute:: Incident.created_at
+.. autoattribute:: Incident.occurred_at
 .. autoattribute:: Incident.updated_at
 .. autoattribute:: Incident.deleted_at
 
