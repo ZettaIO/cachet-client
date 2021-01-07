@@ -293,7 +293,7 @@ def test_incidents():
         component_status=enums.COMPONENT_STATUS_MAJOR_OUTAGE,
     )
     pprint(issue.attrs)
-    issue.update()
+    issue = issue.update()
     issue.delete()
 
 

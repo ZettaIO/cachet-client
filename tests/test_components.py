@@ -76,7 +76,7 @@ class ComponentsTests(CachetTestcase):
 
         comp.add_tag('Tag 1')
         comp.add_tag('Tag 2')
-        comp = comp.update()
+        comp = comp = comp.update()
         self.assertTrue(comp.has_tag('Tag 1'))
         self.assertTrue(comp.has_tag('Tag 2'))
         self.assertTrue(comp.has_tag(slug='tag-1'))
@@ -88,7 +88,7 @@ class ComponentsTests(CachetTestcase):
         self.assertEqual(len(comp.tags), 3)
         comp.del_tag(slug="tag-1")
         self.assertEqual(len(comp.tags), 2)
-        comp.update()
+        comp = comp.update()
         self.assertFalse(comp.has_tag(slug="tag-1"))
         self.assertFalse(comp.has_tag(name="tag 1"))
         self.assertTrue(comp.has_tag(slug="tag-2"))

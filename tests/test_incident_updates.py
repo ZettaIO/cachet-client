@@ -64,7 +64,7 @@ class IncidentUpdatesTests(CachetTestcase):
         entry = updates[-1]
         entry.status = enums.INCIDENT_INVESTIGATING
         entry.message = "Lookin into it.."
-        entry.update()
+        entry = entry.update()
 
         # Manually re-fetch
         updated_entry = self.client.incident_updates.get(entry.incident_id, entry.id)
