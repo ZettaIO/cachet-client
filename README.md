@@ -143,10 +143,10 @@ Running tests:
 python extras/live_run.py
 ...
 =================================================
-Numer of tests    : 10
-Succesful         : 8
-Failure           : 2
-Percentage passed : 80.0%
+Number of tests   : 10
+Successful        : 10
+Failure           : 0
+Percentage passed : 100.0%
 =================================================
 ```
 
