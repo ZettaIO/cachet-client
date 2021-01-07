@@ -178,6 +178,10 @@ def test_components():
     assert comp.status == enums.COMPONENT_STATUS_OPERATIONAL, "Incorrect status"
     assert isinstance(comp.created_at, datetime), "created_at not datetime"
     assert isinstance(comp.updated_at, datetime), "updated_at not datetime"
+    assert comp.has_tag(name="Test Tag")
+    assert comp.has_tag(name="Another Test Tag")
+    assert comp.has_tag(slug="Test-Tag")
+    assert comp.has_tag(slug="Another-Test-Tag")
 
     # Create component using properties
     comp.name = 'Test Thing'
@@ -215,7 +219,13 @@ def test_components():
     assert comp.order == 10
     assert comp.group_id == 1000
     assert comp.enabled is True
-    assert sorted(comp.tag_names) == ['Another Tag', 'Some Tag']
+    assert sorted(comp.tag_names) == ["Another Tag", "Some Tag"]
+    assert comp.has_tag(name="another Tag")
+    assert comp.has_tag(name="some Tag")
+    assert comp.has_tag(slug="some-tag")
+    assert comp.has_tag(slug="another-tag")
+    assert comp.has_tag(slug="test") is False
+    assert comp.has_tag(name="test") is False
     comp.delete()
 
 
