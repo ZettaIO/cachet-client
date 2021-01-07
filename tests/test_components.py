@@ -60,23 +60,39 @@ class ComponentsTests(CachetTestcase):
         self.assertEqual(self.client.components.count(), 0)
 
     def test_delete_nonexist(self):
-        """Delete non-exsitent component"""
+        """Delete non-existant component"""
         with self.assertRaises(HTTPError):
             self.client.components.delete(1337)
 
     def test_tags(self):
         """Test tags"""
         comp = self.create_component(self.client)
-        comp.add_tag('test')
-        self.assertTrue(comp.has_tag('test'))
-        self.assertFalse(comp.has_tag('thing'))
-        comp.del_tag('test')
-        self.assertFalse(comp.has_tag('test'))
+        comp.add_tag('Test Tag')
+        self.assertTrue(comp.has_tag(name='Test Tag'))
+        self.assertTrue(comp.has_tag(name='test tag'))
+        self.assertFalse(comp.has_tag(name='thing'))
+        comp.del_tag(name="Test Tag")
+        self.assertFalse(comp.has_tag("Test Tag"))
 
         comp.add_tag('Tag 1')
         comp.add_tag('Tag 2')
         comp = comp.update()
         self.assertTrue(comp.has_tag('Tag 1'))
         self.assertTrue(comp.has_tag('Tag 2'))
+        self.assertTrue(comp.has_tag(slug='tag-1'))
+        self.assertTrue(comp.has_tag(slug='tag-2'))
         self.assertFalse(comp.has_tag('test'))
         self.assertEqual(sorted(comp.tag_names), ["Tag 1", "Tag 2"])
+
+        comp.add_tag("Tag 3")
+        self.assertEqual(len(comp.tags), 3)
+        comp.del_tag(slug="tag-1")
+        self.assertEqual(len(comp.tags), 2)
+        comp.update()
+        self.assertFalse(comp.has_tag(slug="tag-1"))
+        self.assertFalse(comp.has_tag(name="tag 1"))
+        self.assertTrue(comp.has_tag(slug="tag-2"))
+        self.assertTrue(comp.has_tag(name="tag 2"))
+        self.assertTrue(comp.has_tag(slug="tag-3"))
+        self.assertTrue(comp.has_tag(name="tag 3"))
+        self.assertEqual(len(comp.tags), 2)

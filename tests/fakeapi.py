@@ -149,7 +149,11 @@ class FakeComponents(FakeData):
         return FakeHttpResponse()
 
     def _transform_tags(self, tags):
-        return {v: v for v in tags.split(',')} if tags else None
+        return {self._slugify(v): v for v in tags.split(',')} if tags else None
+
+    def _slugify(self, name) -> str:
+        """Slugify a tag name"""
+        return re.sub(r'[\W_]+', '-', name.lower())
 
 
 class FakeComponentGroups(FakeData):
@@ -236,7 +240,7 @@ class FakeIncidents(FakeData):
             )
 
     def post(self, params=None, data=None):
-        # Fields we don't store but instead triggers behaviour
+        # Fields we don't store but instead triggers behavior
         # 'component_status': data.get('component_status'),
         # 'template': data.get('template'),
 
@@ -255,6 +259,7 @@ class FakeIncidents(FakeData):
             'component_id': data.get('component_id'),
             'notify': data.get('notify'),
             'created_at': '2019-05-25 15:21:34',
+            'occurred_at': data.get('occurred_at') or '2019-05-25 15:21:34',
             'scheduled_at': '2019-05-25 15:21:34',
             'updated_at': '2019-05-25 15:21:34',
         }
@@ -270,6 +275,7 @@ class FakeIncidents(FakeData):
         instance['message'] = data['message']
         instance['status'] = data['status']
         instance['visible'] = data['visible']
+
         # Optional only update if value is present
         for key, value in data.items():
             if key in instance and value is not None:
