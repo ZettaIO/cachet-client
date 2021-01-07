@@ -6,7 +6,8 @@ logger = logging.getLogger(__name__)
 
 class PingManager(Manager):
     """Manager for ping endpoints"""
-    path = 'ping'
+
+    path = "ping"
 
     def __call__(self) -> bool:
         """
@@ -35,7 +36,7 @@ class PingManager(Manager):
         try:
             response = self._http.get(self.path)
             data = response.json()
-            return data['data'] == 'Pong!'
+            return data["data"] == "Pong!"
         except Exception as ex:
             logger.warning("Ping: %s", ex)
             return False

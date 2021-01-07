@@ -6,61 +6,60 @@ from cachetclient import utils
 
 
 class IncidentUpdate(Resource):
-
     @property
     def id(self) -> int:
         """int: Resource id"""
-        return self.get('id')
+        return self.get("id")
 
     @property
     def incident_id(self) -> int:
         """int: The incident id this update belongs to"""
-        return self.get('incident_id')
+        return self.get("incident_id")
 
     @property
     def status(self) -> int:
         """int: Get or set incident status. See :py:data:`enums`."""
-        return self.get('status')
+        return self.get("status")
 
     @status.setter
     def status(self, value: int):
-        self._data['status'] = value
+        self._data["status"] = value
 
     @property
     def message(self) -> str:
         """str: Get or set message"""
-        return self.get('message')
+        return self.get("message")
 
     @message.setter
     def message(self, value: str):
-        self._data['message'] = value
+        self._data["message"] = value
 
     @property
     def user_id(self) -> int:
         """int: The user id creating the update"""
-        return self.get('user_id')
+        return self.get("user_id")
 
     @property
     def created_at(self) -> datetime:
         """datetime: when the resource was created"""
-        return utils.to_datetime(self.get('created_at'))
+        return utils.to_datetime(self.get("created_at"))
 
     @property
     def updated_at(self) -> datetime:
         """datetime: When the resource as last updated"""
-        return utils.to_datetime(self.get('updated_at'))
+        return utils.to_datetime(self.get("updated_at"))
 
     @property
     def human_status(self) -> str:
         """str: Human readable status"""
-        return self.get('human_status')
+        return self.get("human_status")
 
     @property
     def permalink(self) -> str:
         """str: Permanent url to the incident update"""
-        return self.get('permalink')
+        return self.get("permalink")
 
-    def update(self) -> 'IncidentUpdate':
+    def update(self) -> "IncidentUpdate":
         """
         Update/save changes
 
@@ -76,7 +75,7 @@ class IncidentUpdate(Resource):
 
 class IncidentUpdatesManager(Manager):
     resource_class = IncidentUpdate
-    path = 'incidents/{}/updates'
+    path = "incidents/{}/updates"
 
     def create(self, *, incident_id: int, status: int, message: str) -> IncidentUpdate:
         """
@@ -93,19 +92,20 @@ class IncidentUpdatesManager(Manager):
         return self._create(
             self.path.format(incident_id),
             {
-                'status': status,
-                'message': message,
-            }
+                "status": status,
+                "message": message,
+            },
         )
 
     def update(
-            self,
-            *,
-            id: int,
-            incident_id: int,
-            status: int = None,
-            message: str = None,
-            **kwargs) -> IncidentUpdate:
+        self,
+        *,
+        id: int,
+        incident_id: int,
+        status: int = None,
+        message: str = None,
+        **kwargs
+    ) -> IncidentUpdate:
         """
         Update an incident update
 
@@ -125,9 +125,9 @@ class IncidentUpdatesManager(Manager):
             self.path.format(incident_id),
             id,
             {
-                'status': status,
-                'message': message,
-            }
+                "status": status,
+                "message": message,
+            },
         )
 
     def count(self, incident_id) -> int:
@@ -142,7 +142,9 @@ class IncidentUpdatesManager(Manager):
         """
         return self._count(self.path.format(incident_id))
 
-    def list(self, incident_id: int, page: int = 1, per_page: int = 20) -> Generator[IncidentUpdate, None, None]:
+    def list(
+        self, incident_id: int, page: int = 1, per_page: int = 20
+    ) -> Generator[IncidentUpdate, None, None]:
         """
         List updates for an issue
 

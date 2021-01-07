@@ -12,7 +12,6 @@ from cachetclient.v1.schedules import ScheduleManager
 
 
 class Client:
-
     def __init__(self, http_client: HttpClient):
         """
         Args:

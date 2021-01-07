@@ -2,18 +2,17 @@ from cachetclient.base import Manager, Resource
 
 
 class Version(Resource):
-
     @property
     def value(self) -> str:
         """str: Version string from Cachet service"""
-        return self._data['data']
+        return self._data["data"]
 
     @property
     def on_latest(self) -> bool:
         """bool: Are we on latest version?
         Requires beacon enabled on server.
         """
-        return self._data['meta']['on_latest']
+        return self._data["meta"]["on_latest"]
 
     @property
     def latest(self) -> dict:
@@ -29,12 +28,12 @@ class Version(Resource):
             }
 
         """
-        return self._data['meta']['latest']
+        return self._data["meta"]["latest"]
 
 
 class VersionManager(Manager):
     resource_class = Version
-    path = 'version'
+    path = "version"
 
     def __call__(self) -> Version:
         """Shortcut to :py:data:`get`

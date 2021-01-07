@@ -7,51 +7,51 @@ from cachetclient import utils
 
 
 class Schedule(Resource):
-
     @property
     def id(self) -> int:
         """int: Resource ID"""
-        return self.get('id')
+        return self.get("id")
 
     @property
     def name(self) -> str:
         """str: Name of the scheduled event"""
-        return self.get('name')
+        return self.get("name")
 
     @property
     def message(self) -> str:
         """str: Message string"""
-        return self.get('message')
+        return self.get("message")
 
     @property
     def status(self) -> int:
         """int: Status of the scheduled event"""
-        return self.get('status')
+        return self.get("status")
 
     @property
     def scheduled_at(self) -> datetime:
         """datetime: When the event is schedule for"""
-        return utils.to_datetime(self.get('scheduled_at'))
+        return utils.to_datetime(self.get("scheduled_at"))
 
     @property
     def completed_at(self) -> datetime:
         """datetime: When the event is completed"""
-        return utils.to_datetime(self.get('completed_at'))
+        return utils.to_datetime(self.get("completed_at"))
 
 
 class ScheduleManager(Manager):
-    path = 'schedules'
+    path = "schedules"
     resource_class = Schedule
 
     def create(
-            self,
-            *,
-            name: str,
-            status: int,
-            message: str = None,
-            scheduled_at: datetime = None,
-            completed_at: datetime = None,
-            notify: bool = True):
+        self,
+        *,
+        name: str,
+        status: int,
+        message: str = None,
+        scheduled_at: datetime = None,
+        completed_at: datetime = None,
+        notify: bool = True
+    ):
         """Create a schedule.
 
         Keyword Args:
@@ -66,32 +66,37 @@ class ScheduleManager(Manager):
             :py:class:`Schedule` instance
         """
         if status not in enums.SCHEDULE_STATUS_LIST:
-            raise ValueError("Invalid status id '{}'. Valid values :{}".format(
-                status,
-                enums.SCHEDULE_STATUS_LIST,
-            ))
+            raise ValueError(
+                "Invalid status id '{}'. Valid values :{}".format(
+                    status,
+                    enums.SCHEDULE_STATUS_LIST,
+                )
+            )
 
         return self._create(
             self.path,
             {
-                'name': name,
-                'message': message,
-                'status': enums.SCHEDULE_STATUS_UPCOMING,
-                'scheduled_at': scheduled_at.strftime('%Y-%m-%d %H:%M'),
-                'completed_at': completed_at.strftime('%Y-%m-%d %H:%M') if completed_at else None,
-                'notify': 0,
-            }
+                "name": name,
+                "message": message,
+                "status": enums.SCHEDULE_STATUS_UPCOMING,
+                "scheduled_at": scheduled_at.strftime("%Y-%m-%d %H:%M"),
+                "completed_at": completed_at.strftime("%Y-%m-%d %H:%M")
+                if completed_at
+                else None,
+                "notify": 0,
+            },
         )
 
     def update(
-            self,
-            schedule_id: int,
-            *,
-            name: str,
-            status: int,
-            message: str = None,
-            scheduled_at: datetime = None,
-            **kwargs) -> Schedule:
+        self,
+        schedule_id: int,
+        *,
+        name: str,
+        status: int,
+        message: str = None,
+        scheduled_at: datetime = None,
+        **kwargs
+    ) -> Schedule:
         """Update a Schedule by id.
 
         Args:
@@ -109,14 +114,13 @@ class ScheduleManager(Manager):
             self.path,
             schedule_id,
             self._build_data_dict(
-                name=name,
-                status=status,
-                message=message,
-                scheduled_at=scheduled_at
+                name=name, status=status, message=message, scheduled_at=scheduled_at
             ),
         )
 
-    def list(self, page: int = 1, per_page: int = 20) -> Generator[Schedule, None, None]:
+    def list(
+        self, page: int = 1, per_page: int = 20
+    ) -> Generator[Schedule, None, None]:
         """List all schedules
 
         Keyword Args:

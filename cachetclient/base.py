@@ -6,6 +6,7 @@ from cachetclient.httpclient import HttpClient
 
 class Resource:
     """Bag of attributes"""
+
     def __init__(self, manager, data):
         """Resource initializer.
 
@@ -47,11 +48,11 @@ class Resource:
         Returns:
             The updated resource from the server
         """
-        return self._manager.update(self.get('id'), **self.attrs)
+        return self._manager.update(self.get("id"), **self.attrs)
 
     def delete(self) -> None:
         """Deletes the resource from the server"""
-        self._manager.delete(self.get('id'))
+        self._manager.delete(self.get("id"))
 
     def __repr__(self) -> str:
         return str(self)
@@ -64,6 +65,7 @@ class Manager:
     """
     Base class for handling crud resources
     """
+
     resource_class = Resource
     path = None  # Type: str
 
@@ -76,10 +78,12 @@ class Manager:
         self._http = http_client
 
         if self.resource_class is None:
-            raise ValueError('resource_class not defined in class {}'.format(self.__class__))
+            raise ValueError(
+                "resource_class not defined in class {}".format(self.__class__)
+            )
 
         if self.path is None:
-            raise ValueError('path not defined for class {}'.format(self.__class__))
+            raise ValueError("path not defined for class {}".format(self.__class__))
 
     def instance_from_dict(self, data: dict) -> Resource:
         """Creates a resource instance from a dictionary.
@@ -128,13 +132,15 @@ class Manager:
         """
         instances = json.loads(data)
         if not isinstance(instances, list):
-            raise ValueError("json data is {}, not a list : {}".format(type(instances), instances))
+            raise ValueError(
+                "json data is {}, not a list : {}".format(type(instances), instances)
+            )
 
         return [self.resource_class(self, inst) for inst in instances]
 
     def _create(self, path: str, data: dict):
         response = self._http.post(path, data=data)
-        return self.resource_class(self, response.json()['data'])
+        return self.resource_class(self, response.json()["data"])
 
     def _update(self, path: str, resource_id: int, data: dict) -> Resource:
         """Generic resource updater
@@ -148,9 +154,11 @@ class Manager:
             Resource: The updated resource from the server
         """
         response = self._http.put("{}/{}".format(path, resource_id), data=data)
-        return self.resource_class(self, response.json()['data'])
+        return self.resource_class(self, response.json()["data"])
 
-    def _list_paginated(self, path: str, page=1, per_page=20) -> Generator[Resource, None, None]:
+    def _list_paginated(
+        self, path: str, page=1, per_page=20
+    ) -> Generator[Resource, None, None]:
         """List resources paginated.
 
         Args:
@@ -167,19 +175,19 @@ class Manager:
             result = self._http.get(
                 path,
                 params={
-                    'page': page,
-                    'per_page': per_page,
+                    "page": page,
+                    "per_page": per_page,
                 },
             )
             json_data = result.json()
 
-            meta = json_data['meta']
-            data = json_data['data']
+            meta = json_data["meta"]
+            data = json_data["data"]
 
             for entry in data:
                 yield self.resource_class(self, entry)
 
-            if page >= meta['pagination']['total_pages']:
+            if page >= meta["pagination"]["total_pages"]:
                 break
 
             page += 1
@@ -201,7 +209,7 @@ class Manager:
         """
         result = self._http.get("{}/{}".format(path, resource_id))
         json_data = result.json()
-        return self.resource_class(self, json_data['data'])
+        return self.resource_class(self, json_data["data"])
 
     def _count(self, path: str) -> int:
         """Generic count method
@@ -213,9 +221,9 @@ class Manager:
         Returns:
             int: Number of resources
         """
-        result = self._http.get(path, params={'per_page': 1})
+        result = self._http.get(path, params={"per_page": 1})
         json_data = result.json()
-        return json_data['meta']['pagination']['total']
+        return json_data["meta"]["pagination"]["total"]
 
     def _delete(self, path: str, resource_id: int) -> None:
         """Generic resource deleter

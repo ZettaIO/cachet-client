@@ -20,14 +20,14 @@ def to_datetime(timestamp: str):
 
     try:
         # '2019-05-24 09:26:22'
-        return datetime.strptime(timestamp, '%Y-%m-%d %H:%M:%S')
+        return datetime.strptime(timestamp, "%Y-%m-%d %H:%M:%S")
     except ValueError:
         pass
 
     try:
         # 'Friday 1st May 2019 10:01:44'. Used in verified_at for subscribers
         sub_timestamp = re.sub(r"\b([0123]?[0-9])(st|th|nd|rd)\b", r"\1", timestamp)
-        return datetime.strptime(sub_timestamp, '%A %d %B %Y %H:%M:%S')
+        return datetime.strptime(sub_timestamp, "%A %d %B %Y %H:%M:%S")
     except ValueError:
         pass
 

@@ -9,51 +9,52 @@ from cachetclient.httpclient import HttpClient
 
 
 class ComponentGroup(Resource):
-
     @property
     def id(self) -> int:
         """int: Id of the component group"""
-        return self.get('id')
+        return self.get("id")
 
     @property
     def name(self) -> str:
         """str: Set or get name of component group"""
-        return self._data['name']
+        return self._data["name"]
 
     @name.setter
     def name(self, value: str):
-        self._data['name'] = value
+        self._data["name"] = value
 
     @property
     def enabled_components(self) -> List[Component]:
         """List[Component]: Enabled components in this group"""
-        return [Component(self._manager.components, comp)
-                for comp in self._data['enabled_components']]
+        return [
+            Component(self._manager.components, comp)
+            for comp in self._data["enabled_components"]
+        ]
 
     @property
     def order(self) -> int:
         """int: Get or set order value for group"""
-        return self.get('order')
+        return self.get("order")
 
     @order.setter
     def order(self, value: int):
-        self._data['order'] = value
+        self._data["order"] = value
 
     @property
     def collapsed(self) -> int:
         """int: Get or set collapsed status.
         See :py:data:`enums` module for values.
         """
-        return self.get('collapsed')
+        return self.get("collapsed")
 
     @collapsed.setter
     def collapsed(self, value):
-        self._data['collapsed'] = value
+        self._data["collapsed"] = value
 
     @property
     def lowest_human_status(self):
         """str: Lowest component status, human readable"""
-        return self.get('lowest_human_status')
+        return self.get("lowest_human_status")
 
     @property
     def is_collapsed(self) -> bool:
@@ -77,32 +78,34 @@ class ComponentGroup(Resource):
     @property
     def created_at(self) -> datetime:
         """datetime: When the group was created"""
-        return utils.to_datetime(self.get('created_at'))
+        return utils.to_datetime(self.get("created_at"))
 
     @property
     def updated_at(self) -> datetime:
         """datetime: Last time updated"""
-        return utils.to_datetime(self.get('updated_at'))
+        return utils.to_datetime(self.get("updated_at"))
 
     @property
     def visible(self) -> bool:
         """bool: Get or set visibility of the group"""
-        return self.get('visible') == 1
+        return self.get("visible") == 1
 
     @visible.setter
     def visible(self, value: bool):
-        self._data['visible'] = value
+        self._data["visible"] = value
 
 
 class ComponentGroupManager(Manager):
     resource_class = ComponentGroup
-    path = 'components/groups'
+    path = "components/groups"
 
     def __init__(self, http_client: HttpClient, components_manager: ComponentManager):
         super().__init__(http_client)
         self.components = components_manager
 
-    def create(self, *, name: str, order: int = 0, collapsed: int = 0, visible: bool = False) -> ComponentGroup:
+    def create(
+        self, *, name: str, order: int = 0, collapsed: int = 0, visible: bool = False
+    ) -> ComponentGroup:
         """
         Create a component group
 
@@ -118,15 +121,23 @@ class ComponentGroupManager(Manager):
         return self._create(
             self.path,
             {
-                'name': name,
-                'order': order,
-                'collapsed': collapsed,
-                'visible': 1 if visible else 0
-            }
+                "name": name,
+                "order": order,
+                "collapsed": collapsed,
+                "visible": 1 if visible else 0,
+            },
         )
 
-    def update(self, group_id: int, *, name: str, order: int = None,
-               collapsed: int = None, visible: bool = None, **kwargs) -> ComponentGroup:
+    def update(
+        self,
+        group_id: int,
+        *,
+        name: str,
+        order: int = None,
+        collapsed: int = None,
+        visible: bool = None,
+        **kwargs
+    ) -> ComponentGroup:
         """
         Update component group
 
@@ -159,7 +170,9 @@ class ComponentGroupManager(Manager):
         """
         return self._count(self.path)
 
-    def list(self, page: int = 1, per_page: int = 20) -> Generator[ComponentGroup, None, None]:
+    def list(
+        self, page: int = 1, per_page: int = 20
+    ) -> Generator[ComponentGroup, None, None]:
         """
         List all component groups
 

@@ -2,7 +2,8 @@ import copy
 from typing import (
     Dict,
     Iterable,
-    Generator, List,
+    Generator,
+    List,
 )
 from datetime import datetime
 from collections import abc
@@ -13,84 +14,83 @@ from cachetclient import utils
 
 
 class Component(Resource):
-
     def __init__(self, manager, data):
         super().__init__(manager, data)
-        if data.get('tags') is None:
-            data['tags'] = {}
+        if data.get("tags") is None:
+            data["tags"] = {}
 
     @property
     def id(self) -> int:
         """int: The unique ID of the component"""
-        return self._data['id']
+        return self._data["id"]
 
     @property
     def name(self) -> str:
         """str: Get or set name of the component"""
-        return self._data['name']
+        return self._data["name"]
 
     @name.setter
     def name(self, value: str):
-        self._data['name'] = value
+        self._data["name"] = value
 
     @property
     def description(self) -> str:
         """str: Get or set component description"""
-        return self.get('description')
+        return self.get("description")
 
     @description.setter
     def description(self, value: str):
-        self._data['description'] = value
+        self._data["description"] = value
 
     @property
     def link(self) -> str:
         """str: Get or set http link to the component"""
-        return self._data['link']
+        return self._data["link"]
 
     @link.setter
     def link(self, value: str):
-        self._data['link'] = value
+        self._data["link"] = value
 
     @property
     def status(self) -> int:
         """int: Get or set status id of the component (see :py:data:`enums`)"""
-        return self._data['status']
+        return self._data["status"]
 
     @status.setter
     def status(self, value: int):
-        self._data['status'] = value
+        self._data["status"] = value
 
     @property
     def status_name(self) -> str:
         """str: Human readable status representation"""
-        return self._data['status_name']
+        return self._data["status_name"]
 
     @property
     def order(self) -> int:
         """int: Get or set order of the component in a group"""
-        return self._data['order']
+        return self._data["order"]
 
     @order.setter
     def order(self, value: int):
-        self._data['order'] = value
+        self._data["order"] = value
 
     @property
     def group_id(self) -> int:
         """int: Get or set the component group id"""
-        return self._data['group_id']
+        return self._data["group_id"]
 
     @group_id.setter
     def group_id(self, value: int):
-        self._data['group_id'] = value
+        self._data["group_id"] = value
 
     @property
     def enabled(self) -> bool:
         """bool: Get or set enabled state"""
-        return self._data['enabled']
+        return self._data["enabled"]
 
     @enabled.setter
     def enabled(self, value: bool):
-        self._data['enabled'] = value
+        self._data["enabled"] = value
 
     @property
     def tags(self) -> Dict[str, str]:
@@ -104,7 +104,7 @@ class Component(Resource):
         Also see :py:data:`add_tag`, :py:data:`add_tags`, :py:data:`set_tags`,
         :py:data:`del_tag` and :py:data:`has_tag` methods.
         """
-        return self._data['tags'] or {}
+        return self._data["tags"] or {}
 
     @property
     def tag_names(self) -> List[str]:
@@ -119,12 +119,12 @@ class Component(Resource):
     @property
     def created_at(self) -> datetime:
         """datetime: When the component was created"""
-        return utils.to_datetime(self.get('created_at'))
+        return utils.to_datetime(self.get("created_at"))
 
     @property
     def updated_at(self) -> datetime:
         """datetime: Last time the component was updated"""
-        return utils.to_datetime(self.get('updated_at'))
+        return utils.to_datetime(self.get("updated_at"))
 
     def set_tags(self, names: Iterable[str]):
         """Replace the current tags.
@@ -133,7 +133,7 @@ class Component(Resource):
         When the resource is returned from the server the next time
         it will be slugified.
         """
-        self._data['tags'] = {n: n for n in names}
+        self._data["tags"] = {n: n for n in names}
 
     def add_tags(self, names: Iterable[str]) -> None:
         """Add multiple tags.
@@ -158,7 +158,7 @@ class Component(Resource):
         Args:
             name (str): Name of the tag
         """
-        self._data['tags'][name] = name
+        self._data["tags"][name] = name
 
     def del_tag(self, name: str = None, slug: str = None) -> None:
         """Delete a tag.
@@ -174,14 +174,14 @@ class Component(Resource):
             KeyError: if tag does not exist
         """
         if name:
-            for _slug, _name in self._data['tags'].items():
+            for _slug, _name in self._data["tags"].items():
                 if name.lower() == _name.lower():
-                    del self._data['tags'][_slug]
+                    del self._data["tags"][_slug]
                     break
             else:
                 raise KeyError
         elif slug:
-            del self._data['tags'][slug.lower()]
+            del self._data["tags"][slug.lower()]
 
     def has_tag(self, name: str = None, slug: str = None) -> bool:
         """Check if a tag exists by tag or slug.
@@ -224,24 +224,25 @@ class Component(Resource):
         if data.get("tags") is not None:
             data["tags"] = data["tags"].values()
 
-        return self._manager.update(self.get('id'), **data)
+        return self._manager.update(self.get("id"), **data)
 
 
 class ComponentManager(Manager):
     resource_class = Component
-    path = 'components'
+    path = "components"
 
     def create(
-            self,
-            *,
-            name: str,
-            status: int,
-            description: str = None,
-            link: str = None,
-            order: int = None,
-            group_id: int = None,
-            enabled: bool = True,
-            tags: Iterable[str] = None):
+        self,
+        *,
+        name: str,
+        status: int,
+        description: str = None,
+        link: str = None,
+        order: int = None,
+        group_id: int = None,
+        enabled: bool = True,
+        tags: Iterable[str] = None
+    ):
         """Create a component.
 
         Keyword Args:
@@ -258,44 +259,49 @@ class ComponentManager(Manager):
             :py:class:`Component` instance
         """
         if status not in enums.COMPONENT_STATUS_LIST:
-            raise ValueError("Invalid status id '{}'. Valid values :{}".format(
-                status,
-                enums.COMPONENT_STATUS_LIST,
-            ))
+            raise ValueError(
+                "Invalid status id '{}'. Valid values :{}".format(
+                    status,
+                    enums.COMPONENT_STATUS_LIST,
+                )
+            )
 
         if tags is not None and not isinstance(tags, abc.Iterable):
             raise ValueError("tags is not an iterable")
 
         if isinstance(tags, str):
-            raise ValueError("tags cannot be a string. It needs to be an iterable of strings.")
+            raise ValueError(
+                "tags cannot be a string. It needs to be an iterable of strings."
+            )
 
         return self._create(
             self.path,
             {
-                'name': name,
-                'description': description,
-                'status': status,
-                'link': link,
-                'order': order,
-                'group_id': group_id,
-                'enabled': enabled,
-                'tags': ','.join(tags) if tags else None,
-            }
+                "name": name,
+                "description": description,
+                "status": status,
+                "link": link,
+                "order": order,
+                "group_id": group_id,
+                "enabled": enabled,
+                "tags": ",".join(tags) if tags else None,
+            },
         )
 
     def update(
-            self,
-            component_id: int,
-            *,
-            status: int,
-            name: str = None,
-            description: str = None,
-            link: str = None,
-            order: int = None,
-            group_id: int = None,
-            enabled: bool = None,
-            tags: Iterable[str] = None,
-            **kwargs) -> Component:
+        self,
+        component_id: int,
+        *,
+        status: int,
+        name: str = None,
+        description: str = None,
+        link: str = None,
+        order: int = None,
+        group_id: int = None,
+        enabled: bool = None,
+        tags: Iterable[str] = None,
+        **kwargs
+    ) -> Component:
         """Update a component by id.
 
         Args:
@@ -328,11 +334,13 @@ class ComponentManager(Manager):
                 order=order,
                 group_id=group_id,
                 enabled=enabled,
-                tags=','.join(tags) if tags else None,
+                tags=",".join(tags) if tags else None,
             ),
         )
 
-    def list(self, page: int = 1, per_page: int = 20) -> Generator[Component, None, None]:
+    def list(
+        self, page: int = 1, per_page: int = 20
+    ) -> Generator[Component, None, None]:
         """List all components
 
         Keyword Args:

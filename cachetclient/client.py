@@ -5,10 +5,11 @@ from cachetclient.httpclient import HttpClient
 
 
 def Client(
-        endpoint: str = None,
-        api_token: str = None,
-        version: str = None,
-        verify_tls: bool = True) -> v1.Client:
+    endpoint: str = None,
+    api_token: str = None,
+    version: str = None,
+    verify_tls: bool = True,
+) -> v1.Client:
     """
     Creates a cachet client. Use this fuction to create clients to ensure
     compatibility in the future.
@@ -22,7 +23,7 @@ def Client(
         verify_tls (bool): Enable/disable tls verify. When using self signed certificates this has to be ``False``.
     """
     if not api_token:
-        api_token = os.environ.get('CACHET_API_TOKEN')
+        api_token = os.environ.get("CACHET_API_TOKEN")
 
     if not api_token:
         raise ValueError(
@@ -32,7 +33,7 @@ def Client(
         )
 
     if not endpoint:
-        endpoint = os.environ.get('CACHET_ENDPOINT')
+        endpoint = os.environ.get("CACHET_ENDPOINT")
 
     if not endpoint:
         raise ValueError(
@@ -52,8 +53,8 @@ def detect_version(endpoint: str) -> str:
     Detect the api version from endpoint url.
     Currently cachet only has a single "v1" endpoint but this may change in the future.
     """
-    if endpoint.endswith('/v1'):
-        return '1'
+    if endpoint.endswith("/v1"):
+        return "1"
 
     raise ValueError(
         "Cannot determine api version based on endpoint '{}'. "

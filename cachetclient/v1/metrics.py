@@ -8,130 +8,132 @@ from cachetclient.httpclient import HttpClient
 
 
 class Metric(Resource):
-
     @property
     def id(self) -> int:
-        return self.get('id')
+        return self.get("id")
 
     @property
     def name(self) -> str:
-        return self.get('name')
+        return self.get("name")
 
     @name.setter
     def name(self, value: str):
-        self._data['name'] = value
+        self._data["name"] = value
 
     @property
     def suffix(self) -> str:
-        return self.get('suffix')
+        return self.get("suffix")
 
     @suffix.setter
     def suffix(self, value: str):
-        self._data['suffix'] = value
+        self._data["suffix"] = value
 
     @property
     def description(self):
-        return self.get('description')
+        return self.get("description")
 
     @description.setter
     def description(self, value: str):
-        self._data['description'] = value
+        self._data["description"] = value
 
     @property
     def calc_type(self):
-        return self.get('calc_type')
+        return self.get("calc_type")
 
     @calc_type.setter
     def calc_type(self, value: int):
-        self._data['calc_type'] = value
+        self._data["calc_type"] = value
 
     @property
     def default_value(self):
-        return self.get('default_value')
+        return self.get("default_value")
 
     @default_value.setter
     def default_value(self, value: int):
-        self._data['default_value'] = value
+        self._data["default_value"] = value
 
     @property
     def display_chart(self) -> int:
-        return self.get('display_chart')
+        return self.get("display_chart")
 
     @display_chart.setter
     def display_chart(self, value: int):
-        self._data['display_chart'] = value
+        self._data["display_chart"] = value
 
     @property
     def created_at(self) -> datetime:
         """datetime: When the issue was created"""
-        return utils.to_datetime(self.get('created_at'))
+        return utils.to_datetime(self.get("created_at"))
 
     @property
     def updated_at(self) -> datetime:
         """datetime: Last time the issue was updated"""
-        return utils.to_datetime(self.get('updated_at'))
+        return utils.to_datetime(self.get("updated_at"))
 
     @property
     def places(self) -> int:
-        return self.get('places')
+        return self.get("places")
 
     @places.setter
     def places(self, value: int):
-        self._data['places'] = value
+        self._data["places"] = value
 
     @property
     def default_view(self) -> int:
-        return self.get('default_view')
+        return self.get("default_view")
 
     @default_view.setter
     def default_view(self, value: int):
-        self._data['default_view'] = value
+        self._data["default_view"] = value
 
     @property
     def threshold(self) -> int:
-        return self.get('threshold')
+        return self.get("threshold")
 
     @threshold.setter
     def threshold(self, value: int):
-        self._data['threshold'] = value
+        self._data["threshold"] = value
 
     @property
     def order(self) -> int:
-        return self.get('order')
+        return self.get("order")
 
     @order.setter
     def order(self, value: int):
-        self._data['order'] = value
+        self._data["order"] = value
 
     @property
     def visible(self) -> int:
-        return self.get('visible')
+        return self.get("visible")
 
     @visible.setter
     def visible(self, value: int):
-        self._data['visible'] = value
+        self._data["visible"] = value
 
-    def points(self) -> Generator['Metric', None, None]:
+    def points(self) -> Generator["Metric", None, None]:
         """Generator['Metric', None, None]: Metric points for this metric"""
         return self._manager.points.list(self.id)
 
 
 class MetricsManager(Manager):
     resource_class = Metric
-    path = 'metrics'
+    path = "metrics"
 
-    def __init__(self, http_client: HttpClient, metric_update_manager: MetricPointsManager):
+    def __init__(
+        self, http_client: HttpClient, metric_update_manager: MetricPointsManager
+    ):
         super().__init__(http_client)
         self.points = metric_update_manager
 
     def create(
-            self,
-            *,
-            name: str,
-            description: str,
-            suffix: str,
-            default_value: int = 0,
-            display_chart: int = 0) -> Metric:
+        self,
+        *,
+        name: str,
+        description: str,
+        suffix: str,
+        default_value: int = 0,
+        display_chart: int = 0
+    ) -> Metric:
         """
         Create a metric.
 
@@ -148,12 +150,12 @@ class MetricsManager(Manager):
         return self._create(
             self.path,
             {
-                'name': name,
-                'description': description,
-                'suffix': suffix,
-                'default_value': default_value,
-                'display_chart': display_chart,
-            }
+                "name": name,
+                "description": description,
+                "suffix": suffix,
+                "default_value": default_value,
+                "display_chart": display_chart,
+            },
         )
 
     def list(self, page: int = 1, per_page: int = 1) -> Generator[Metric, None, None]:
