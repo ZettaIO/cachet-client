@@ -46,12 +46,17 @@ class Resource:
             >> updated_resource = resource.update()
 
         Returns:
-            The updated resource from the server
+            Resource: The updated resource from the server
         """
         return self._manager.update(self.get("id"), **self.attrs)
 
     def delete(self) -> None:
-        """Deletes the resource from the server"""
+        """
+        Deletes the resource from the server.
+        
+        Raises:
+            HTTPException if the resource don't exist.
+        """
         self._manager.delete(self.get("id"))
 
     def __repr__(self) -> str:

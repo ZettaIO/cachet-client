@@ -130,18 +130,18 @@ class Component(Resource):
     def set_tags(self, names: Iterable[str]):
         """Replace the current tags.
 
-        Note:: We use the provided names also as the slugs.
-               When the resource is returned from the server the next time
-               it will be slugified.
+        .. Note:: We use the provided names also as the slugs.
+                  When the resource is returned from the server the next time
+                  it will be slugified.
         """
         self._data["tags"] = {n: n for n in names}
 
     def add_tags(self, names: Iterable[str]) -> None:
         """Add multiple tags.
 
-        Note:: We use the provided name also as the slug.
-               When the resource is returned from the server the next time
-               it will be slugified.
+        .. Note:: We use the provided name also as the slug.
+                  When the resource is returned from the server the next time
+                  it will be slugified.
 
         Args:
             names (Iterable[str]): Iterable with names such as a list or set
@@ -152,9 +152,9 @@ class Component(Resource):
     def add_tag(self, name: str) -> None:
         """Add a new tag.
 
-        Note: We use the provided name also as the slug.
-        When the resource is returned from the server the next time
-        it will be slugified.
+        .. Note: We use the provided name also as the slug.
+                 When the resource is returned from the server the next time
+                 it will be slugified.
 
         Args:
             name (str): Name of the tag
@@ -190,8 +190,8 @@ class Component(Resource):
         Tags and slugs are case insensitive.
 
         Args:
-            name (str): Tag name
-            slug (str): Slug name
+            name (str): Name of the tag
+            slug (str): Slug for the tag
 
         Returns:
             bool: If the tag exists
@@ -218,7 +218,7 @@ class Component(Resource):
             >> updated_resource = resource.update()
 
         Returns:
-            The updated resource from the server
+            Resource: The updated resource from the server
         """
         # Transform tags into an iterable
         data = copy.deepcopy(self.attrs)
