@@ -3,7 +3,7 @@
 
 # cachet-client
 
-A python 3.5+ API client for the open source status page system
+A python 3.6+ API client for the open source status page system
 [Cachet](https://github.com/CachetHQ/Cachet).
 
 * [cachet-client on github](https://github.com/ZettaIO/cachet-client)

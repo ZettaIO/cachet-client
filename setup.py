@@ -3,7 +3,7 @@ from setuptools import setup
 
 setup(
     name="cachet-client",
-    version="4.0.0",
+    version="4.0.1",
     description="A python 3 client for the Cachet API",
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
@@ -19,7 +19,6 @@ setup(
     classifiers=[
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
