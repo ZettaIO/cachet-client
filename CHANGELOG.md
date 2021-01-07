@@ -1,4 +1,8 @@
 
+# 4.0.1
+
+Drop python 3.5 support.
+
 # 4.0.0
 
 ## Tags
@@ -17,7 +21,7 @@ versions was limited to inspecting component slugs.
 ## Other Additions / Fixes
 
 * Incidents now support the ``occurred_at`` field in cachet 2.4
-" Updating components via incidents should no longer cause a 400 error if
+* Updating components via incidents should no longer cause a 400 error if
   `component_id` or `component_status` is missing
 
 # 3.1.1
