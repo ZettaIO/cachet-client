@@ -129,18 +129,18 @@ class Component(Resource):
     def set_tags(self, names: Iterable[str]):
         """Replace the current tags.
 
-        Note: We use the provided names also as the slugs.
-        When the resource is returned from the server the next time
-        it will be slugified.
+        Note:: We use the provided names also as the slugs.
+               When the resource is returned from the server the next time
+               it will be slugified.
         """
         self._data["tags"] = {n: n for n in names}
 
     def add_tags(self, names: Iterable[str]) -> None:
         """Add multiple tags.
 
-        Note: We use the provided name also as the slug.
-        When the resource is returned from the server the next time
-        it will be slugified.
+        Note:: We use the provided name also as the slug.
+               When the resource is returned from the server the next time
+               it will be slugified.
 
         Args:
             names (Iterable[str]): Iterable with names such as a list or set
@@ -184,7 +184,7 @@ class Component(Resource):
             del self._data["tags"][slug.lower()]
 
     def has_tag(self, name: str = None, slug: str = None) -> bool:
-        """Check if a tag exists by tag or slug.
+        """Check if a tag exists by name or slug.
 
         Tags and slugs are case insensitive.
 
