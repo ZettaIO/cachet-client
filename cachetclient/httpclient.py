@@ -27,11 +27,12 @@ class HttpClient:
         self._session.headers.update(
             {
                 "X-Cachet-Token": api_token,
-                "User-Agent": user_agent,
                 "Accept": "application/json",
                 "Content-Type": "application/json",
             }
         )
+        if user_agent:
+            self._session.headers.update({"User-Agent": user_agent})
 
     def get(self, path, params=None) -> requests.Response:
         return self.request("GET", path, params=params)
