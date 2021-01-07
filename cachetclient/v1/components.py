@@ -4,6 +4,7 @@ from typing import (
     Iterable,
     Generator,
     List,
+    Optional,
 )
 from datetime import datetime
 from collections import abc
@@ -117,12 +118,12 @@ class Component(Resource):
         return list(self.tags.keys())
 
     @property
-    def created_at(self) -> datetime:
+    def created_at(self) -> Optional[datetime]:
         """datetime: When the component was created"""
         return utils.to_datetime(self.get("created_at"))
 
     @property
-    def updated_at(self) -> datetime:
+    def updated_at(self) -> Optional[datetime]:
         """datetime: Last time the component was updated"""
         return utils.to_datetime(self.get("updated_at"))
 

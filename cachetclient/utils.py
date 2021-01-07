@@ -1,8 +1,9 @@
+from typing import Optional
 import re
 from datetime import datetime
 
 
-def to_datetime(timestamp: str):
+def to_datetime(timestamp: Optional[str]) -> Optional[datetime]:
     """
     Convert string to datetime of formats::
 

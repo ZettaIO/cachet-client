@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Generator, List
+from typing import Generator, List, Optional
 
 from cachetclient.base import Manager, Resource
 from cachetclient import utils
@@ -76,12 +76,12 @@ class ComponentGroup(Resource):
         return self.collapsed != enums.COMPONENT_GROUP_COLLAPSED_NOT_OPERATIONAL
 
     @property
-    def created_at(self) -> datetime:
+    def created_at(self) -> Optional[datetime]:
         """datetime: When the group was created"""
         return utils.to_datetime(self.get("created_at"))
 
     @property
-    def updated_at(self) -> datetime:
+    def updated_at(self) -> Optional[datetime]:
         """datetime: Last time updated"""
         return utils.to_datetime(self.get("updated_at"))
 

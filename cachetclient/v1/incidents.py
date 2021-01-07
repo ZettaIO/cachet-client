@@ -1,6 +1,6 @@
 import copy
 from datetime import datetime
-from typing import List, Generator
+from typing import List, Generator, Optional
 
 from cachetclient.base import Manager, Resource
 from cachetclient import utils
@@ -83,7 +83,7 @@ class Incident(Resource):
         self._data["stickied"] = value
 
     @property
-    def scheduled_at(self) -> datetime:
+    def scheduled_at(self) -> Optional[datetime]:
         """datetime: Scheduled time. This is used for scheduled events
         like maintenance in Cachet 2.3 were incident status is ``INCIDENT_SCHEDULED``.
         2.4 has its own schedule resource and endpoints.
@@ -91,22 +91,22 @@ class Incident(Resource):
         return utils.to_datetime(self.get("scheduled_at"))
 
     @property
-    def occurred_at(self) -> datetime:
+    def occurred_at(self) -> Optional[datetime]:
         """datetime: When the issue was occurred"""
         return utils.to_datetime(self.get("occurred_at"))
 
     @property
-    def created_at(self) -> datetime:
+    def created_at(self) -> Optional[datetime]:
         """datetime: When the issue was created"""
         return utils.to_datetime(self.get("created_at"))
 
     @property
-    def updated_at(self) -> datetime:
+    def updated_at(self) -> Optional[datetime]:
         """datetime: Last time the issue was updated"""
         return utils.to_datetime(self.get("updated_at"))
 
     @property
-    def deleted_at(self) -> datetime:
+    def deleted_at(self) -> Optional[datetime]:
         """datetime: When the issue was deleted"""
         return utils.to_datetime(self.get("deleted_at"))
 

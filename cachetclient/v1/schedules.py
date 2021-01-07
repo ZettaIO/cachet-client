@@ -1,6 +1,6 @@
 from datetime import datetime
 from cachetclient.v1 import enums
-from typing import Generator
+from typing import Generator, Optional
 
 from cachetclient.base import Resource, Manager
 from cachetclient import utils
@@ -28,12 +28,12 @@ class Schedule(Resource):
         return self.get("status")
 
     @property
-    def scheduled_at(self) -> datetime:
+    def scheduled_at(self) -> Optional[datetime]:
         """datetime: When the event is schedule for"""
         return utils.to_datetime(self.get("scheduled_at"))
 
     @property
-    def completed_at(self) -> datetime:
+    def completed_at(self) -> Optional[datetime]:
         """datetime: When the event is completed"""
         return utils.to_datetime(self.get("completed_at"))
 
@@ -75,16 +75,14 @@ class ScheduleManager(Manager):
 
         return self._create(
             self.path,
-            {
-                "name": name,
-                "message": message,
-                "status": enums.SCHEDULE_STATUS_UPCOMING,
-                "scheduled_at": scheduled_at.strftime("%Y-%m-%d %H:%M"),
-                "completed_at": completed_at.strftime("%Y-%m-%d %H:%M")
-                if completed_at
-                else None,
-                "notify": 0,
-            },
+            self._build_data_dict(
+                name=name,
+                message=message,
+                status=enums.SCHEDULE_STATUS_UPCOMING,
+                scheduled_at=scheduled_at.strftime("%Y-%m-%d %H:%M") if scheduled_at else None,
+                completed_at=completed_at.strftime("%Y-%m-%d %H:%M") if completed_at else None,
+                notify=0,
+            ),
         )
 
     def update(

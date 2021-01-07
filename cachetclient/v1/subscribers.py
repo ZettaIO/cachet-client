@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Generator, List
+from typing import Generator, List, Optional
 
 from cachetclient.base import Manager, Resource
 from cachetclient import utils
@@ -27,17 +27,17 @@ class Subscriber(Resource):
         return self._data["global"]
 
     @property
-    def created_at(self) -> datetime:
+    def created_at(self) -> Optional[datetime]:
         """datetime: When the subscription was created"""
         return utils.to_datetime(self.get("created_at"))
 
     @property
-    def updated_at(self) -> datetime:
+    def updated_at(self) -> Optional[datetime]:
         """datetime: Last time the subscription was updated"""
         return utils.to_datetime(self.get("updated_at"))
 
     @property
-    def verified_at(self) -> datetime:
+    def verified_at(self) -> Optional[datetime]:
         """datetime: When the subscription was verified. ``None`` if not verified"""
         return utils.to_datetime(self.get("verified_at"))
 

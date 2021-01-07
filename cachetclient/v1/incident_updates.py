@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Generator
+from typing import Generator, Optional
 
 from cachetclient.base import Manager, Resource
 from cachetclient import utils
@@ -40,12 +40,12 @@ class IncidentUpdate(Resource):
         return self.get("user_id")
 
     @property
-    def created_at(self) -> datetime:
+    def created_at(self) -> Optional[datetime]:
         """datetime: when the resource was created"""
         return utils.to_datetime(self.get("created_at"))
 
     @property
-    def updated_at(self) -> datetime:
+    def updated_at(self) -> Optional[datetime]:
         """datetime: When the resource as last updated"""
         return utils.to_datetime(self.get("updated_at"))
 

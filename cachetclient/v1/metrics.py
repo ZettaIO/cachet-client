@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Generator
+from typing import Generator, Optional
 
 from cachetclient.base import Manager, Resource
 from cachetclient import utils
@@ -61,12 +61,12 @@ class Metric(Resource):
         self._data["display_chart"] = value
 
     @property
-    def created_at(self) -> datetime:
+    def created_at(self) -> Optional[datetime]:
         """datetime: When the issue was created"""
         return utils.to_datetime(self.get("created_at"))
 
     @property
-    def updated_at(self) -> datetime:
+    def updated_at(self) -> Optional[datetime]:
         """datetime: Last time the issue was updated"""
         return utils.to_datetime(self.get("updated_at"))
 

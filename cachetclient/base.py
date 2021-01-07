@@ -1,5 +1,5 @@
 import json
-from typing import Generator, Union, List
+from typing import Any, Generator, Optional, List
 
 from cachetclient.httpclient import HttpClient
 
@@ -22,7 +22,7 @@ class Resource:
         """dict: The raw json response from the server"""
         return self._data
 
-    def get(self, name) -> Union[int, str, float, bool]:
+    def get(self, name) -> Any:
         """
         Safely obtain any attribute name for the resource
 
@@ -67,7 +67,7 @@ class Manager:
     """
 
     resource_class = Resource
-    path = None  # Type: str
+    path: Optional[str] = None
 
     def __init__(self, http_client: HttpClient):
         """Manager initializer.
@@ -82,8 +82,8 @@ class Manager:
                 "resource_class not defined in class {}".format(self.__class__)
             )
 
-        if self.path is None:
-            raise ValueError("path not defined for class {}".format(self.__class__))
+        # if self.path is None:
+        #     raise ValueError("path not defined for class {}".format(self.__class__))
 
     def instance_from_dict(self, data: dict) -> Resource:
         """Creates a resource instance from a dictionary.

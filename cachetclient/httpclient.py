@@ -1,3 +1,7 @@
+from typing import (
+    Any,
+    Dict,
+)
 import logging
 from urllib.parse import urljoin
 
@@ -46,7 +50,13 @@ class HttpClient:
     def delete(self, path, resource_id) -> requests.Response:
         return self.request("DELETE", "{}/{}".format(path, resource_id))
 
-    def request(self, method, path, params=None, data=None) -> requests.Response:
+    def request(
+        self,
+        method: str,
+        path: str,
+        params: Dict[str, Any] = None,
+        data: Dict[str, Any] = None,
+    ) -> requests.Response:
         url = urljoin(self.base_url, path)
         response = self._session.request(
             method,
@@ -62,3 +72,4 @@ class HttpClient:
 
         logger.debug(response.text)
         response.raise_for_status()
+        raise RuntimeError
